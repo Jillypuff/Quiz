@@ -1,33 +1,42 @@
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Server {
 
+    final private ServerSocket serverSocket;
 
-    int port = 55554;
-    private Socket socket;
-    List<GameInstance> games;
-
-    Server(){
-        games = new ArrayList<>();
-        try(ServerSocket serverSocket = new ServerSocket(port)){
-
-            System.out.println("Server started");
-            socket = serverSocket.accept();
-            ConnectedClient client = new ConnectedClient(socket);
-            new Thread(client).start();
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+    Server(ServerSocket serverSocket) {
+        this.serverSocket = serverSocket;
     }
 
+    public void startServer() {
+        try {
+            while(!serverSocket.isClosed()){
+                System.out.println("Server started");
+                Socket socket = serverSocket.accept();
+                ConnectedClient client = new ConnectedClient(socket);
+                new Thread(client).start();
+            }
+        } catch (IOException e) {
+            closeServerSocket();
+        }
+    }
 
-    public static void main(String[] args) {
-        new Server();
+    public void closeServerSocket() {
+        try  {
+            if (serverSocket != null){
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Server socket closed.");
+            System.exit(1);
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(55554);
+        Server server = new Server(serverSocket);
+        server.startServer();
     }
 }
