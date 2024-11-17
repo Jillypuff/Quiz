@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    
+
     public static final int PORT = 55554;
 
     public Client(){
@@ -14,7 +14,7 @@ public class Client {
         try(Socket socket = new Socket(InetAddress.getLocalHost(), PORT);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream())
-        ){
+        ) {
             Scanner userInput = new Scanner(System.in);
             Object objIn;
             while((objIn = in.readObject()) != null){
@@ -26,6 +26,7 @@ public class Client {
                 }
                 else if(objIn instanceof String serverAnswer){
                     System.out.println(serverAnswer);
+                    break;
                 }
             }
 

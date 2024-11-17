@@ -30,6 +30,9 @@ public class ConnectedClient implements Runnable {
                 if (question.checkAnswer(answer)){
                     out.writeObject("CORRECT!");
                 }
+                else{
+                    out.writeObject("WRONG");
+                }
             }
         }
         catch(Exception e){
