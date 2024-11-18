@@ -6,7 +6,7 @@ public class Question implements Serializable {
 
     String question;
     String answer;
-    List<String> alternatives = new ArrayList<>();
+    List<String> alternatives;
 
     public Question(String question, String answer, List<String> alternatives) {
         this.question = question;

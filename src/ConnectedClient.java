@@ -18,20 +18,27 @@ public class ConnectedClient implements Runnable {
     @Override
     public void run() {
         try{
+
             System.out.println("Connected");
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
 
-            Question question = new Question("What city is the capital of Sweden?", "Stockholm",
-                    Arrays.asList("Paris", "London", "Stockholm" , "Budapest"));
-            out.writeObject(question);
-            Object objIn = in.readObject();
-            if(objIn instanceof String answer){
-                if (question.checkAnswer(answer)){
-                    out.writeObject("CORRECT!");
+            while((in.readObject() instanceof Request request)){
+                if (request.type == RequestType.CONNECT){
+                    out.writeObject("Connected");
                 }
-                else{
-                    out.writeObject("WRONG");
+                else if (request.type == RequestType.START_GAME){
+                    Question question = new Question("What city is the capital of Sweden?", "Stockholm",
+                            Arrays.asList("Paris", "London", "Stockholm" , "Budapest"));
+                    out.writeObject(question);
+                }
+                else if (request.type == RequestType.EVALUATE_ANSWER){
+                    if (request.playerAnswer.equals(request.question.answer)){
+                        out.writeObject("Correct");
+                    }
+                    else{
+                        out.writeObject("Wrong");
+                    }
                 }
             }
         }
