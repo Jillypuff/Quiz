@@ -10,6 +10,7 @@ public class Client {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     String username;
+    GameGUI gameGUI;
 
     public Client(Socket socket){
         try{
@@ -87,10 +88,9 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("localhost", 55554);
-        Client client = new Client(socket);
-        client.startConnection();
+    public void run() {
+        gameGUI = new GameGUI(this);
+        gameGUI.showLoginWindow();
     }
 
     public void startGame(String username) {
@@ -107,5 +107,10 @@ public class Client {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Client client = new Client(null);
+        client.run();
     }
 }
