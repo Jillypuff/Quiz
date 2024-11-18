@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
@@ -8,6 +9,7 @@ public class Client {
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+    String username;
 
     public Client(Socket socket){
         try{
@@ -89,5 +91,21 @@ public class Client {
         Socket socket = new Socket("localhost", 55554);
         Client client = new Client(socket);
         client.startConnection();
+    }
+
+    public void startGame(String username) {
+        this.username = username;
+
+        try {
+            socket = new Socket("localhost", 55554);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+
+            out.writeObject(username);
+
+            startConnection();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
