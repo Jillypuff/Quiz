@@ -17,4 +17,8 @@ public class Question implements Serializable {
     public boolean checkAnswer(String answer){
         return this.answer.equalsIgnoreCase(answer);
     }
+
+    public boolean checkAnswer(int answer){
+        return checkAnswer(alternatives.get(answer));
+    }
 }

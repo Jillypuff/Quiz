@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class Client {
 
-    public static final int PORT = 55554;
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -40,6 +39,26 @@ public class Client {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void startListening() {
+        new Thread(() -> {
+//            try {
+//                while(in.readObject() instanceof Response response){
+//                    if(response.type == ResponseType.CONNECTION_ESTABLISHED){
+//                        //stäng log in fönstret och öppna spelfönstret?
+//                    }
+//                    else if (response.type == ResponseType.QUESTION){
+//                        //skriv ut frågan i fönstret och alternativen
+//                    }
+//                    else if (response.type == ResponseType.ANSWER_EVALUATED){
+//                        //skriv ut om spelaren hade rätt eller fel
+//                    }
+//                }
+//            } catch (IOException | ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+        }).start();
     }
 
     public void readQuestion(Question question){
