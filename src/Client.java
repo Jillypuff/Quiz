@@ -1,16 +1,24 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client {
+public class Client implements ActionListener {
 
     public static final int PORT = 55554;
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+    String username;
+
+    //Fönster, innehåller knappar osv
+    Gui gui;
 
     public Client(Socket socket){
+        gui = new Gui(username);
         try{
             this.socket = socket;
             this.out = new ObjectOutputStream(socket.getOutputStream());
@@ -49,6 +57,7 @@ public class Client {
         }
     }
 
+
     public void closeEverything(Socket socket, ObjectOutputStream out, ObjectInputStream in){
         try {
             if (out != null){
@@ -70,5 +79,27 @@ public class Client {
         Socket socket = new Socket("localhost", 55554);
         Client client = new Client(socket);
         client.startConnection();
+    }
+
+    public void sendRequest(JButton button){
+        if (button == gui.startButton){
+            username = gui.usernameTextfield.getText;
+            out.writeObject(new Request(RequestType.START_GAME), username));
+        }
+        else if (button == gui.exitButton){
+            out.writeObject(new Request(RequestType.END_GAME));
+        }
+        else if (button == gui.categoryButton || gui.continueButton){
+            out.writeObject(new Request(RequestType.QUESTION_REQUEST, category));
+        }
+        else if (button == gui.questionChoice){
+            out.writeObject(new Request(RequestType.EVALUATE_ANSWER, int answer));
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton button = (JButton) e.getSource();
+        sendRequest(button);
     }
 }
