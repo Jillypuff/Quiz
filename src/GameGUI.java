@@ -24,7 +24,7 @@ public class GameGUI {
 
     public void showMenu() {
         String[] options = {"Start Game", "Exit Game"};
-        int choice = JOptionPane.showOptionDialog(null, "Welcome to Quiz!", "Game Menu",
+        int choice = JOptionPane.showOptionDialog(null, "Welcome!", "Game Menu",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
 
         if (choice == 0) {

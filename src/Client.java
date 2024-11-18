@@ -102,6 +102,7 @@ public class Client {
             in = new ObjectInputStream(socket.getInputStream());
 
             out.writeObject(username);
+            gameGUI.showMenu();
 
             startConnection();
         } catch (IOException e) {
