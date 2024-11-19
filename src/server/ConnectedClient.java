@@ -1,3 +1,7 @@
+package server;
+
+import client.Request;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,12 +16,13 @@ public class ConnectedClient implements Runnable {
     Socket socket;
     ObjectOutputStream out;
     ObjectInputStream in;
-    private String clientUsername;
+    private String username;
     static List<ConnectedClient> connectedClients = new ArrayList<>();
     static List<ConnectedClient> queuedClients = new ArrayList<>();
 
     public ConnectedClient(Socket socket){
         this.socket = socket;
+        this.username = username;
         connectedClients.add(this);
     }
 
@@ -31,24 +36,34 @@ public class ConnectedClient implements Runnable {
         }
     }
 
+    public synchronized void sendResponse(Response response) throws IOException {
+        out.writeObject(response);
+        out.flush();
+    }
+
     @Override
     public void run() {
         try {
             System.out.println("Connected");
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
+            ServerProtocol protocol = new ServerProtocol();
 
-            Question question = new Question("What city is the capital of Sweden?", "Stockholm",
-                    Arrays.asList("Paris", "London", "Stockholm", "Budapest"));
-            out.writeObject(question);
-            Object objIn = in.readObject();
-            if (objIn instanceof String answer) {
-                if (question.checkAnswer(answer)) {
-                    out.writeObject("CORRECT!");
-                } else {
-                    out.writeObject("WRONG");
-                }
+            while(in.readObject() instanceof Request request){
+                protocol.processRequest(request, this);
             }
+
+//            Question question = new Question("What city is the capital of Sweden?", "Stockholm",
+//                    Arrays.asList("Paris", "London", "Stockholm", "Budapest"));
+//            out.writeObject(question);
+//            Object objIn = in.readObject();
+//            if (objIn instanceof String answer) {
+//                if (question.checkAnswer(answer)) {
+//                    out.writeObject("CORRECT!");
+//                } else {
+//                    out.writeObject("WRONG");
+//                }
+//            }
         } catch (Exception e) {
             closeEverything(socket, out, in);
         }

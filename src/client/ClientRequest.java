@@ -1,4 +1,7 @@
+package client;
+
 public enum ClientRequest {
+    CONNECT,
     START_GAME,
     EXIT_GAME,
     LEAVE_QUEUE,
@@ -6,13 +9,9 @@ public enum ClientRequest {
     // CHANGE_USERNAME,
     // CHECK_HIGHSCORE,
 
-    CATEGORY_ONE_CHOSEN,
-    CATEGORY_TWO_CHOSEN,
+    CATEGORY_CHOSEN,
 
-    ANSWER_ONE,
-    ANSWER_TWO,
-    ANSWER_THREE,
-    ANSWER_FOUR,
+    ANSWER,
     NEXT_QUESTION,
     GIVE_UP,
 }

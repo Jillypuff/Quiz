@@ -1,22 +1,24 @@
+package client;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 public class GameGUI extends JFrame {
 
-    JPanel main;
+    JFrame main;
     JFrame gameFrame;
     JTextField questionField;
     JButton[] answerButtons = new JButton[4];
 
     Client client;
 
-    public GameGUI(Client client) {
+    public GameGUI(Client client) throws IOException {
         this.client = client;
+        showLoginWindow();
     }
 
-    public void showLoginWindow() {
+    public void showLoginWindow() throws IOException {
         String username;
 
         while (true) {
@@ -27,8 +29,10 @@ public class GameGUI extends JFrame {
             }
 
             if (!username.trim().isEmpty()) {
-                client.startGame(username);
+//                client.startGame(username);
+                client.username = username;
 
+                client.sendRequest(new Request(ClientRequest.CONNECT, username, -1));
                 gameFrame.dispose();
                 return;
             }
@@ -63,7 +67,7 @@ public class GameGUI extends JFrame {
         buttonPanel.setLayout(new GridLayout(2, 2));
     }
 
-    public void showQuestion(Question question) {
-        questionField.setText(question.question);
-    }
+//    public void showQuestion(Question question) {
+//        questionField.setText(question.question);
+//    }
 }
