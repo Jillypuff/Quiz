@@ -7,6 +7,7 @@ public class ClientProtocol {
     public void processResponse(Response response, Client client){
         switch (response.getType()){
             case CLIENT_CONNECTED -> {
+                System.out.println("Received client connected");
                 client.gameGUI.startGame();
                 // client.gameGUI.textField.text = "Clienten konnektad";
                 // Skriv ut i något relevant textfält att connection är lyckad

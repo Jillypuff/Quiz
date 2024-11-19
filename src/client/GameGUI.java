@@ -29,11 +29,9 @@ public class GameGUI extends JFrame {
             }
 
             if (!username.trim().isEmpty()) {
-//                client.startGame(username);
                 client.username = username;
 
                 client.sendRequest(new Request(ClientRequest.CONNECT, username, -1));
-                gameFrame.dispose();
                 return;
             }
 
@@ -58,6 +56,8 @@ public class GameGUI extends JFrame {
         gameFrame.setSize(800, 600);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setLayout(new BorderLayout());
+        gameFrame.setLocationRelativeTo(null);
+        gameFrame.setVisible(true);
 
         questionField = new JTextField();
         questionField.setEditable(false);
@@ -67,7 +67,4 @@ public class GameGUI extends JFrame {
         buttonPanel.setLayout(new GridLayout(2, 2));
     }
 
-//    public void showQuestion(Question question) {
-//        questionField.setText(question.question);
-//    }
 }
