@@ -1,6 +1,6 @@
 package client;
 
-public enum ClientRequest {
+public enum RequestType {
     CONNECT,
     START_GAME,
     EXIT_GAME,

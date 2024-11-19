@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class Client {
 
-    private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
     String username;
@@ -17,7 +16,6 @@ public class Client {
 
     public Client(Socket socket){
         try{
-            this.socket = socket;
             this.out = new ObjectOutputStream(socket.getOutputStream());
             this.in = new ObjectInputStream(socket.getInputStream());
             startListening();
@@ -27,10 +25,8 @@ public class Client {
         }
     }
 
-
     public void startListening() {
         new Thread(() -> {
-
             ClientProtocol protocol = new ClientProtocol();
             try{
                 while(in.readObject() instanceof Response response){

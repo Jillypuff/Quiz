@@ -31,7 +31,7 @@ public class GameGUI extends JFrame {
             if (!username.trim().isEmpty()) {
                 client.username = username;
 
-                client.sendRequest(new Request(ClientRequest.CONNECT, username, -1));
+                client.sendRequest(new Request(RequestType.CONNECT, username, -1));
                 return;
             }
 
@@ -60,7 +60,7 @@ public class GameGUI extends JFrame {
         gameFrame.setVisible(true);
 
         questionField = new JTextField();
-        questionField.setEditable(false);
+        questionField.setEditable(true);
         gameFrame.add(questionField, BorderLayout.NORTH);
 
         JPanel buttonPanel = new JPanel();

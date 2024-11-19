@@ -53,17 +53,6 @@ public class ConnectedClient implements Runnable {
                 protocol.processRequest(request, this);
             }
 
-//            Question question = new Question("What city is the capital of Sweden?", "Stockholm",
-//                    Arrays.asList("Paris", "London", "Stockholm", "Budapest"));
-//            out.writeObject(question);
-//            Object objIn = in.readObject();
-//            if (objIn instanceof String answer) {
-//                if (question.checkAnswer(answer)) {
-//                    out.writeObject("CORRECT!");
-//                } else {
-//                    out.writeObject("WRONG");
-//                }
-//            }
         } catch (Exception e) {
             closeEverything(socket, out, in);
         }

@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 public class Request implements Serializable {
 
-    private ClientRequest request;
+    private RequestType request;
     String username;
     private int answer = -1;
 
-    public Request(ClientRequest request, String username, int answer) {
+    public Request(RequestType request, String username, int answer) {
         this.request = request;
         this.username = username;
         this.answer = answer;
     }
 
-    public ClientRequest getType() {
+    public RequestType getType() {
         return request;
     }
 
