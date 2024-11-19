@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class GameGUI {
+public class GameGUI extends JFrame {
 
     Client client;
     JFrame gameFrame;
@@ -13,12 +13,23 @@ public class GameGUI {
     }
 
     public void showLoginWindow() {
-        String username = JOptionPane.showInputDialog(null, "Enter your username:");
-        if (username != null && !username.trim().isEmpty()) {
-            client.startGame(username);
-        } else {
-            JOptionPane.showMessageDialog(gameFrame, "Please enter your username");
-            showLoginWindow();
+        String username;
+
+        while (true) {
+            username = JOptionPane.showInputDialog("Enter your username: ");
+
+            if (username == null) {
+                break;
+            }
+
+            if (!username.trim().isEmpty()) {
+                client.startGame(username);
+
+                gameFrame.dispose();
+                return;
+            }
+
+            JOptionPane.showMessageDialog(gameFrame, "Please enter a valid username.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -35,7 +46,7 @@ public class GameGUI {
     }
 
     public void startGame() {
-        gameFrame = new JFrame("Game");
+        gameFrame.setTitle("Game");
         gameFrame.setSize(800, 600);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setLayout(new BorderLayout());
