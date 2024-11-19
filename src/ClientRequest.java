@@ -2,13 +2,17 @@ public enum ClientRequest {
     START_GAME,
     EXIT_GAME,
     LEAVE_QUEUE,
+
     // CHANGE_USERNAME,
     // CHECK_HIGHSCORE,
 
+    CATEGORY_ONE_CHOSEN,
+    CATEGORY_TWO_CHOSEN,
 
     ANSWER_ONE,
     ANSWER_TWO,
     ANSWER_THREE,
     ANSWER_FOUR,
+    NEXT_QUESTION,
     GIVE_UP,
 }
