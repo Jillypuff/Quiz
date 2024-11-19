@@ -18,6 +18,7 @@ public class Client {
         } catch (Exception e){
             closeEverything(socket, out, in);
         }
+//        run();
     }
 
     public void startConnection (){
@@ -41,6 +42,7 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
+
 
     public void startListening() {
         new Thread(() -> {

@@ -1,12 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GameGUI extends JFrame {
 
-    Client client;
+    JPanel main;
     JFrame gameFrame;
     JTextField questionField;
     JButton[] answerButtons = new JButton[4];
+
+    Client client;
 
     public GameGUI(Client client) {
         this.client = client;
@@ -46,7 +50,7 @@ public class GameGUI extends JFrame {
     }
 
     public void startGame() {
-        gameFrame.setTitle("Game");
+        gameFrame = new JFrame("Quiz Game");
         gameFrame.setSize(800, 600);
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameFrame.setLayout(new BorderLayout());

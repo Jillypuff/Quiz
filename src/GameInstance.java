@@ -7,4 +7,5 @@ public class GameInstance {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
+
 }
