@@ -23,13 +23,6 @@ public class Activ_game {
         spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
         //gameState = new int[(antalFragor*2)][antalKategoriSet];
 
-        while(true) {
-
-        }
-
-
-
-
 
     }
 
@@ -68,7 +61,7 @@ public class Activ_game {
 
 
         try{
-            tempProperties.load(new FileReader("src/Game_properties.properties"));
+            tempProperties.load(new FileReader("src/Game_Properties.properties"));
         }
         catch(Exception e){
             e.printStackTrace();
@@ -81,7 +74,7 @@ public class Activ_game {
 
 
         try{
-            tempProperties.store(new FileOutputStream("src/Game_properties.properties"), null);
+            tempProperties.store(new FileOutputStream("src/Game_Properties.properties"), null);
         }
         catch (Exception e){
             e.printStackTrace();
