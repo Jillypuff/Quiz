@@ -66,5 +66,4 @@ public class GameGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(2, 2));
     }
-
 }
