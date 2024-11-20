@@ -6,6 +6,8 @@ import java.io.IOException;
 
 public class ServerProtocol {
 
+    Server server;
+
     public void processRequest(Request request, ConnectedClient client) throws IOException {
         switch (request.getType()){
             case CONNECT -> {
@@ -18,10 +20,7 @@ public class ServerProtocol {
                 client.sendResponse(new Response(ServerResponse.CLIENT_DISCONNECTED));
             }
             case START_GAME -> {
-                client.server.queue.add(client);
-                client.server.createInstance();
-                //client.queueClient(client);
-                // Skicka tillbaka ett medelande
+                server.handleStartGame(client);
             }
             case EXIT_GAME -> {
                 // Säg hejdå till username

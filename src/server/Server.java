@@ -9,10 +9,12 @@ import java.util.List;
 public class Server {
 
     final private ServerSocket serverSocket;
+    ServerProtocol protocol;
     List<ConnectedClient> queue;
 
     Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        protocol = new ServerProtocol();
     }
 
     public void startServer() {
@@ -21,7 +23,7 @@ public class Server {
         try {
             while(!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
-                ConnectedClient client = new ConnectedClient(socket, this);
+                ConnectedClient client = new ConnectedClient(socket, protocol);
                 new Thread(client).start();
             }
         } catch (IOException e) {
@@ -29,7 +31,8 @@ public class Server {
         }
     }
 
-    public void createInstance() throws IOException {
+    public void handleStartGame(ConnectedClient client) throws IOException {
+        queue.add(client);
         if(queue.size() >= 2){
             ConnectedClient player1 = queue.removeFirst();
             ConnectedClient player2 = queue.removeFirst();
