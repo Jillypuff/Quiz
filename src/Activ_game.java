@@ -11,10 +11,10 @@ public class Activ_game {
     private QuestionInPannel[][] spelare1Spelbrade;
     private QuestionInPannel[][] spelare2Spelbrade;
     //private int[][] gameState;
-    ServerSocket spelare1;
-    ServerSocket spelare2;
+    ConnectedClient spelare1;
+    ConnectedClient spelare2;
 
-    Activ_game(ServerSocket spelare1, ServerSocket spelare2) {
+    Activ_game(ConnectedClient spelare1, ConnectedClient spelare2) {
         properties = new Properties();
         loadProperties();
         uppdateSpelNummerInProperties();
@@ -44,15 +44,16 @@ public class Activ_game {
 
     public void loadProperties(){
         try {
-            this.properties.store(new FileWriter("src/Game_properties.properties"), "Activ Game Properties");
+            this.properties.load(new FileInputStream("src/Game_Properties.properties"));
         }
         catch(IOException e){
             e.printStackTrace();
             //***************************************************************************************************************************lägg till sout kommentar
         }
-        this.spelid = Integer.parseInt(this.properties.getProperty("spelNummer", "1"));
-        this.antalFragor = Integer.parseInt(this.properties.getProperty("antalFragor", "3"));
-        this.antalKategoriSet = Integer.parseInt(this.properties.getProperty("kategoriSet", "4"));
+        this.spelid = Integer.parseInt(this.properties.getProperty("spelNummer"));
+        this.antalFragor = Integer.parseInt(this.properties.getProperty("antalFragor"));
+        this.antalKategoriSet = Integer.parseInt(this.properties.getProperty("kategoriSet"));
+        System.out.println(this.spelid + " " + this.antalFragor + " " + this.antalKategoriSet);
     }
 
     public void uppdateSpelNummerInProperties() {//************************************************************************************************ behöver den här metoden vara "syncronized"
@@ -61,15 +62,20 @@ public class Activ_game {
 
 
         try{
-            tempProperties.load(new FileReader("src/Game_Properties.properties"));
+            tempProperties.load(new FileInputStream("src/Game_Properties.properties"));
         }
         catch(Exception e){
             e.printStackTrace();
         }
 
+        String nuvarandeSpel = tempProperties.getProperty("spelNummer");
+        int nuvarandeSpelInt = Integer.parseInt(nuvarandeSpel);
+        String nySpelNummer = (nuvarandeSpelInt+1) + "";
 
-        int spelNummer = Integer.parseInt(tempProperties.getProperty("spelNummer"));
-        String nySpelNummer = String.valueOf(spelNummer)+1;
+        System.out.println(nuvarandeSpel);
+
+        System.out.println(nySpelNummer);
+
         tempProperties.setProperty("spelNummer", nySpelNummer);
 
 
