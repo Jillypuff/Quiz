@@ -6,13 +6,17 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+//SERVERN LIGGER OCH TAR EMOT ANSLUTNINGAR; PLUS HANTERAR OPERATIONERNA PÅ DESSA
 public class Server {
 
     final private ServerSocket serverSocket;
     List<ConnectedClient> queue;
+    //Lägger till en ServerResponseDispatcher
+    ServerResponseDispatcher responseDispatcher;
 
     Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        this.responseDispatcher = new ServerResponseDispatcher(this);
     }
 
     public void startServer() {
@@ -21,7 +25,7 @@ public class Server {
         try {
             while(!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
-                ConnectedClient client = new ConnectedClient(socket, this);
+                ConnectedClient client = new ConnectedClient(socket, responseDispatcher);
                 new Thread(client).start();
             }
         } catch (IOException e) {
@@ -29,19 +33,35 @@ public class Server {
         }
     }
 
-    public void createInstance() throws IOException {
+    //ny metod
+    public void handleConnect(Event event) throws IOException {
+        ConnectedClient client = event.getClient();
+        client.setUsername(event.getRequest().getUsername());
+        client.sendResponse(new Response(ServerResponse.CLIENT_CONNECTED));
+        System.out.println("User connected: " + client.getUsername());
+    }
+
+    //bytte namn från createInstance till handleStartGame
+    public void handleStartGame(Event event) throws IOException {
+        queue.add(event.getClient());
         if(queue.size() >= 2){
             ConnectedClient player1 = queue.removeFirst();
             ConnectedClient player2 = queue.removeFirst();
-            System.out.println(player1.username + " " + player2.username);
+            System.out.println(player1.getUsername() + " " + player2.getUsername());
             GameInstance instance = new GameInstance(player1, player2);
             broadcastInstance(instance);
         }
     }
 
+    public void handleDisconnect(Event event) throws IOException {
+        ConnectedClient client = event.getClient();
+        client.sendResponse(new Response(ServerResponse.CLIENT_DISCONNECTED));
+        client.closeEverything(client.getSocket(), client.getOut(), client.getIn());
+    }
+
     public void broadcastInstance(GameInstance instance) throws IOException {
-        instance.playerOne.sendResponse(new Response(ServerResponse.GAME_JOINED, instance.game));
-        instance.playerTwo.sendResponse(new Response(ServerResponse.GAME_JOINED, instance.game));
+        instance.getPlayerOne().sendResponse(new Response(ServerResponse.GAME_JOINED, instance.getGame()));
+        instance.getPlayerTwo().sendResponse(new Response(ServerResponse.GAME_JOINED, instance.getGame()));
     }
 
     public void closeServerSocket() {

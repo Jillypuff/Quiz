@@ -33,4 +33,12 @@ public class Request implements Serializable {
     public int getAnswer(){
         return answer;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

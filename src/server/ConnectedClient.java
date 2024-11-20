@@ -6,34 +6,20 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
-
+// CONNECTEDCLIENT HANTERAR KOMMUNIKATIONEN MED JUST DENNA SOCKET, DVS SOM KOMMER FRÅN/TILL JUST DEN CLIENT SOM ANSLUTIT PÅ DENNA SOCKET
 public class ConnectedClient implements Runnable {
 
-    public Server server;
-    Socket socket;
-    ObjectOutputStream out;
-    ObjectInputStream in;
-    public String username;
-    static List<ConnectedClient> connectedClients = new ArrayList<>();
-    static List<ConnectedClient> queuedClients = new ArrayList<>();
+    private ServerResponseDispatcher dispatcher;
+    private Socket socket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private String username;
 
-    public ConnectedClient(Socket socket, Server server){
+    //Istället för att ta emot en server, tar den emot en ServerResponseDispatcher
+    public ConnectedClient(Socket socket, ServerResponseDispatcher dispatcher){
         this.socket = socket;
-        this.server = server;
-        connectedClients.add(this);
-    }
-
-    public void queueClient(ConnectedClient client){
-        queuedClients.add(client);
-        if (queuedClients.size() >= 2){
-            ConnectedClient player1 = queuedClients.removeFirst();
-            ConnectedClient player2 = queuedClients.removeFirst();
-
-            GameInstance gameInstance = new GameInstance(player1, player2);
-        }
+        this.dispatcher = dispatcher;
     }
 
     public synchronized void sendResponse(Response response) throws IOException {
@@ -47,10 +33,11 @@ public class ConnectedClient implements Runnable {
             System.out.println("Connected");
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            ServerProtocol protocol = new ServerProtocol();
 
+            // Istället för protocol.processRequest dispatchar vi iväg requesten
+            // vi fått in + denna connectedclient i ett event objekt, till ServerDispatcher
             while(in.readObject() instanceof Request request){
-                protocol.processRequest(request, this);
+                dispatcher.dispatch(new Event(request, this));
             }
 
         } catch (Exception e) {
@@ -72,5 +59,37 @@ public class ConnectedClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public ObjectOutputStream getOut() {
+        return out;
+    }
+
+    public void setOut(ObjectOutputStream out) {
+        this.out = out;
+    }
+
+    public ObjectInputStream getIn() {
+        return in;
+    }
+
+    public void setIn(ObjectInputStream in) {
+        this.in = in;
     }
 }
