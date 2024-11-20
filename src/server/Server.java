@@ -33,18 +33,23 @@ public class Server {
 
     public void handleStartGame(ConnectedClient client) throws IOException {
         queue.add(client);
+//        client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
         if(queue.size() >= 2){
-            ConnectedClient player1 = queue.removeFirst();
-            ConnectedClient player2 = queue.removeFirst();
-            System.out.println(player1.username + " " + player2.username);
-            GameInstance instance = new GameInstance(player1, player2);
-            broadcastInstance(instance);
+            startGame();
         }
     }
 
+    public void startGame() throws IOException {
+        ConnectedClient player1 = queue.removeFirst();
+        ConnectedClient player2 = queue.removeFirst();
+        System.out.println(player1.username + " " + player2.username);
+        GameInstance instance = new GameInstance(player1, player2);
+        broadcastInstance(instance);
+    }
+
     public void broadcastInstance(GameInstance instance) throws IOException {
-        instance.playerOne.sendResponse(new Response(ServerResponse.GAME_JOINED, instance.game));
-        instance.playerTwo.sendResponse(new Response(ServerResponse.GAME_JOINED, instance.game));
+        instance.playerOne.sendResponse(new Response(ResponseType.GAME_JOINED, instance.game));
+        instance.playerTwo.sendResponse(new Response(ResponseType.GAME_JOINED, instance.game));
     }
 
     public void closeServerSocket() {

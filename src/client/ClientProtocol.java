@@ -24,8 +24,8 @@ public class ClientProtocol {
                 // Gå tillbaka till loginWindow
             }
             case QUEUE_JOINED -> {
-                // Skriv ut att du väntar på andra spelare
-                // Skapa till en lämna kö knapp
+                System.out.println("Received queue joined");
+                client.gameGUI.switchPanel(1);
             }
             case GAME_JOINED -> {
                 System.out.println("Received game joined");

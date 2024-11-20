@@ -13,11 +13,11 @@ public class ServerProtocol {
             case CONNECT -> {
                 System.out.println("Received connect request; sending connected response");
                 client.username = request.username;
-                client.sendResponse(new Response(ServerResponse.CLIENT_CONNECTED));
+                client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
             }
             case DISCONNECT -> {
                 System.out.println("Received disconnect request; sending disconnected response");
-                client.sendResponse(new Response(ServerResponse.CLIENT_DISCONNECTED));
+                client.sendResponse(new Response(ResponseType.CLIENT_DISCONNECTED));
             }
             case START_GAME -> {
                 server.handleStartGame(client);
