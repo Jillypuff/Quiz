@@ -14,7 +14,7 @@ public class Server {
 
     Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
-        protocol = new ServerProtocol();
+        protocol = new ServerProtocol(this);
     }
 
     public void startServer() {
@@ -31,20 +31,14 @@ public class Server {
         }
     }
 
-    public void handleStartGame(ConnectedClient client) throws IOException {
-        queue.add(client);
-//        client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
+    public void handleStartGame() throws IOException {
         if(queue.size() >= 2){
-            startGame();
+            ConnectedClient player1 = queue.removeFirst();
+            ConnectedClient player2 = queue.removeFirst();
+            System.out.println(player1.username + " " + player2.username);
+            GameInstance instance = new GameInstance(player1, player2);
+            broadcastInstance(instance);
         }
-    }
-
-    public void startGame() throws IOException {
-        ConnectedClient player1 = queue.removeFirst();
-        ConnectedClient player2 = queue.removeFirst();
-        System.out.println(player1.username + " " + player2.username);
-        GameInstance instance = new GameInstance(player1, player2);
-        broadcastInstance(instance);
     }
 
     public void broadcastInstance(GameInstance instance) throws IOException {

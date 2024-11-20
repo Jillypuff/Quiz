@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class ConnectedClient implements Runnable {
 
@@ -17,24 +14,11 @@ public class ConnectedClient implements Runnable {
     ObjectOutputStream out;
     ObjectInputStream in;
     public String username;
-//    static List<ConnectedClient> connectedClients = new ArrayList<>();
-//    static List<ConnectedClient> queuedClients = new ArrayList<>();
 
     public ConnectedClient(Socket socket, ServerProtocol protocol) {
         this.socket = socket;
         this.protocol = protocol;
-//        connectedClients.add(this);
     }
-
-//    public void queueClient(ConnectedClient client){
-//        queuedClients.add(client);
-//        if (queuedClients.size() >= 2){
-//            ConnectedClient player1 = queuedClients.removeFirst();
-//            ConnectedClient player2 = queuedClients.removeFirst();
-//
-//            GameInstance gameInstance = new GameInstance(player1, player2);
-//        }
-//    }
 
     public synchronized void sendResponse(Response response) throws IOException {
         out.writeObject(response);
