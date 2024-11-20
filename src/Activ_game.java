@@ -23,6 +23,15 @@ public class Activ_game {
         spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
         //gameState = new int[(antalFragor*2)][antalKategoriSet];
 
+        //skicka till spelare 1 bestäm kategori
+        //uppdatera kategorin för spelbräde 1 och 2 y1= samma kategori
+
+        //spelare 1 får svara på frågor, när fråga slumpas ska samma fråga in på spelare 2's bräde i samma position
+        //när spelare 1 svarat på alla frågor är det spelare 2's turbrädet ska uppdateras clientside efter att båda spelare svarat på alla frågor(första spelaren som svarar på frågor kan ju egentligen få se sina egna svar men men...).
+
+        //där efter är det spelere 2's tur att välja kategori tänker att spelet kan kolla om det är jämnt eller ojämnt y värde den tittar på vid jämna värden är det spelare 1 som väljer och ojämna och spelare 2 vid jämna
+
+
 
     }
 
@@ -53,7 +62,7 @@ public class Activ_game {
         this.spelid = Integer.parseInt(this.properties.getProperty("spelNummer"));
         this.antalFragor = Integer.parseInt(this.properties.getProperty("antalFragor"));
         this.antalKategoriSet = Integer.parseInt(this.properties.getProperty("kategoriSet"));
-        System.out.println(this.spelid + " " + this.antalFragor + " " + this.antalKategoriSet);
+        //System.out.println(this.spelid + " " + this.antalFragor + " " + this.antalKategoriSet);
     }
 
     public void uppdateSpelNummerInProperties() {//************************************************************************************************ behöver den här metoden vara "syncronized"
@@ -72,9 +81,9 @@ public class Activ_game {
         int nuvarandeSpelInt = Integer.parseInt(nuvarandeSpel);
         String nySpelNummer = (nuvarandeSpelInt+1) + "";
 
-        System.out.println(nuvarandeSpel);
+        //System.out.println(nuvarandeSpel);
 
-        System.out.println(nySpelNummer);
+        //System.out.println(nySpelNummer);
 
         tempProperties.setProperty("spelNummer", nySpelNummer);
 
@@ -91,8 +100,8 @@ public class Activ_game {
     public void visaVariabler(){
         System.out.println(
         "spelnr: "+ spelid +
-        "\n Antal frågor: " + antalFragor +
-        "\n Antal kategori: " + antalKategoriSet
+        "\nAntal frågor: " + antalFragor +
+        "\nAntal kategori: " + antalKategoriSet
         //properties;
         //spelare1Spelbrade;
         //spelare2Spelbrade;
