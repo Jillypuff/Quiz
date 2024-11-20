@@ -7,22 +7,22 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 public class ConnectedClient implements Runnable {
 
+    public Server server;
     Socket socket;
     ObjectOutputStream out;
     ObjectInputStream in;
-    private String username;
+    public String username;
     static List<ConnectedClient> connectedClients = new ArrayList<>();
     static List<ConnectedClient> queuedClients = new ArrayList<>();
 
-    public ConnectedClient(Socket socket){
+    public ConnectedClient(Socket socket, Server server){
         this.socket = socket;
-        this.username = username;
+        this.server = server;
         connectedClients.add(this);
     }
 

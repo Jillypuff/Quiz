@@ -9,10 +9,18 @@ public class ServerProtocol {
     public void processRequest(Request request, ConnectedClient client) throws IOException {
         switch (request.getType()){
             case CONNECT -> {
+                System.out.println("Received connect request; sending connected response");
+                client.username = request.username;
                 client.sendResponse(new Response(ServerResponse.CLIENT_CONNECTED));
             }
+            case DISCONNECT -> {
+                System.out.println("Received disconnect request; sending disconnected response");
+                client.sendResponse(new Response(ServerResponse.CLIENT_DISCONNECTED));
+            }
             case START_GAME -> {
-                client.queueClient(client);
+                client.server.queue.add(client);
+                client.server.createInstance();
+                //client.queueClient(client);
                 // Skicka tillbaka ett medelande
             }
             case EXIT_GAME -> {

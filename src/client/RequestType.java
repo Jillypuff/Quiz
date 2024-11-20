@@ -2,6 +2,7 @@ package client;
 
 public enum RequestType {
     CONNECT,
+    DISCONNECT,
     START_GAME,
     EXIT_GAME,
     LEAVE_QUEUE,

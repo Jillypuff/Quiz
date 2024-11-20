@@ -1,72 +1,55 @@
 package GUI;
-import client.Client;
-import client.Request;
-import client.RequestType;
 
+import client.Client;
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class GameGUI extends JFrame {
 
-    JFrame main;
-    JFrame gameFrame;
-    JTextField questionField;
-    JButton[] answerButtons = new JButton[4];
+    public GamePanel gamePanel;
+    public CategoryPanel categoryPanel;
+    public LoginPanel loginPanel;
+    public MainPanel mainPanel;
 
     Client client;
 
-    public GameGUI(Client client) throws IOException {
+    public GameGUI(Client client) throws IOException, InterruptedException {
         this.client = client;
-        showLoginWindow();
+        loginPanel = new LoginPanel();
+        add(loginPanel);
+        setupMainFrame();
+        loadPanel();
+//        Thread.sleep(5000);
+//        switchPanel(2);
     }
 
-    public void showLoginWindow() throws IOException {
-        String username;
+    public void setupMainFrame(){
+        setSize(800, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
 
-        while (true) {
-            username = JOptionPane.showInputDialog("Enter your username: ");
+    public void loadPanel(){
+        mainPanel = new MainPanel();
+        gamePanel = new GamePanel();
+        categoryPanel = new CategoryPanel();
+    }
 
-            if (username == null) {
-                break;
-            }
-
-            if (!username.trim().isEmpty()) {
-//                client.username = username;
-
-                client.sendRequest(new Request(RequestType.CONNECT, username, -1));
-                return;
-            }
-
-            JOptionPane.showMessageDialog(gameFrame, "Please enter a valid username.", "Error", JOptionPane.ERROR_MESSAGE);
+    public void switchPanel(int panel){
+        getContentPane().removeAll();
+        switch (panel){
+            case 1 -> this.add(loginPanel);
+            case 2 -> this.add(mainPanel);
+            case 3 -> this.add(categoryPanel);
+            case 4 -> this.add(gamePanel);
         }
+        revalidate();
+        repaint();
     }
 
-    public void showMenu() {
-        String[] options = {"Start Game", "Exit Game"};
-        int choice = JOptionPane.showOptionDialog(null, "Welcome!", "Game Menu",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+    public void actionListener(ActionListener actionListener){
 
-        if (choice == 0) {
-            startGame();
-        } else {
-            System.exit(0);
-        }
-    }
-
-    public void startGame() {
-        gameFrame = new JFrame("Quiz Game");
-        gameFrame.setSize(800, 600);
-        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameFrame.setLayout(new BorderLayout());
-        gameFrame.setLocationRelativeTo(null);
-        gameFrame.setVisible(true);
-
-        questionField = new JTextField();
-        questionField.setEditable(true);
-        gameFrame.add(questionField, BorderLayout.NORTH);
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(2, 2));
     }
 }

@@ -9,7 +9,16 @@ import java.util.List;
 
 public class GamePanel extends JPanel {
 
-    static ImageIcon icon = new ImageIcon("src/CategoryLogo.png");
+    // static ImageIcon icon = new ImageIcon("src/CategoryLogo.png");
+
+    Color rightAnswerColor = new Color(1, 172, 1);
+    Color wrongAnswerColor = new Color(255, 0, 0);
+
+    JButton button1;
+    JButton button2;
+    JButton button3;
+    JButton button4;
+    JButton nextQuestionButton;
 
     public GamePanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -20,15 +29,15 @@ public class GamePanel extends JPanel {
         questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
-        JButton nextQuestionButton = new JButton("Next Question");
+        nextQuestionButton = new JButton("Next Question");
         nextQuestionButton.setVisible(false);
         nextQuestionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         nextQuestionButton.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        JButton button1 = new JButton("Los Angeles");
-        JButton button2 = new JButton("Chicago");
-        JButton button3 = new JButton("New York City");
-        JButton button4 = new JButton("Boston");
+        button1 = new JButton("Los Angeles");
+        button2 = new JButton("Chicago");
+        button3 = new JButton("New York City");
+        button4 = new JButton("Boston");
 
         button1.setPreferredSize(new Dimension(100, 40));
         button2.setPreferredSize(new Dimension(100, 40));
@@ -69,11 +78,11 @@ public class GamePanel extends JPanel {
 
             JButton clickedButton = (JButton) e.getSource();
             if (clickedButton.getText().equals("New York City")) {
-                clickedButton.setBackground(new Color(1, 172, 1));
+                clickedButton.setBackground(rightAnswerColor);
                 nextQuestionButton.setVisible(true);
             } else {
-                clickedButton.setBackground(new Color(255, 0, 0));
-                button3.setBackground(new Color(1, 172, 1));
+                clickedButton.setBackground(wrongAnswerColor);
+                button3.setBackground(rightAnswerColor);
                 nextQuestionButton.setVisible(true);
             }
         };
@@ -91,7 +100,7 @@ public class GamePanel extends JPanel {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Quiz");
-        frame.setIconImage(icon.getImage());
+        // frame.setIconImage(icon.getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(550, 450);
         frame.setLocationRelativeTo(null);
