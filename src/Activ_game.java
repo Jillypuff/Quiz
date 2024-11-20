@@ -62,7 +62,7 @@ public class Activ_game {
         this.antalKategoriSet = Integer.parseInt(this.properties.getProperty("kategoriSet", "4"));
     }
 
-    public void uppdateSpelNummerInProperties() {//********************************************************************************************** behöver den här metoden vara "syncronized"
+    public void uppdateSpelNummerInProperties() {//************************************************************************************************ behöver den här metoden vara "syncronized"
 
         Properties tempProperties = new Properties();
 
