@@ -1,11 +1,11 @@
 package client;
 
+import GUI.GameGUI;
 import server.Response;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client {
 

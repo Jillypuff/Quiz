@@ -1,4 +1,7 @@
-package client;
+package GUI;
+import client.Client;
+import client.Request;
+import client.RequestType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +32,7 @@ public class GameGUI extends JFrame {
             }
 
             if (!username.trim().isEmpty()) {
-                client.username = username;
+//                client.username = username;
 
                 client.sendRequest(new Request(RequestType.CONNECT, username, -1));
                 return;
