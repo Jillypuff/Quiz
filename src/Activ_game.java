@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.ServerSocket;
 import java.util.Properties;
 
 public class Activ_game {
@@ -9,6 +10,35 @@ public class Activ_game {
     private Properties properties;
     private QuestionInPannel[][] spelare1Spelbrade;
     private QuestionInPannel[][] spelare2Spelbrade;
+    //private int[][] gameState;
+    ServerSocket spelare1;
+    ServerSocket spelare2;
+
+    Activ_game(ServerSocket spelare1, ServerSocket spelare2) {
+        properties = new Properties();
+        loadProperties();
+        uppdateSpelNummerInProperties();
+
+        spelare1Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
+        spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
+        //gameState = new int[(antalFragor*2)][antalKategoriSet];
+
+        while(true) {
+
+        }
+
+
+
+
+
+    }
+
+    Activ_game(){
+        properties = new Properties();
+        loadProperties();
+        uppdateSpelNummerInProperties();
+        visaVariabler();
+    }
 
 
 
@@ -57,6 +87,19 @@ public class Activ_game {
             e.printStackTrace();
         }
 
+    }
+
+    public void visaVariabler(){
+        System.out.println(
+        "spelnr: "+ spelid +
+        "\n Antal frågor: " + antalFragor +
+        "\n Antal kategori: " + antalKategoriSet
+        //properties;
+        //spelare1Spelbrade;
+        //spelare2Spelbrade;
+        //spelare 1
+        //spelare 2
+        );
     }
 
 }
