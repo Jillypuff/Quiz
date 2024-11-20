@@ -15,12 +15,12 @@ public class ServerProtocol {
     public void processRequest(Request request, ConnectedClient client) throws IOException {
         switch (request.getType()){
             case CONNECT -> {
-                System.out.println("Received connect request; sending connected response");
+//                System.out.println("Received connect request; sending connected response");
                 client.username = request.username;
                 client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
             }
             case DISCONNECT -> {
-                System.out.println("Received disconnect request; sending disconnected response");
+//                System.out.println("Received disconnect request; sending disconnected response");
                 client.sendResponse(new Response(ResponseType.CLIENT_DISCONNECTED));
             }
             case START_GAME -> {

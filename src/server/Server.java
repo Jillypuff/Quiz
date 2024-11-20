@@ -41,6 +41,7 @@ public class Server {
         }
     }
 
+
     public void broadcastInstance(GameInstance instance) throws IOException {
         instance.playerOne.sendResponse(new Response(ResponseType.GAME_JOINED, instance.game));
         instance.playerTwo.sendResponse(new Response(ResponseType.GAME_JOINED, instance.game));
