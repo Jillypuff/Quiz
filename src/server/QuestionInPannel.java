@@ -1,3 +1,5 @@
+package server;
+
 public class QuestionInPannel {
     Question question;
     protected int recivedAwnser;

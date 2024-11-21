@@ -1,5 +1,6 @@
+package server;
+
 import java.io.*;
-import java.net.ServerSocket;
 import java.util.Properties;
 
 public class Activ_game {
