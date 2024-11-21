@@ -40,8 +40,8 @@ public class Server {
     }
 
     public void broadcastInstance(GameInstance instance) throws IOException {
-        instance.playerOne.sendResponse(new Response(ServerResponse.GAME_JOINED, instance.game));
-        instance.playerTwo.sendResponse(new Response(ServerResponse.GAME_JOINED, instance.game));
+        instance.playerOne.sendResponse(new Response(ReponseType.GAME_JOINED, instance.game));
+        instance.playerTwo.sendResponse(new Response(ReponseType.GAME_JOINED, instance.game));
     }
 
     public void closeServerSocket() {
