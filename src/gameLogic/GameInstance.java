@@ -1,4 +1,6 @@
-package server;
+package gameLogic;
+
+import server.ConnectedClient;
 
 public class GameInstance  {
 

@@ -1,5 +1,7 @@
 package server;
 
+import gameLogic.CurrentGame;
+
 import java.io.Serializable;
 
 public class Response implements Serializable {

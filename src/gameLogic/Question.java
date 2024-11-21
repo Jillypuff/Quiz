@@ -1,4 +1,4 @@
-package server;
+package gameLogic;
 
 import java.io.Serializable;
 import java.util.ArrayList;

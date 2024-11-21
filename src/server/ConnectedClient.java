@@ -1,6 +1,7 @@
 package server;
 
 import client.Request;
+import gameLogic.GameInstance;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,6 +20,7 @@ public class ConnectedClient implements Runnable {
     public String username;
     static List<ConnectedClient> connectedClients = new ArrayList<>();
     static List<ConnectedClient> queuedClients = new ArrayList<>();
+    gameLogic currentGame;
 
     public ConnectedClient(Socket socket, Server server){
         this.socket = socket;

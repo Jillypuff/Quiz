@@ -32,14 +32,20 @@ public class ServerProtocol {
                 // Skicka confirmation
             }
             case CATEGORY_CHOSEN -> {
+                client.server.currentGame.setCategory("science");
                 // Valde kategorin request.getAnswer();
                 // Ge feedback
             }
             case ANSWER -> {
+                String answer = request.getAnswer();
+                boolean trueoffalse = client.server.currentGame.currentQuestion.isCorrect(anser);
+                client.server.sendResponse(new Response(ResponseType.ANSWER_EVALUATED, trueoffalse));
+
                 // Valde svaret request.getAnswer();
                 // Ge feedback om korrekt eller inte
             }
             case NEXT_QUESTION -> {
+                client.server.broadcastInstance(new Response(ResponseType.SEND_QUESTION, client.gameLogic.getQuestion()));
                 // Ge nästa fråga
             }
             case GIVE_UP -> {
