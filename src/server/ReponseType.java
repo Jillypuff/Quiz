@@ -1,6 +1,6 @@
 package server;
 
-public enum ServerResponse {
+public enum ReponseType {
     CLIENT_CONNECTED,
     CLIENT_DISCONNECTED,
 

@@ -4,19 +4,19 @@ import java.io.Serializable;
 
 public class Response implements Serializable {
 
-    ServerResponse response;
+    ReponseType response;
     public CurrentGame game;
 
-    public Response(ServerResponse response) {
+    public Response(ReponseType response) {
         this.response = response;
     }
 
-    public Response(ServerResponse response, CurrentGame game){
+    public Response(ReponseType response, CurrentGame game){
         this.response = response;
         this.game = game;
     }
 
-    public ServerResponse getType(){
+    public ReponseType getType(){
         return this.response;
     }
 
