@@ -1,0 +1,113 @@
+import java.io.*;
+import java.net.ServerSocket;
+import java.util.Properties;
+
+public class Activ_game {
+
+    private int spelid;
+    private int antalFragor;
+    private int antalKategoriSet;
+    private Properties properties;
+    private QuestionInPannel[][] spelare1Spelbrade;
+    private QuestionInPannel[][] spelare2Spelbrade;
+    //private int[][] gameState;
+    ConnectedClient spelare1;
+    ConnectedClient spelare2;
+
+    Activ_game(ConnectedClient spelare1, ConnectedClient spelare2) {
+        properties = new Properties();
+        loadProperties();
+        uppdateSpelNummerInProperties();
+
+        spelare1Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
+        spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
+        //gameState = new int[(antalFragor*2)][antalKategoriSet];
+
+        //skicka till spelare 1 bestäm kategori
+        //uppdatera kategorin för spelbräde 1 och 2 y1= samma kategori
+
+        //spelare 1 får svara på frågor, när fråga slumpas ska samma fråga in på spelare 2's bräde i samma position
+        //när spelare 1 svarat på alla frågor är det spelare 2's turbrädet ska uppdateras clientside efter att båda spelare svarat på alla frågor(första spelaren som svarar på frågor kan ju egentligen få se sina egna svar men men...).
+
+        //där efter är det spelere 2's tur att välja kategori tänker att spelet kan kolla om det är jämnt eller ojämnt y värde den tittar på vid jämna värden är det spelare 1 som väljer och ojämna och spelare 2 vid jämna
+
+
+
+    }
+
+    Activ_game(){
+        properties = new Properties();
+        loadProperties();
+        uppdateSpelNummerInProperties();
+        visaVariabler();
+    }
+
+
+
+    //metod för att läsa in sparad sessionsid
+    //metod för att uppdatera sessionsid tar int (nuvarande sessions id)
+
+    //konstruktor som tar int (sesionsid)
+
+
+
+    public void loadProperties(){
+        try {
+            this.properties.load(new FileInputStream("src/Game_Properties.properties"));
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            //***************************************************************************************************************************lägg till sout kommentar
+        }
+        this.spelid = Integer.parseInt(this.properties.getProperty("spelNummer"));
+        this.antalFragor = Integer.parseInt(this.properties.getProperty("antalFragor"));
+        this.antalKategoriSet = Integer.parseInt(this.properties.getProperty("kategoriSet"));
+        //System.out.println(this.spelid + " " + this.antalFragor + " " + this.antalKategoriSet);
+    }
+
+    public void uppdateSpelNummerInProperties() {//************************************************************************************************ behöver den här metoden vara "syncronized"
+
+        Properties tempProperties = new Properties();
+
+
+        try{
+            tempProperties.load(new FileInputStream("src/Game_Properties.properties"));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        String nuvarandeSpel = tempProperties.getProperty("spelNummer");
+        int nuvarandeSpelInt = Integer.parseInt(nuvarandeSpel);
+        String nySpelNummer = (nuvarandeSpelInt+1) + "";
+
+        //System.out.println(nuvarandeSpel);
+
+        //System.out.println(nySpelNummer);
+
+        tempProperties.setProperty("spelNummer", nySpelNummer);
+
+
+        try{
+            tempProperties.store(new FileOutputStream("src/Game_Properties.properties"), null);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void visaVariabler(){
+        System.out.println(
+        "spelnr: "+ spelid +
+        "\nAntal frågor: " + antalFragor +
+        "\nAntal kategori: " + antalKategoriSet
+        //properties;
+        //spelare1Spelbrade;
+        //spelare2Spelbrade;
+        //spelare 1
+        //spelare 2
+        );
+    }
+
+}
