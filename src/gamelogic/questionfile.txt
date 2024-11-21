@@ -1,0 +1,41 @@
+SCIENCE;What is the chemical symbol for water?;H2O;O2;CO2;HO;H2O
+SCIENCE;Which planet is known as the "Red Planet"?;Venus;Mars;Jupiter;Saturn;Mars
+SCIENCE;What is the powerhouse of the cell?;Nucleus;Mitochondria;Ribosome;Chloroplast;Mitochondria
+SCIENCE;What gas do plants absorb from the atmosphere during photosynthesis?;Oxygen;Carbon dioxide;Nitrogen;Methane;Carbon dioxide
+SCIENCE;What is the speed of light in a vacuum?;300,000 kilometers per second;150,000 kilometers per second;100,000 kilometers per second;500,000 kilometers per second;300,000 kilometers per second
+SCIENCE;Who proposed the theory of relativity?;Isaac Newton;Albert Einstein;Galileo Galilei;Marie Curie;Albert Einstein
+
+ANIMALS;Which mammal is known to have the most powerful bite?;Lion;Tiger;Hippopotamus;Crocodile;Hippopotamus
+ANIMALS;What is the fastest land animal?;Cheetah;Leopard;Lion;Antelope;Cheetah
+ANIMALS;Which bird is known for its impressive mimicry of sounds?;Parrot;Mockingbird;Lyrebird;Crow;Lyrebird
+ANIMALS;What is the largest species of penguin?;Emperor Penguin;King Penguin;Adelie Penguin;Chinstrap Penguin;Emperor Penguin
+ANIMALS;Which marine animal is known as a "sea cow"?;Dolphin;Manatee;Seal;Walrus;Manatee
+ANIMALS;What is a group of lions called?;Pack;Flock;Pride;Herd;Pride
+
+MUSIC;Who composed the "Four Seasons"?;Vivaldi;Mozart;Bach;Beethoven;Vivaldi
+MUSIC;Which instrument has 88 keys?;Piano;Organ;Harpsichord;Keyboard;Piano
+MUSIC;Which musician is known as the "King of Pop"?;Elvis Presley;Michael Jackson;Prince;Freddie Mercury;Michael Jackson
+MUSIC;What is the name of the music symbol indicating silence?;Rest;Pause;Break;Stop;Rest
+MUSIC;Which classical composer became deaf later in life?;Beethoven;Mozart;Bach;Tchaikovsky;Beethoven
+MUSIC;What is the term for a group of three musicians?;Quartet;Trio;Duet;Band;Trio
+
+PROGRAMMING;Which language is primarily used for Android development?;Python;Java;C++;Swift;Java
+PROGRAMMING;What does HTML stand for?;Hyper Trainer Markup Language;Hyper Text Markup Language;High Transfer Machine Learning;Hyper Text Machine Learning;Hyper Text Markup Language
+PROGRAMMING;Which company developed the Java programming language?;Microsoft;Sun Microsystems;Apple;Google;Sun Microsystems
+PROGRAMMING;What is the term for an error in a program?;Bug;Glitch;Fault;Crash;Bug
+PROGRAMMING;Which programming language is known for its use in data analysis and statistical computing?;Python;R;MATLAB;C;R
+PROGRAMMING;Which keyword is used to define a class in Java?;function;method;class;new;class
+
+GEOGRAPHY;What is the capital city of Australia?;Sydney;Melbourne;Canberra;Brisbane;Canberra
+GEOGRAPHY;Which is the longest river in the world?;Amazon;Nile;Yangtze;Mississippi;Nile
+GEOGRAPHY;What is the largest desert in the world?;Sahara;Arctic;Gobi;Kalahari;Sahara
+GEOGRAPHY;Which country has the most islands?;Indonesia;Canada;Sweden;Philippines;Sweden
+GEOGRAPHY;Which mountain range includes Mount Everest?;Andes;Rockies;Alps;Himalayas;Himalayas
+GEOGRAPHY;What is the smallest country in the world?;Malta;Vatican City;Monaco;San Marino;Vatican City
+
+HISTORY;Who was the first president of the United States?;George Washington;Abraham Lincoln;Thomas Jefferson;John Adams;George Washington
+HISTORY;In which year did World War II begin?;1939;1914;1941;1945;1939
+HISTORY;Which empire built the Colosseum?;Greek;Roman;Byzantine;Ottoman;Roman
+HISTORY;Who discovered America in 1492?;Christopher Columbus;Vasco da Gama;Marco Polo;Amerigo Vespucci;Christopher Columbus
+HISTORY;What was the name of the ship that brought the Pilgrims to America?;Mayflower;Santa Maria;Endeavour;Pinta;Mayflower
+HISTORY;Which historical event is associated with the year 1066?;The Battle of Hastings;The Fall of the Roman Empire;The French Revolution;The Declaration of Independence;The Battle of Hastings

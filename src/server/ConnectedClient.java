@@ -1,14 +1,12 @@
 package server;
 
 import client.Request;
+import gamelogic.CurrentGame;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class ConnectedClient implements Runnable {
 
@@ -17,23 +15,12 @@ public class ConnectedClient implements Runnable {
     ObjectOutputStream out;
     ObjectInputStream in;
     public String username;
-    static List<ConnectedClient> connectedClients = new ArrayList<>();
-    static List<ConnectedClient> queuedClients = new ArrayList<>();
+    private boolean running = true;
+    CurrentGame currentGame;
 
     public ConnectedClient(Socket socket, Server server){
         this.socket = socket;
         this.server = server;
-        connectedClients.add(this);
-    }
-
-    public void queueClient(ConnectedClient client){
-        queuedClients.add(client);
-        if (queuedClients.size() >= 2){
-            ConnectedClient player1 = queuedClients.removeFirst();
-            ConnectedClient player2 = queuedClients.removeFirst();
-
-            GameInstance gameInstance = new GameInstance(player1, player2);
-        }
     }
 
     public synchronized void sendResponse(Response response) throws IOException {
@@ -46,11 +33,15 @@ public class ConnectedClient implements Runnable {
         try {
             System.out.println("Connected");
             out = new ObjectOutputStream(socket.getOutputStream());
+            out.flush();
             in = new ObjectInputStream(socket.getInputStream());
             ServerProtocol protocol = new ServerProtocol();
 
-            while(in.readObject() instanceof Request request){
-                protocol.processRequest(request, this);
+            while(running && !socket.isClosed()){
+                Object obj = in.readObject();
+                if (obj instanceof Request request){
+                    protocol.processRequest(request, this);
+                }
             }
 
         } catch (Exception e) {
@@ -58,7 +49,12 @@ public class ConnectedClient implements Runnable {
         }
     }
 
+    public void stop(){
+        running = false;
+    }
+
     public void closeEverything(Socket socket, ObjectOutputStream out, ObjectInputStream in){
+        stop();
         try{
             if (out != null){
                 out.close();

@@ -1,4 +1,4 @@
-package server;
+package gamelogic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ public class Question implements Serializable {
 
     String question;
     String answer;
-    List<String> alternatives = new ArrayList<>();
+    List<String> alternatives;
 
     public Question(String question, String answer, List<String> alternatives) {
         this.question = question;
@@ -22,5 +22,13 @@ public class Question implements Serializable {
 
     public boolean checkAnswer(int answer){
         return checkAnswer(alternatives.get(answer));
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public List<String> getAlternatives() {
+        return alternatives;
     }
 }

@@ -1,4 +1,6 @@
-package server;
+package gamelogic;
+
+import server.ConnectedClient;
 
 import java.io.*;
 import java.util.Properties;

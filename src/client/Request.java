@@ -1,12 +1,15 @@
 package client;
 
+import gamelogic.Category;
+
 import java.io.Serializable;
 
 public class Request implements Serializable {
 
     private final RequestType request;
     public String username;
-    private final int answer;
+    Category chosenCategory;
+    public int answer = -1;
 
     public Request(RequestType request){
         this(request, "", -1);
@@ -26,11 +29,20 @@ public class Request implements Serializable {
         this.answer = answer;
     }
 
+    public Request(RequestType request, String username, Category chosenCategory){
+        this.request = request;
+        this.username = username;
+        this.chosenCategory = chosenCategory;
+    }
+
     public RequestType getType() {
         return request;
     }
 
     public int getAnswer(){
         return answer;
+    }
+    public Category getChosenCategory(){
+        return chosenCategory;
     }
 }

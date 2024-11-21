@@ -1,14 +1,17 @@
 package GUI;
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryPanel extends JPanel {
 
     // static ImageIcon icon = new ImageIcon("src/CategoryLogo.png");
 
-    JButton category1;
-    JButton category2;
-    JButton category3;
+    public JButton category1;
+    public JButton category2;
+    public JButton category3;
+
 
     public CategoryPanel() {
 
@@ -43,6 +46,17 @@ public class CategoryPanel extends JPanel {
         add(Box.createVerticalStrut(50));
         add(buttonPanel);
     }
+
+    public List<JButton> getCategoryButtons(){
+        List<JButton> buttons = new ArrayList<JButton>();
+        buttons.add(category1);
+        buttons.add(category2);
+        buttons.add(category3);
+        return buttons;
+    }
+
+
+
 
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame("Quiz");

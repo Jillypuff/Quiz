@@ -1,5 +1,7 @@
 package server;
 
+import gamelogic.CurrentGame;
+
 public class GameInstance  {
 
     ConnectedClient playerOne;

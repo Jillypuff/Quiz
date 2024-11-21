@@ -1,6 +1,7 @@
 package client;
 
 import GUI.GameGUI;
+import gamelogic.Category;
 import server.Response;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client implements ActionListener {
 
@@ -16,6 +19,7 @@ public class Client implements ActionListener {
     private ObjectInputStream in;
     String username;
     GameGUI gameGUI;
+    boolean running = true;
 
     public Client(Socket socket){
         try{
@@ -32,14 +36,20 @@ public class Client implements ActionListener {
     public void addListeners(){
         gameGUI.loginPanel.addActionListener(this);
         gameGUI.mainPanel.addActionListener(this);
+        gameGUI.waitingPanel.addActionListener(this);
+        gameGUI.gamePanel.addActionListeners(this);
+        addActionListenersToCategoryButtons();
     }
 
     public void startListening() {
         new Thread(() -> {
             ClientProtocol protocol = new ClientProtocol();
             try{
-                while(in.readObject() instanceof Response response){
-                    protocol.processResponse(response, this);
+                while(running){
+                    Object obj = in.readObject();
+                    if (obj instanceof Response response){
+                        protocol.processResponse(response, this);
+                    }
                 }
             }
             catch (Exception e){
@@ -48,7 +58,12 @@ public class Client implements ActionListener {
         }).start();
     }
 
+    public void stop(){
+        running = false;
+    }
+
     public void closeEverything(Socket socket, ObjectOutputStream out, ObjectInputStream in){
+        stop();
         try {
             if (out != null){
                 out.close();
@@ -65,21 +80,55 @@ public class Client implements ActionListener {
         }
     }
 
+    public void sendRequest(Request request){
+        try{
+            out.writeObject(request);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void sendRequest(JButton button) throws IOException {
         if(button == gameGUI.loginPanel.loginButton){
             System.out.println("Sending connect-request");
-            out.writeObject(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
+            sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
         } else if (button == gameGUI.loginPanel.exitGameButton){
             System.out.println("Shutting down");
             System.exit(0);
         } else if (button == gameGUI.mainPanel.logoutButton){
             System.out.println("Logging out");
-            out.writeObject(new Request(RequestType.DISCONNECT));
+            sendRequest(new Request(RequestType.DISCONNECT));
         } else if (button == gameGUI.mainPanel.newGameButton){
             System.out.println("Starting new game");
-            out.writeObject(new Request(RequestType.START_GAME, username));
+            sendRequest(new Request(RequestType.START_GAME, username));
+        }
+        else if (button == gameGUI.waitingPanel.leaveQueueButton){
+            System.out.println("Leaving queue");
+            sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
+            gameGUI.switchPanel(2);
         }
     }
+
+    public void addActionListenersToCategoryButtons(){
+        List<JButton> buttons = gameGUI.categoryPanel.getCategoryButtons();
+        for(JButton button : buttons){
+            button.addActionListener(e ->{
+                Category selectedCategory = Category.valueOf(button.getText());
+                System.out.println("Sending next question request");
+                sendRequest(new Request(RequestType.NEXT_QUESTION, username, selectedCategory));
+            });
+        }
+    }
+
+//    public void addActionListenerToAnswerButtons(){
+//        List<JButton> buttons = gameGUI.gamePanel.getAllAnswerButtons();
+//        for(JButton button : buttons){
+//            button.addActionListener(e -> {
+//                sendRequest(new Request(RequestType.ANSWER, username));
+//            });
+//        }
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

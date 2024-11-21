@@ -7,7 +7,10 @@ public enum ReponseType {
     QUEUE_JOINED,
     GAME_JOINED,
 
-    SEND_QUESTION,
+    YOUR_TURN,
+    OTHER_PLAYERS_TURN,
+
+    QUESTION,
     SEND_ANSWER,
 
     SEND_SCORE,

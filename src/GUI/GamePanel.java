@@ -20,12 +20,15 @@ public class GamePanel extends JPanel {
     JButton button4;
     JButton nextQuestionButton;
 
+    JLabel questionLabel;
+
+
     public GamePanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         add(Box.createVerticalStrut(30));
 
-        JLabel questionLabel = new JLabel("In which city does the show 'Friends' take place?");
+        questionLabel = new JLabel("In which city does the show 'Friends' take place?");
         questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
@@ -107,5 +110,25 @@ public class GamePanel extends JPanel {
 
         frame.add(new GamePanel());
         frame.setVisible(true);
+    }
+
+    public void addActionListeners(ActionListener listener){
+        button1.addActionListener(listener);
+        button2.addActionListener(listener);
+        button3.addActionListener(listener);
+        button4.addActionListener(listener);
+    }
+
+    public List<JButton> getAllAnswerButtons(){
+        List<JButton> buttons = new ArrayList<>();
+        buttons.add(button1);
+        buttons.add(button2);
+        buttons.add(button3);
+        buttons.add(button4);
+        return buttons;
+    }
+
+    public JLabel getQuestionLabel(){
+        return questionLabel;
     }
 }

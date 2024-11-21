@@ -1,4 +1,4 @@
-package server;
+package gamelogic;
 
 public class QuestionInPannel {
     Question question;
