@@ -56,19 +56,19 @@ public class Server {
         }
     }
 
-    public void handleRoundSwitch(GameInstance instance) throws IOException {
+    public void handleTurnSwitch(GameInstance instance) throws IOException {
         List<Question> questions = instance.game.getQuestionsForCurrentCategory();
         Category currentCategory = instance.game.getCurrentCategory();
 
-        if (instance.game.turnHolder.equals(instance.playerOne.username)) {
+        if (instance.turnHolder.equals(instance.playerOne)) {
 
-            instance.game.turnHolder = instance.playerTwo.username;
+            instance.turnHolder = instance.playerTwo;
             notifyOtherPlayersTurn(instance.playerOne);
             sendTurnPackage(instance.playerTwo, currentCategory, questions);
         }
-        else if (instance.game.turnHolder.equals(instance.playerTwo.username)) {
+        else if (instance.turnHolder.equals(instance.playerTwo)) {
 
-            instance.game.turnHolder = instance.playerOne.username;
+            instance.turnHolder = instance.playerOne;
             notifyOtherPlayersTurn(instance.playerTwo);
             sendTurnPackage(instance.playerOne, currentCategory, questions);
         }
@@ -79,7 +79,7 @@ public class Server {
     }
 
     private void sendTurnPackage(ConnectedClient client, Category category, List<Question> questions) throws IOException {
-        client.sendResponse(new QuestionPackageResponse(ResponseType.YOUR_TURN, category, questions));
+        client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, category, questions));
     }
 
     public void closeServerSocket() {

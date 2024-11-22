@@ -6,11 +6,39 @@ public class GameInstance  {
 
     ConnectedClient playerOne;
     ConnectedClient playerTwo;
-    public CurrentGame game;
+    ConnectedClient turnHolder;
+    CurrentGame game;
 
-    public GameInstance(ConnectedClient player1, ConnectedClient player2) {
-        this.playerOne = player1;
-        this.playerTwo = player2;
-        game = new CurrentGame(playerOne.username, playerTwo.username);
+    public GameInstance(ConnectedClient clientOne, ConnectedClient clientTwo) {
+        this.playerOne = clientOne;
+        this.playerTwo = clientTwo;
+        turnHolder = playerOne;
+        game = new CurrentGame(playerOne.getUsername(), playerTwo.getUsername());
+    }
+
+    public void changeTurnHolder(){
+        if (turnHolder.equals(playerOne)){
+            turnHolder = playerTwo;
+        } else {
+            turnHolder = playerOne;
+        }
+    }
+
+    public void awardPointsToTurnHolder(int points) {
+        turnHolder.increaseScore(points);
+    }
+
+    public void endGameAndDetermineWinner() {
+        if (playerOne.getScore() > playerTwo.getScore()) {
+            playerOne.incrementMatchesWon();
+        } else if (playerTwo.getScore() > playerOne.getScore()) {
+            playerTwo.incrementMatchesWon();
+        }
+        playerOne.resetScore();
+        playerTwo.resetScore();
+    }
+
+    public CurrentGame getCurrentGame(){
+        return game;
     }
 }

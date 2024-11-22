@@ -28,9 +28,4 @@ public class LoginPanel extends JPanel{
         add(loginButton);
         add(exitGameButton);
     }
-
-    public void addActionListener(ActionListener listener){
-        loginButton.addActionListener(listener);
-        exitGameButton.addActionListener(listener);
-    }
 }

@@ -11,14 +11,16 @@ import java.net.Socket;
 
 public class ConnectedClient implements Runnable {
 
+    private boolean running = true;
     public Server server;
     Socket socket;
     ObjectOutputStream out;
     ObjectInputStream in;
-    public String username;
-    private boolean running = true;
-    CurrentGame currentGame;
+    private String username;
     GameInstance gameInstance;
+
+    private int score = 0;
+    private int matchesWon = 0;
 
     public ConnectedClient(Socket socket, Server server){
         this.socket = socket;
@@ -70,5 +72,34 @@ public class ConnectedClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setUsername(String username){
+        this.username = username;
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+
+    public void increaseScore(int points) {
+        this.score += points;
+    }
+
+    public void resetScore() {
+        this.score = 0;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void incrementMatchesWon() {
+        this.matchesWon++;
+    }
+
+    public int getMatchesWon() {
+        return matchesWon;
     }
 }

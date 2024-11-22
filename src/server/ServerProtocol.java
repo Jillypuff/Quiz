@@ -19,7 +19,7 @@ public class ServerProtocol {
         switch (request.getRequestType()){
             case CONNECT -> {
                 System.out.println("Received connect request; sending connected response");
-                client.username = request.username;
+                client.setUsername(request.username);
                 client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
             }
             case DISCONNECT -> {
@@ -35,13 +35,13 @@ public class ServerProtocol {
             case LEAVE_QUEUE -> {
                 client.server.queue.remove(client);
             }
-            case GET_QUESTIONS -> {
+            case CATEGORY_CHOSEN -> {
                 if (request instanceof StartRoundRequest startRoundRequest){
-                    client.currentGame.setCurrentCategory(startRoundRequest.getChosenCategory());
+                    client.gameInstance.game.setCurrentCategory(startRoundRequest.getChosenCategory());
 
                     System.out.println("Received get questions request, fetching questions for current category");
-                    List<Question> questions = client.currentGame.getQuestionsForCurrentCategory();
-                    Category currentCategory = client.currentGame.getCurrentCategory();
+                    List<Question> questions = client.gameInstance.game.getQuestionsForCurrentCategory();
+                    Category currentCategory = client.gameInstance.game.getCurrentCategory();
 
                     System.out.println("Sending them");
                     client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, currentCategory, questions));
@@ -50,7 +50,8 @@ public class ServerProtocol {
             case ROUND_FINISHED -> {
                 if(request instanceof RoundFinishedRequest roundFinishedRequest){
                     int score = roundFinishedRequest.getScore();
-                    client.server.handleRoundSwitch(client.gameInstance);
+                    client.gameInstance.awardPointsToTurnHolder(score);
+                    client.server.handleTurnSwitch(client.gameInstance);
                 }
             }
             case GIVE_UP -> {

@@ -54,18 +54,4 @@ public class CategoryPanel extends JPanel {
         buttons.add(category3);
         return buttons;
     }
-
-
-
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Quiz");
-//        frame.setIconImage(icon.getImage());
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(550, 450);
-//        frame.setLocationRelativeTo(null);
-//
-//        frame.add(new CategoryPanel());
-//        frame.setVisible(true);
-//    }
 }

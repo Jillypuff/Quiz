@@ -107,24 +107,6 @@ public class GamePanel extends JPanel {
         add(buttonPanel);
     }
 
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Quiz");
-//        // frame.setIconImage(icon.getImage());
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(550, 450);
-//        frame.setLocationRelativeTo(null);
-//
-//        frame.add(new GamePanel());
-//        frame.setVisible(true);
-//    }
-
-    public void addActionListeners(ActionListener listener){
-        button1.addActionListener(listener);
-        button2.addActionListener(listener);
-        button3.addActionListener(listener);
-        button4.addActionListener(listener);
-    }
-
     public List<JButton> getAllAnswerButtons(){
         List<JButton> buttons = new ArrayList<>();
         buttons.add(button1);

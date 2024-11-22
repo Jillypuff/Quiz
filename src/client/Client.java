@@ -15,7 +15,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
 
-public class Client implements ActionListener {
+public class Client {
 
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -29,20 +29,20 @@ public class Client implements ActionListener {
             this.out = new ObjectOutputStream(socket.getOutputStream());
             this.in = new ObjectInputStream(socket.getInputStream());
             startListening();
-            gameGUI = new GameGUI(this);
+            gameGUI = new GameGUI();
         } catch (Exception e){
             closeEverything(socket, out, in);
         }
-        addListeners();
+        addActionListenersToButtons();
     }
 
-    public void addListeners(){
-        gameGUI.loginPanel.addActionListener(this);
-        gameGUI.mainPanel.addActionListener(this);
-        gameGUI.waitingPanel.addActionListener(this);
-        gameGUI.gamePanel.addActionListeners(this);
-        addActionListenersToCategoryButtons();
-    }
+//    public void addListeners(){
+//        gameGUI.loginPanel.addActionListener(this);
+//        gameGUI.mainPanel.addActionListener(this);
+//        gameGUI.waitingPanel.addActionListener(this);
+//        gameGUI.gamePanel.addActionListeners(this);
+//        addActionListenersToCategoryButtons();
+//    }
 
     public void startListening() {
         new Thread(() -> {
@@ -92,25 +92,30 @@ public class Client implements ActionListener {
         }
     }
 
-    public void sendRequest(JButton button) throws IOException {
-        if(button == gameGUI.loginPanel.loginButton){
+    public void addActionListenersToButtons(){
+        gameGUI.loginPanel.loginButton.addActionListener(e->{
             System.out.println("Sending connect-request");
             sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
-        } else if (button == gameGUI.loginPanel.exitGameButton){
+        });
+        gameGUI.loginPanel.exitGameButton.addActionListener(e->{
             System.out.println("Shutting down");
             System.exit(0);
-        } else if (button == gameGUI.mainPanel.logoutButton){
+        });
+        gameGUI.mainPanel.logoutButton.addActionListener(e->{
             System.out.println("Logging out");
             sendRequest(new Request(RequestType.DISCONNECT, username));
-        } else if (button == gameGUI.mainPanel.newGameButton){
+        });
+        gameGUI.mainPanel.newGameButton.addActionListener(e->{
             System.out.println("Starting new game");
             sendRequest(new Request(RequestType.START_GAME, username));
-        }
-        else if (button == gameGUI.waitingPanel.leaveQueueButton){
+        });
+        gameGUI.waitingPanel.leaveQueueButton.addActionListener(e->{
             System.out.println("Leaving queue");
             sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
             gameGUI.switchPanel(2);
-        }
+        });
+
+        addActionListenersToCategoryButtons();
     }
 
     public void addActionListenersToCategoryButtons(){
@@ -119,23 +124,36 @@ public class Client implements ActionListener {
             button.addActionListener(e ->{
                 Category selectedCategory = Category.valueOf(button.getText());
                 System.out.println("Sending get question request");
-                sendRequest(new StartRoundRequest(RequestType.GET_QUESTIONS, username, selectedCategory));
+                sendRequest(new StartRoundRequest(RequestType.CATEGORY_CHOSEN, username, selectedCategory));
             });
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JButton button = (JButton) e.getSource();
-        try {
-            sendRequest(button);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket(InetAddress.getLocalHost(), 55554);
         Client client = new Client(socket);
     }
+
+
+    //    public void sendRequest(JButton button) throws IOException {
+//        if(button == gameGUI.loginPanel.loginButton){
+//            System.out.println("Sending connect-request");
+//            sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
+//        } else if (button == gameGUI.loginPanel.exitGameButton){
+//            System.out.println("Shutting down");
+//            System.exit(0);
+//        } else if (button == gameGUI.mainPanel.logoutButton){
+//            System.out.println("Logging out");
+//            sendRequest(new Request(RequestType.DISCONNECT, username));
+//        } else if (button == gameGUI.mainPanel.newGameButton){
+//            System.out.println("Starting new game");
+//            sendRequest(new Request(RequestType.START_GAME, username));
+//        }
+//        else if (button == gameGUI.waitingPanel.leaveQueueButton){
+//            System.out.println("Leaving queue");
+//            sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
+//            gameGUI.switchPanel(2);
+//        }
+//    }
 }

@@ -20,8 +20,4 @@ public class WaitingPanel extends JPanel {
         add(queuedLabel);
         add(leaveQueueButton);
     }
-
-    public void addActionListener(ActionListener listener){
-        leaveQueueButton.addActionListener(listener);
-    }
 }

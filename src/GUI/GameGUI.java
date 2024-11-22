@@ -13,16 +13,11 @@ public class GameGUI extends JFrame {
     public MainPanel mainPanel;
     public WaitingPanel waitingPanel;
 
-    Client client;
-
-    public GameGUI(Client client) throws IOException, InterruptedException {
-        this.client = client;
+    public GameGUI() throws IOException, InterruptedException {
         loginPanel = new LoginPanel();
         add(loginPanel);
         setupMainFrame();
         loadPanel();
-//        Thread.sleep(5000);
-//        switchPanel(2);
     }
 
     public void setupMainFrame(){
@@ -50,9 +45,5 @@ public class GameGUI extends JFrame {
         }
         revalidate();
         repaint();
-    }
-
-    public void actionListener(ActionListener actionListener){
-
     }
 }
