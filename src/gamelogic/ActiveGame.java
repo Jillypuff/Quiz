@@ -13,9 +13,8 @@ public class ActiveGame {
     private int antalFragor;
     private int antalKategoriSet;
     private Properties properties;
-    private QuestionInPannel[][] spelare1Spelbrade;
-    private QuestionInPannel[][] spelare2Spelbrade;
-    //private int[][] gameState;
+    private QuestionInPannel[][] Spelbrade;
+
     ServerSocket spelare1;
     ServerSocket spelare2;
 
@@ -24,17 +23,9 @@ public class ActiveGame {
         loadProperties();
         uppdateSpelNummerInProperties();
 
-        spelare1Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
-        spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
+        Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
+        //spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
         //gameState = new int[(antalFragor*2)][antalKategoriSet];
-
-        while(true) {
-
-        }
-
-
-
-
 
     }
 
