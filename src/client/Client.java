@@ -36,14 +36,6 @@ public class Client {
         addActionListenersToButtons();
     }
 
-//    public void addListeners(){
-//        gameGUI.loginPanel.addActionListener(this);
-//        gameGUI.mainPanel.addActionListener(this);
-//        gameGUI.waitingPanel.addActionListener(this);
-//        gameGUI.gamePanel.addActionListeners(this);
-//        addActionListenersToCategoryButtons();
-//    }
-
     public void startListening() {
         new Thread(() -> {
             ClientProtocol protocol = new ClientProtocol();

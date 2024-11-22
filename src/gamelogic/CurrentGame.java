@@ -1,8 +1,5 @@
 package gamelogic;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
@@ -10,6 +7,7 @@ public class CurrentGame implements Serializable {
 
     private Category currentCategory;
     private final List<Category> allAvailableCategories;
+    private List<Question> currentSetOfQuestions;
 
     private int amountOfQuestions = 3;
     private int amountOfCategoryAlternatives = 3;
@@ -27,10 +25,14 @@ public class CurrentGame implements Serializable {
         return currentCategory;
     }
 
-    public List<Question> getQuestionsForCurrentCategory(){
+    public void loadCurrentSetOfQuestions(){
         List<Question> allQuestions = QuestionDatabase.getQuestionsFromCategory(currentCategory);
         Collections.shuffle(allQuestions);
-        return new ArrayList<>(allQuestions.subList(0,amountOfQuestions));
+        currentSetOfQuestions = new ArrayList<>(allQuestions.subList(0, amountOfQuestions));
+    }
+
+    public List<Question> getCurrentSetOfQuestions(){
+        return currentSetOfQuestions;
     }
 
     public List<Category> getCurrentSetOfCategories(){
@@ -38,4 +40,5 @@ public class CurrentGame implements Serializable {
         List<Category> selectedCategories = allAvailableCategories.subList(0, amountOfCategoryAlternatives);
         return new ArrayList<>(selectedCategories);
     }
+
 }

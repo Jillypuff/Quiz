@@ -8,6 +8,9 @@ public class GameInstance  {
     ConnectedClient playerTwo;
     ConnectedClient turnHolder;
     CurrentGame game;
+    boolean playerOneFinishedRound = false;
+    boolean playerTwoFinishedRound = false;
+    public int roundsFinished = 0;
 
     public GameInstance(ConnectedClient clientOne, ConnectedClient clientTwo) {
         this.playerOne = clientOne;
@@ -36,6 +39,28 @@ public class GameInstance  {
         }
         playerOne.resetScore();
         playerTwo.resetScore();
+    }
+
+    public boolean allRoundsFinished(){
+        return roundsFinished == 2;
+    }
+
+
+    public void setPlayerFinishedRound(ConnectedClient player) {
+        if (player.equals(playerOne)) {
+            playerOneFinishedRound = true;
+        } else if (player.equals(playerTwo)) {
+            playerTwoFinishedRound = true;
+        }
+    }
+
+    public boolean bothPlayersFinishedRound() {
+        return playerOneFinishedRound && playerTwoFinishedRound;
+    }
+
+    public void resetRoundState() {
+        playerOneFinishedRound = false;
+        playerTwoFinishedRound = false;
     }
 
     public CurrentGame getCurrentGame(){

@@ -12,6 +12,7 @@ public class GameGUI extends JFrame {
     public LoginPanel loginPanel;
     public MainPanel mainPanel;
     public WaitingPanel waitingPanel;
+    public UglyScorePanel uglyScorePanel;
 
     public GameGUI() throws IOException, InterruptedException {
         loginPanel = new LoginPanel();
@@ -32,6 +33,7 @@ public class GameGUI extends JFrame {
         gamePanel = new GamePanel();
         categoryPanel = new CategoryPanel();
         waitingPanel = new WaitingPanel();
+        uglyScorePanel = new UglyScorePanel();
     }
 
     public void switchPanel(int panel){
@@ -42,6 +44,7 @@ public class GameGUI extends JFrame {
             case 3 -> this.add(categoryPanel);
             case 4 -> this.add(gamePanel);
             case 5 -> this.add(waitingPanel);
+            case 6 -> this.add(uglyScorePanel);
         }
         revalidate();
         repaint();

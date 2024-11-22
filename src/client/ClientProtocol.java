@@ -6,6 +6,7 @@ import server.GameInstance;
 import server.response.CategoryPackageResponse;
 import server.response.QuestionPackageResponse;
 import server.response.Response;
+import server.response.ResultResponse;
 
 import javax.swing.*;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ClientProtocol {
                 System.out.println("Received queue joined");
                 client.gameGUI.switchPanel(5);
             }
-            case YOUR_TURN -> {
+            case CATEGORIES -> {
                 System.out.println("Received your turn");
                 if (response instanceof CategoryPackageResponse categoryPackageResponse) {
                     List<Category> categories = categoryPackageResponse.getSetOfCategories();
@@ -49,8 +50,26 @@ public class ClientProtocol {
                     System.out.println("Received questions");
                     client.gameGUI.switchPanel(4);
                     List<Question> questions = questionPackageResponse.getSetOfQuestions();
-                    GameRound round = new GameRound(client, questions);
-                    client.currentScore = round.score;
+                    GameRound round = new GameRound(client, questions, client.currentScore);
+                    client.currentScore += round.score;
+                }
+            }
+            case ROUND_RESULT -> {
+                if (response instanceof ResultResponse resultResponse){
+                    int playersScore = resultResponse.getPlayerResult();
+                    int opponentsScore = resultResponse.getOpponentResult();
+                    client.gameGUI.uglyScorePanel.setOpponentScore(opponentsScore);
+                    client.gameGUI.uglyScorePanel.setPlayerScore(playersScore);
+                    if (playersScore > opponentsScore){
+                        client.gameGUI.uglyScorePanel.setResultText("You won this round!");
+                    }
+                    else if (opponentsScore > playersScore){
+                        client.gameGUI.uglyScorePanel.setResultText("You lost this round.");
+                    }
+                    else{
+                        client.gameGUI.uglyScorePanel.setResultText("It was a draw.");
+                    }
+                    client.gameGUI.switchPanel(6);
                 }
             }
         }

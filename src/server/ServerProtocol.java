@@ -4,13 +4,11 @@ import client.request.Request;
 import client.request.RoundFinishedRequest;
 import client.request.StartRoundRequest;
 import gamelogic.Category;
-import gamelogic.Question;
 import server.response.QuestionPackageResponse;
 import server.response.ResponseType;
 import server.response.Response;
 
 import java.io.IOException;
-import java.util.List;
 
 
 public class ServerProtocol {
@@ -40,18 +38,18 @@ public class ServerProtocol {
                     client.gameInstance.game.setCurrentCategory(startRoundRequest.getChosenCategory());
 
                     System.out.println("Received get questions request, fetching questions for current category");
-                    List<Question> questions = client.gameInstance.game.getQuestionsForCurrentCategory();
+                    client.gameInstance.game.loadCurrentSetOfQuestions();
                     Category currentCategory = client.gameInstance.game.getCurrentCategory();
 
                     System.out.println("Sending them");
-                    client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, currentCategory, questions));
+                    client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, currentCategory, client.gameInstance.game.getCurrentSetOfQuestions()));
                 }
             }
             case ROUND_FINISHED -> {
                 if(request instanceof RoundFinishedRequest roundFinishedRequest){
                     int score = roundFinishedRequest.getScore();
                     client.gameInstance.awardPointsToTurnHolder(score);
-                    client.server.handleTurnSwitch(client.gameInstance);
+                    client.server.handleRoundFinished(client.gameInstance, client);
                 }
             }
             case GIVE_UP -> {

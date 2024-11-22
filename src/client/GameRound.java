@@ -1,6 +1,5 @@
 package client;
 
-import client.request.Request;
 import client.request.RequestType;
 import client.request.RoundFinishedRequest;
 import gamelogic.Question;
@@ -13,13 +12,12 @@ public class GameRound {
 
     Client client;
     List<JButton> gameButtons;
-    boolean wasCorrect = false;
     List<Question> questions;
     int score = 0;
     int questionNumber = 0;
     Question currentQuestion;
 
-    public GameRound(Client client, List<Question> questions) {
+    public GameRound(Client client, List<Question> questions, int currentScore) {
         this.client = client;
         this.questions = questions;
         gameButtons = client.gameGUI.gamePanel.getAllAnswerButtons();
@@ -58,7 +56,7 @@ public class GameRound {
                 String answer = button.getText();
                 if (currentQuestion.checkAnswer(answer)){
                     button.setBackground(Color.GREEN);
-                    wasCorrect = true;
+                    score++;
                 }
                 else{
                     button.setBackground(Color.RED);
@@ -75,10 +73,6 @@ public class GameRound {
     }
 
     public void updateQuestionBoard(int questionNumber){
-        if (wasCorrect) {
-            score++;
-        }
-        wasCorrect = false;
         currentQuestion = questions.get(questionNumber);
         fillBoardWithCurrentAlternatives(currentQuestion);
 

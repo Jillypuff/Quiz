@@ -16,6 +16,7 @@ public class QuestionPackageResponse extends Response implements Serializable {
         this.category = category;
         this.setOfQuestions = setOfQuestions;
     }
+
     public List<Question> getSetOfQuestions() {
         return setOfQuestions;
     }

@@ -13,10 +13,10 @@ public enum ResponseType {
     CLIENT_CONNECTED,
     CLIENT_DISCONNECTED,
     QUEUE_JOINED,
-    GAME_STARTED,      // Indicates the game has started
-    YOUR_TURN,         // Includes category choices
-    OTHER_PLAYERS_TURN,
-    QUESTIONS,         // Includes questions for the chosen category
-    ROUND_RESULT,      // Sends the result of a round
+//    GAME_STARTED,      //Skickas till spelarna när en spelinstans skapats
+    CATEGORIES,         //Skickas till den spelare vars tur det är (efter GAME_STARTED, till den först i kön)
+    OTHER_PLAYERS_TURN, //Skickas till den spelare som ska vänta
+    QUESTIONS,         //Sickas till den som valt kategori, sen till den som ska köra efter
+    ROUND_RESULT,      //Skickas till både spelarna
     GAME_OVER
 }

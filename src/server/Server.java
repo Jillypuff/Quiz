@@ -3,10 +3,7 @@ package server;
 import gamelogic.Category;
 import gamelogic.CurrentGame;
 import gamelogic.Question;
-import server.response.CategoryPackageResponse;
-import server.response.QuestionPackageResponse;
-import server.response.ResponseType;
-import server.response.Response;
+import server.response.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -52,27 +49,57 @@ public class Server {
             CurrentGame game = instance.game;
 
             player2.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
-            player1.sendResponse(new CategoryPackageResponse(ResponseType.YOUR_TURN, game.getCurrentSetOfCategories()));
+            player1.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, game.getCurrentSetOfCategories()));
+        }
+    }
+
+    public void handleRoundFinished(GameInstance instance, ConnectedClient client) throws IOException {
+        instance.setPlayerFinishedRound(client);
+        if(instance.bothPlayersFinishedRound()){
+            instance.roundsFinished++;
+            sendRoundResult(instance);
+            instance.resetRoundState();
+            if (instance.allRoundsFinished()){
+                instance.endGameAndDetermineWinner();
+                sendFinalGameResult(instance);
+            }
+        }
+        else{
+            handleTurnSwitch(instance);
         }
     }
 
     public void handleTurnSwitch(GameInstance instance) throws IOException {
-        List<Question> questions = instance.game.getQuestionsForCurrentCategory();
-        Category currentCategory = instance.game.getCurrentCategory();
-
         if (instance.turnHolder.equals(instance.playerOne)) {
 
             instance.turnHolder = instance.playerTwo;
             notifyOtherPlayersTurn(instance.playerOne);
-            sendTurnPackage(instance.playerTwo, currentCategory, questions);
+            sendTurnPackage(instance.playerTwo, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
         }
         else if (instance.turnHolder.equals(instance.playerTwo)) {
 
             instance.turnHolder = instance.playerOne;
             notifyOtherPlayersTurn(instance.playerTwo);
-            sendTurnPackage(instance.playerOne, currentCategory, questions);
+            sendTurnPackage(instance.playerOne, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
         }
     }
+
+    public void sendFinalGameResult(GameInstance instance) throws IOException {
+        int playerOneFinalScore = instance.playerOne.getScore();
+        int playerTwoFinalScore = instance.playerTwo.getScore();
+
+        instance.playerOne.sendResponse(new ResultResponse(ResponseType.GAME_OVER, playerOneFinalScore, playerTwoFinalScore));
+        instance.playerOne.sendResponse(new ResultResponse(ResponseType.GAME_OVER, playerTwoFinalScore, playerOneFinalScore));
+    }
+
+    public void sendRoundResult(GameInstance instance) throws IOException {
+        int playerOneScore = instance.playerOne.getScore();
+        int playerTwoScore = instance.playerTwo.getScore();
+
+        instance.playerOne.sendResponse(new ResultResponse(ResponseType.ROUND_RESULT, playerOneScore, playerTwoScore));
+        instance.playerTwo.sendResponse(new ResultResponse(ResponseType.ROUND_RESULT, playerTwoScore, playerOneScore));
+    }
+
 
     private void notifyOtherPlayersTurn(ConnectedClient client) throws IOException {
         client.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
