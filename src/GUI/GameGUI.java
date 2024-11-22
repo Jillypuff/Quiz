@@ -24,10 +24,11 @@ public class GameGUI extends JFrame {
     }
 
     public void setupMainFrame(){
-        setSize(550, 350);
+        setSize(500, 350);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+        setResizable(false);
     }
 
     public void loadPanel(){

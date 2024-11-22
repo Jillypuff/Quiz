@@ -89,12 +89,26 @@ public class Client implements ActionListener {
     }
 
     public void sendRequest(JButton button) throws IOException {
-        if(button == gameGUI.loginPanel.startButton){
+        if (button == gameGUI.loginPanel.startButton) {
+            String username = gameGUI.loginPanel.usernameTextField.getText().trim();
+            if (username.isEmpty()) {
+                JOptionPane.showMessageDialog(gameGUI.loginPanel,
+                        "Please enter your name",
+                        "Input Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             System.out.println("Sending connect-request");
             sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
         } else if (button == gameGUI.loginPanel.exitButton){
-            System.out.println("Shutting down");
-            System.exit(0);
+            int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
+                    "Do you wish to exit?",
+                    "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                System.out.println("Shutting down");
+                System.exit(0);
+            }
         } else if (button == gameGUI.mainPanel.logoutButton){
             System.out.println("Logging out");
             sendRequest(new Request(RequestType.DISCONNECT));

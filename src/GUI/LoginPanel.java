@@ -14,35 +14,47 @@ public class LoginPanel extends JPanel{
 
     public LoginPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add(Box.createVerticalStrut(40));
 
-        add(Box.createVerticalStrut(30));
-
-        welcomeLabel = new JLabel("Welcome to Quizkampen!");
+        welcomeLabel = new JLabel("Welcome to QUIZ!");
         enterNameLabel = new JLabel("Enter Your Name:");
-        usernameTextField = new JTextField(20);
-        startButton = new JButton("Start");
-        exitButton = new JButton("Exit");
+        usernameTextField = new JTextField(50);
+        startButton = new JButton("START");
+        exitButton = new JButton("EXIT");
 
-        startButton.setPreferredSize(new Dimension(100, 40));
-        exitButton.setPreferredSize(new Dimension(100, 40));
+        startButton.setPreferredSize(new Dimension(120, 40));
+        exitButton.setPreferredSize(new Dimension(120, 40));
 
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        welcomeLabel.setForeground(new Color(22, 153, 153));
+        welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        enterNameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        usernameTextField.setForeground(Color.BLACK);
+        usernameTextField.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         namePanel.add(enterNameLabel);
-        namePanel.add(Box.createHorizontalStrut(10));
+        namePanel.add(Box.createHorizontalStrut(5));
         namePanel.add(usernameTextField);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(startButton);
-        buttonPanel.add(Box.createHorizontalStrut(90));
+        buttonPanel.add(Box.createHorizontalStrut(100));
         buttonPanel.add(exitButton);
 
+        startButton.setForeground(Color.WHITE);
+        startButton.setBackground(new Color(1, 214, 196));
+        startButton.setFont(new Font("Arial", Font.BOLD, 16));
+        exitButton.setForeground(Color.WHITE);
+        exitButton.setBackground(new Color(0, 153, 255));
+        exitButton.setFont(new Font("Arial", Font.BOLD, 16));
+
         add(welcomeLabel);
-        add(Box.createVerticalStrut(60));
+        add(Box.createVerticalStrut(50));
         add(namePanel);
         add(buttonPanel);
     }
