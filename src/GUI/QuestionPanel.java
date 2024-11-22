@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GamePanel extends JPanel {
-
-    // static ImageIcon icon = new ImageIcon("src/CategoryLogo.png");
+public class QuestionPanel extends JPanel {
 
     Color rightAnswerColor = new Color(1, 172, 1);
     Color wrongAnswerColor = new Color(255, 0, 0);
@@ -23,7 +21,7 @@ public class GamePanel extends JPanel {
     JLabel questionLabel;
 
 
-    public GamePanel() {
+    public QuestionPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         add(Box.createVerticalStrut(30));
@@ -86,8 +84,9 @@ public class GamePanel extends JPanel {
             } else {
                 clickedButton.setBackground(wrongAnswerColor);
                 button3.setBackground(rightAnswerColor);
-                nextQuestionButton.setVisible(true);
             }
+            disableButtons();
+            nextQuestionButton.setVisible(true);
         };
 
         button1.addActionListener(buttonListener);
@@ -96,20 +95,16 @@ public class GamePanel extends JPanel {
         button4.addActionListener(buttonListener);
 
         add(questionLabel);
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(10));
         add(nextQuestionButton);
         add(buttonPanel);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quiz");
-        // frame.setIconImage(icon.getImage());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(550, 450);
-        frame.setLocationRelativeTo(null);
-
-        frame.add(new GamePanel());
-        frame.setVisible(true);
+    private void disableButtons() {
+        button1.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+        button4.setEnabled(false);
     }
 
     public void addActionListeners(ActionListener listener){
@@ -130,5 +125,14 @@ public class GamePanel extends JPanel {
 
     public JLabel getQuestionLabel(){
         return questionLabel;
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Quiz");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setLocationRelativeTo(null);
+        frame.add(new QuestionPanel());
+        frame.setVisible(true);
     }
 }

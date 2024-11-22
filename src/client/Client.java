@@ -36,7 +36,7 @@ public class Client implements ActionListener {
         gameGUI.loginPanel.addActionListener(this);
         gameGUI.welcomePanel.addActionListener(this);
         gameGUI.waitingPanel.addActionListener(this);
-        gameGUI.gamePanel.addActionListeners(this);
+        gameGUI.questionPanel.addActionListeners(this);
         addActionListenersToCategoryButtons();
     }
 
@@ -140,7 +140,7 @@ public class Client implements ActionListener {
     }
 
 //    public void addActionListenerToAnswerButtons(){
-//        List<JButton> buttons = gameGUI.gamePanel.getAllAnswerButtons();
+//        List<JButton> buttons = gameGUI.questionPanel.getAllAnswerButtons();
 //        for(JButton button : buttons){
 //            button.addActionListener(e -> {
 //                sendRequest(new Request(RequestType.ANSWER, username));

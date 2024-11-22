@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class GameGUI extends JFrame {
 
-    public GamePanel gamePanel;
+    public QuestionPanel questionPanel;
     public CategoryPanel categoryPanel;
     public LoginPanel loginPanel;
     public WelcomePanel welcomePanel;
@@ -24,7 +24,7 @@ public class GameGUI extends JFrame {
     }
 
     public void setupMainFrame(){
-        setSize(500, 350);
+        setSize(600, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -33,7 +33,7 @@ public class GameGUI extends JFrame {
 
     public void loadPanel(){
         welcomePanel = new WelcomePanel();
-        gamePanel = new GamePanel();
+        questionPanel = new QuestionPanel();
         categoryPanel = new CategoryPanel();
         waitingPanel = new WaitingPanel();
     }
@@ -44,7 +44,7 @@ public class GameGUI extends JFrame {
             case 1 -> this.add(loginPanel);
             case 2 -> this.add(welcomePanel);
             case 3 -> this.add(categoryPanel);
-            case 4 -> this.add(gamePanel);
+            case 4 -> this.add(questionPanel);
             case 5 -> this.add(waitingPanel);
         }
         revalidate();

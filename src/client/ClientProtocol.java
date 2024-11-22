@@ -43,14 +43,14 @@ public class ClientProtocol {
             case QUESTION -> {
                 System.out.println("Received question");
                 Question questionObj = response.getQuestion();
-                List<JButton> buttons = client.gameGUI.gamePanel.getAllAnswerButtons();
+                List<JButton> buttons = client.gameGUI.questionPanel.getAllAnswerButtons();
                 List<String> alternatives = questionObj.getAlternatives();
                 buttons.get(0).setText(alternatives.get(0));
                 buttons.get(1).setText(alternatives.get(1));
                 buttons.get(2).setText(alternatives.get(2));
                 buttons.get(3).setText(alternatives.get(3));
                 String question = questionObj.getQuestion();
-                client.gameGUI.gamePanel.getQuestionLabel().setText(question);
+                client.gameGUI.questionPanel.getQuestionLabel().setText(question);
                 client.gameGUI.switchPanel(4);
             }
         }
