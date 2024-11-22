@@ -21,12 +21,10 @@ public class GameGUI extends JFrame {
         add(loginPanel);
         setupMainFrame();
         loadPanel();
-//        Thread.sleep(5000);
-//        switchPanel(2);
     }
 
     public void setupMainFrame(){
-        setSize(800, 600);
+        setSize(550, 350);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);

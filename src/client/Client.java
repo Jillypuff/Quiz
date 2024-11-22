@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Client implements ActionListener {
@@ -90,10 +89,10 @@ public class Client implements ActionListener {
     }
 
     public void sendRequest(JButton button) throws IOException {
-        if(button == gameGUI.loginPanel.loginButton){
+        if(button == gameGUI.loginPanel.startButton){
             System.out.println("Sending connect-request");
             sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
-        } else if (button == gameGUI.loginPanel.exitGameButton){
+        } else if (button == gameGUI.loginPanel.exitButton){
             System.out.println("Shutting down");
             System.exit(0);
         } else if (button == gameGUI.mainPanel.logoutButton){
