@@ -93,22 +93,26 @@ public class CurrentGame implements Serializable {
         Collections.shuffle(allAvailableCategories);
         List<Category> selectedCategories = allAvailableCategories.subList(0, amountOfCategoryAlternatives);
         currentSetOfCategories.addAll(selectedCategories);
-        allAvailableCategories.removeAll(selectedCategories);
+//        allAvailableCategories.removeAll(selectedCategories);
     }
 
-    public void loadProperties(){
-        try {
-            this.properties.load(new FileInputStream("src/Game_Properties.properties"));
-        }
-        catch(IOException e){
-            e.printStackTrace();
-            //***************************************************************************************************************************lägg till sout kommentar
-        }
-        this.spelid = Integer.parseInt(this.properties.getProperty("spelNummer"));
-        this.questionAmount = Integer.parseInt(this.properties.getProperty("antalFragor"));
-        this.categoryAmount = Integer.parseInt(this.properties.getProperty("kategoriSet"));
-        //System.out.println(this.spelid + " " + this.antalFragor + " " + this.antalKategoriSet);
+    public void removeChosenCategory(Category category){
+        allAvailableCategories.remove(category);
     }
+
+//    public void loadProperties(){
+//        try {
+//            this.properties.load(new FileInputStream("src/Game_Properties.properties"));
+//        }
+//        catch(IOException e){
+//            e.printStackTrace();
+//            //***************************************************************************************************************************lägg till sout kommentar
+//        }
+//        this.spelid = Integer.parseInt(this.properties.getProperty("spelNummer"));
+//        this.questionAmount = Integer.parseInt(this.properties.getProperty("antalFragor"));
+//        this.categoryAmount = Integer.parseInt(this.properties.getProperty("kategoriSet"));
+//        //System.out.println(this.spelid + " " + this.antalFragor + " " + this.antalKategoriSet);
+//    }
 
     public void uppdateSpelNummerInProperties() {//************************************************************************************************ behöver den här metoden vara "syncronized"
 
@@ -142,16 +146,16 @@ public class CurrentGame implements Serializable {
 
     }
 
-    public void visaVariabler(){
-        System.out.println(
-                "spelnr: "+ spelid +
-                        "\nAntal frågor: " + questionAmount +
-                        "\nAntal kategori: " + categoryAmount
-                //properties;
-                //spelare1Spelbrade;
-                //spelare2Spelbrade;
-                //spelare 1
-                //spelare 2
-        );
-    }
+//    public void visaVariabler(){
+//        System.out.println(
+//                "spelnr: "+ spelid +
+//                        "\nAntal frågor: " + questionAmount +
+//                        "\nAntal kategori: " + categoryAmount
+//                //properties;
+//                //spelare1Spelbrade;
+//                //spelare2Spelbrade;
+//                //spelare 1
+//                //spelare 2
+//        );
+//    }
 }
