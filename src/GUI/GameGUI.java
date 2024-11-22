@@ -10,7 +10,7 @@ public class GameGUI extends JFrame {
     public GamePanel gamePanel;
     public CategoryPanel categoryPanel;
     public LoginPanel loginPanel;
-    public MainPanel mainPanel;
+    public WelcomePanel welcomePanel;
     public WaitingPanel waitingPanel;
 
     Client client;
@@ -32,7 +32,7 @@ public class GameGUI extends JFrame {
     }
 
     public void loadPanel(){
-        mainPanel = new MainPanel();
+        welcomePanel = new WelcomePanel();
         gamePanel = new GamePanel();
         categoryPanel = new CategoryPanel();
         waitingPanel = new WaitingPanel();
@@ -42,7 +42,7 @@ public class GameGUI extends JFrame {
         getContentPane().removeAll();
         switch (panel){
             case 1 -> this.add(loginPanel);
-            case 2 -> this.add(mainPanel);
+            case 2 -> this.add(welcomePanel);
             case 3 -> this.add(categoryPanel);
             case 4 -> this.add(gamePanel);
             case 5 -> this.add(waitingPanel);

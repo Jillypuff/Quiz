@@ -34,7 +34,7 @@ public class Client implements ActionListener {
 
     public void addListeners(){
         gameGUI.loginPanel.addActionListener(this);
-        gameGUI.mainPanel.addActionListener(this);
+        gameGUI.welcomePanel.addActionListener(this);
         gameGUI.waitingPanel.addActionListener(this);
         gameGUI.gamePanel.addActionListeners(this);
         addActionListenersToCategoryButtons();
@@ -93,7 +93,7 @@ public class Client implements ActionListener {
             String username = gameGUI.loginPanel.usernameTextField.getText().trim();
             if (username.isEmpty()) {
                 JOptionPane.showMessageDialog(gameGUI.loginPanel,
-                        "Please enter your name",
+                        "You must enter a name!",
                         "Input Error",
                         JOptionPane.WARNING_MESSAGE);
                 return;
@@ -102,17 +102,22 @@ public class Client implements ActionListener {
             sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
         } else if (button == gameGUI.loginPanel.exitButton){
             int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
-                    "Do you wish to exit?",
+                    "Are you sure you want to exit?",
                     "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                System.out.println("Shutting down");
                 System.exit(0);
             }
-        } else if (button == gameGUI.mainPanel.logoutButton){
-            System.out.println("Logging out");
+        } else if (button == gameGUI.welcomePanel.logoutButton){
+
+            int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
+                    "Are you sure you want to log out?",
+                    "Log out", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+            if (confirm == JOptionPane.YES_OPTION) {
             sendRequest(new Request(RequestType.DISCONNECT));
-        } else if (button == gameGUI.mainPanel.newGameButton){
+            }
+        } else if (button == gameGUI.welcomePanel.newGameButton){
             System.out.println("Starting new game");
             sendRequest(new Request(RequestType.START_GAME, username));
         }

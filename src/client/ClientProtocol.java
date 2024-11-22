@@ -16,7 +16,7 @@ public class ClientProtocol {
                 client.gameGUI.switchPanel(2);
                 String username = client.gameGUI.loginPanel.usernameTextField.getText();
                 client.username = username;
-                client.gameGUI.mainPanel.welcomePrompt.setText("Welcome " + username);
+                client.gameGUI.welcomePanel.welcomePrompt.setText("Welcome " + username + "!");
             }
             case CLIENT_DISCONNECTED -> {
                 System.out.println("Client disconnected");
