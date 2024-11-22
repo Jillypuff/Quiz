@@ -1,4 +1,4 @@
-package client;
+package client.request;
 
 public enum RequestType {
     CONNECT,
@@ -6,13 +6,9 @@ public enum RequestType {
     START_GAME,
     EXIT_GAME,
     LEAVE_QUEUE,
-
-    // CHANGE_USERNAME,
-    // CHECK_HIGHSCORE,
-
-    CATEGORY_CHOSEN,
-
-    ANSWER,
-    NEXT_QUESTION,
+    GET_QUESTIONS,
+    ROUND_FINISHED,
     GIVE_UP,
+    CATEGORY_CHOSEN,
+    ANSWER,
 }

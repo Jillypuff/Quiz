@@ -1,56 +1,60 @@
 package server;
 
-import client.Request;
+import client.request.Request;
+import client.request.RoundFinishedRequest;
+import client.request.StartRoundRequest;
 import gamelogic.Category;
 import gamelogic.Question;
+import server.response.QuestionPackageResponse;
+import server.response.ResponseType;
+import server.response.Response;
 
 import java.io.IOException;
+import java.util.List;
+
 
 public class ServerProtocol {
 
     public void processRequest(Request request, ConnectedClient client) throws IOException {
-        switch (request.getType()){
+        switch (request.getRequestType()){
             case CONNECT -> {
                 System.out.println("Received connect request; sending connected response");
                 client.username = request.username;
-                client.sendResponse(new Response(ReponseType.CLIENT_CONNECTED));
+                client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
             }
             case DISCONNECT -> {
                 System.out.println("Received disconnect request; sending disconnected response");
-                client.sendResponse(new Response(ReponseType.CLIENT_DISCONNECTED));
+                client.sendResponse(new Response(ResponseType.CLIENT_DISCONNECTED));
             }
             case START_GAME -> {
                 client.server.handleStartGame(client);
             }
             case EXIT_GAME -> {
                 // Säg hejdå till username
-                // Stäng ner connetions
             }
             case LEAVE_QUEUE -> {
                 client.server.queue.remove(client);
-                // Plocka ut username ur kön
-                // Skicka confirmation?
             }
-            case CATEGORY_CHOSEN -> {
-                // Valde kategorin request.getAnswer();
-                // Ge feedback
+            case GET_QUESTIONS -> {
+                if (request instanceof StartRoundRequest startRoundRequest){
+                    client.currentGame.setCurrentCategory(startRoundRequest.getChosenCategory());
+
+                    System.out.println("Received get questions request, fetching questions for current category");
+                    List<Question> questions = client.currentGame.getQuestionsForCurrentCategory();
+                    Category currentCategory = client.currentGame.getCurrentCategory();
+
+                    System.out.println("Sending them");
+                    client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, currentCategory, questions));
+                }
             }
-            case ANSWER -> {
-                // Valde svaret request.getAnswer();
-                // Ge feedback om korrekt eller inte
-            }
-            case NEXT_QUESTION -> {
-                client.currentGame.setCurrentCategory(request.getChosenCategory());
-                System.out.println("Set current category to " + request.getChosenCategory());
-                System.out.println("Trying to fetch current question");
-                Question question = client.currentGame.getCurrentQuestion();
-                System.out.println("Question: " + question.getQuestion());
-                client.sendResponse(new Response(ReponseType.QUESTION, question));
+            case ROUND_FINISHED -> {
+                if(request instanceof RoundFinishedRequest roundFinishedRequest){
+                    int score = roundFinishedRequest.getScore();
+                    client.server.handleRoundSwitch(client.gameInstance);
+                }
             }
             case GIVE_UP -> {
                 // Ta bort spelaren ut spelet
-                // Anropa båda spelarna att en spelare har gett upp
-                // Avsluta spelet
             }
             default -> System.err.println("How did we end up here!?");
         }

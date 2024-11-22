@@ -1,6 +1,12 @@
 package server;
 
+import gamelogic.Category;
 import gamelogic.CurrentGame;
+import gamelogic.Question;
+import server.response.CategoryPackageResponse;
+import server.response.QuestionPackageResponse;
+import server.response.ResponseType;
+import server.response.Response;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -33,40 +39,48 @@ public class Server {
 
     public void handleStartGame(ConnectedClient client) throws IOException {
         queue.add(client);
-        System.out.println("Sending queue joined response to " + client.username);
-        client.sendResponse(new Response(ReponseType.QUEUE_JOINED));
+        client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
         if(queue.size() >= 2){
-            System.out.println("Queue as two players, attempting to create instance");
             ConnectedClient player1 = queue.removeFirst();
             ConnectedClient player2 = queue.removeFirst();
 
-            System.out.println("Players found: " + player1.username + " " + player2.username);
             GameInstance instance = new GameInstance(player1, player2);
 
-            player1.currentGame = instance.game;
-            player2.currentGame = instance.game;
+            player1.gameInstance = instance;
+            player2.gameInstance = instance;
 
-            System.out.println("Trying to update current set of categories");
-            instance.game.updateCurrentSetOfCategories();
-            System.out.println("Fetching current game from instance");
             CurrentGame game = instance.game;
 
-            System.out.println("Sending other-players-turn to " + player2.username);
-            player2.sendResponse(new Response(ReponseType.OTHER_PLAYERS_TURN));
-
-            System.out.println("Sending your-turn to " + player1.username);
-            player1.sendResponse(new Response(ReponseType.YOUR_TURN, game.getCurrentSetOfCategories()));
+            player2.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+            player1.sendResponse(new CategoryPackageResponse(ResponseType.YOUR_TURN, game.getCurrentSetOfCategories()));
         }
     }
 
-    public void handleTurnSwitch(ConnectedClient client) throws IOException {
+    public void handleRoundSwitch(GameInstance instance) throws IOException {
+        List<Question> questions = instance.game.getQuestionsForCurrentCategory();
+        Category currentCategory = instance.game.getCurrentCategory();
 
+        if (instance.game.turnHolder.equals(instance.playerOne.username)) {
+
+            instance.game.turnHolder = instance.playerTwo.username;
+            notifyOtherPlayersTurn(instance.playerOne);
+            sendTurnPackage(instance.playerTwo, currentCategory, questions);
+        }
+        else if (instance.game.turnHolder.equals(instance.playerTwo.username)) {
+
+            instance.game.turnHolder = instance.playerOne.username;
+            notifyOtherPlayersTurn(instance.playerTwo);
+            sendTurnPackage(instance.playerOne, currentCategory, questions);
+        }
     }
 
-//    public void broadcastInstance(GameInstance instance) throws IOException {
-//        instance.playerOne.sendResponse(new Response(ReponseType.GAME_JOINED, instance.game));
-//        instance.playerTwo.sendResponse(new Response(ReponseType.GAME_JOINED, instance.game));
-//    }
+    private void notifyOtherPlayersTurn(ConnectedClient client) throws IOException {
+        client.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+    }
+
+    private void sendTurnPackage(ConnectedClient client, Category category, List<Question> questions) throws IOException {
+        client.sendResponse(new QuestionPackageResponse(ResponseType.YOUR_TURN, category, questions));
+    }
 
     public void closeServerSocket() {
         try  {

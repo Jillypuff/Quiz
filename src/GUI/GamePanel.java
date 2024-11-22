@@ -73,27 +73,33 @@ public class GamePanel extends JPanel {
             buttonPanel.add(button);
         }
 
-        ActionListener buttonListener = e -> {
-            button1.setBackground(null);
-            button2.setBackground(null);
-            button3.setBackground(null);
-            button4.setBackground(null);
+        button1.setBackground(null);
+        button2.setBackground(null);
+        button3.setBackground(null);
+        button4.setBackground(null);
 
-            JButton clickedButton = (JButton) e.getSource();
-            if (clickedButton.getText().equals("New York City")) {
-                clickedButton.setBackground(rightAnswerColor);
-                nextQuestionButton.setVisible(true);
-            } else {
-                clickedButton.setBackground(wrongAnswerColor);
-                button3.setBackground(rightAnswerColor);
-                nextQuestionButton.setVisible(true);
-            }
-        };
 
-        button1.addActionListener(buttonListener);
-        button2.addActionListener(buttonListener);
-        button3.addActionListener(buttonListener);
-        button4.addActionListener(buttonListener);
+//        ActionListener buttonListener = e -> {
+//            button1.setBackground(null);
+//            button2.setBackground(null);
+//            button3.setBackground(null);
+//            button4.setBackground(null);
+//
+//            JButton clickedButton = (JButton) e.getSource();
+//            if (clickedButton.getText().equals("New York City")) {
+//                clickedButton.setBackground(rightAnswerColor);
+//                nextQuestionButton.setVisible(true);
+//            } else {
+//                clickedButton.setBackground(wrongAnswerColor);
+//                button3.setBackground(rightAnswerColor);
+//                nextQuestionButton.setVisible(true);
+//            }
+//        };
+//
+//        button1.addActionListener(buttonListener);
+//        button2.addActionListener(buttonListener);
+//        button3.addActionListener(buttonListener);
+//        button4.addActionListener(buttonListener);
 
         add(questionLabel);
         add(Box.createVerticalStrut(20));
@@ -101,16 +107,16 @@ public class GamePanel extends JPanel {
         add(buttonPanel);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quiz");
-        // frame.setIconImage(icon.getImage());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(550, 450);
-        frame.setLocationRelativeTo(null);
-
-        frame.add(new GamePanel());
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Quiz");
+//        // frame.setIconImage(icon.getImage());
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(550, 450);
+//        frame.setLocationRelativeTo(null);
+//
+//        frame.add(new GamePanel());
+//        frame.setVisible(true);
+//    }
 
     public void addActionListeners(ActionListener listener){
         button1.addActionListener(listener);
@@ -130,5 +136,15 @@ public class GamePanel extends JPanel {
 
     public JLabel getQuestionLabel(){
         return questionLabel;
+    }
+
+    public JButton getNextQuestionButton(){
+        return nextQuestionButton;
+    }
+    public void resetButtons(){
+        button1.setBackground(null);
+        button2.setBackground(null);
+        button3.setBackground(null);
+        button4.setBackground(null);
     }
 }

@@ -1,8 +1,11 @@
 package client;
 
 import GUI.GameGUI;
+import client.request.Request;
+import client.request.RequestType;
+import client.request.StartRoundRequest;
 import gamelogic.Category;
-import server.Response;
+import server.response.Response;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Client implements ActionListener {
@@ -20,6 +22,7 @@ public class Client implements ActionListener {
     String username;
     GameGUI gameGUI;
     boolean running = true;
+    int currentScore;
 
     public Client(Socket socket){
         try{
@@ -98,7 +101,7 @@ public class Client implements ActionListener {
             System.exit(0);
         } else if (button == gameGUI.mainPanel.logoutButton){
             System.out.println("Logging out");
-            sendRequest(new Request(RequestType.DISCONNECT));
+            sendRequest(new Request(RequestType.DISCONNECT, username));
         } else if (button == gameGUI.mainPanel.newGameButton){
             System.out.println("Starting new game");
             sendRequest(new Request(RequestType.START_GAME, username));
@@ -115,20 +118,11 @@ public class Client implements ActionListener {
         for(JButton button : buttons){
             button.addActionListener(e ->{
                 Category selectedCategory = Category.valueOf(button.getText());
-                System.out.println("Sending next question request");
-                sendRequest(new Request(RequestType.NEXT_QUESTION, username, selectedCategory));
+                System.out.println("Sending get question request");
+                sendRequest(new StartRoundRequest(RequestType.GET_QUESTIONS, username, selectedCategory));
             });
         }
     }
-
-//    public void addActionListenerToAnswerButtons(){
-//        List<JButton> buttons = gameGUI.gamePanel.getAllAnswerButtons();
-//        for(JButton button : buttons){
-//            button.addActionListener(e -> {
-//                sendRequest(new Request(RequestType.ANSWER, username));
-//            });
-//        }
-//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

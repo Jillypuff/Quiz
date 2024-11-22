@@ -12,10 +12,7 @@ public class CurrentGame implements Serializable {
     public String playerTwo;
     public String turnHolder;
     private Category currentCategory;
-    private List<Category> currentSetOfCategories = new ArrayList<>();
     private List<Category> allAvailableCategories;
-
-    //Ska läsas in från properties
     int amountOfQuestions = 3;
     int amountOfCategoryAlternatives = 3;
 
@@ -26,7 +23,39 @@ public class CurrentGame implements Serializable {
         setTurnHolder(playerOne);
     }
 
-        /*
+    public void changeTurnHolder(){
+        if (turnHolder.equals(playerOne)){
+            turnHolder = playerTwo;
+        } else {
+            turnHolder = playerOne;
+        }
+    }
+    public void setTurnHolder(String player){
+        turnHolder = player;
+    }
+
+    public void setCurrentCategory(Category category){
+        currentCategory = category;
+        allAvailableCategories.remove(currentCategory);
+    }
+
+    public Category getCurrentCategory(){
+        return currentCategory;
+    }
+
+    public List<Question> getQuestionsForCurrentCategory(){
+        List<Question> allQuestions = QuestionDatabase.getQuestionsFromCategory(currentCategory);
+        Collections.shuffle(allQuestions);
+        return new ArrayList<>(allQuestions.subList(0,amountOfQuestions));
+    }
+
+    public List<Category> getCurrentSetOfCategories(){
+        Collections.shuffle(allAvailableCategories);
+        List<Category> selectedCategories = allAvailableCategories.subList(0, amountOfCategoryAlternatives);
+        return new ArrayList<>(selectedCategories);
+    }
+
+            /*
         SPELETS GÅNG
         x = DONE
         - = TODO
@@ -50,56 +79,6 @@ public class CurrentGame implements Serializable {
         [-] *Går att utöka med att spara alla frågor och svar och skicka tillba dom också*
      */
 
-    public void changeTurnHolder(){
-        if (turnHolder.equals(playerOne)){
-            turnHolder = playerTwo;
-        } else {
-            turnHolder = playerOne;
-        }
-    }
-
-    public List<Category> getCurrentSetOfCategories(){
-        return currentSetOfCategories;
-    }
-
-    public void setTurnHolder(String player){
-        turnHolder = player;
-    }
-
-    public void setCurrentCategory(Category category){
-        currentCategory = category;
-    }
-
-    public Category getCurrentCategory(){
-        return currentCategory;
-    }
-
-    public Question getCurrentQuestion(){
-        List<Question> questions = fetchQuestionsForCurrentCategory();
-        return questions.removeFirst();
-    }
-
-    public List<Question> fetchQuestionsForCurrentCategory(){
-        System.out.println("Inside current game class, going to get questions from category");
-        List<Question> allQuestions = QuestionDatabase.getQuestionsFromCategory(currentCategory);
-        for(Question question : allQuestions){
-            System.out.println(question.question);
-        }
-        Collections.shuffle(allQuestions);
-        return new ArrayList<>(allQuestions.subList(0,amountOfQuestions));
-    }
-
-    public void updateCurrentSetOfCategories(){
-        Collections.shuffle(allAvailableCategories);
-        List<Category> selectedCategories = allAvailableCategories.subList(0, amountOfCategoryAlternatives);
-        currentSetOfCategories.addAll(selectedCategories);
-//        allAvailableCategories.removeAll(selectedCategories);
-    }
-
-    public void removeChosenCategory(Category category){
-        allAvailableCategories.remove(category);
-    }
-
 //    public void loadProperties(){
 //        try {
 //            this.properties.load(new FileInputStream("src/Game_Properties.properties"));
@@ -114,37 +93,37 @@ public class CurrentGame implements Serializable {
 //        //System.out.println(this.spelid + " " + this.antalFragor + " " + this.antalKategoriSet);
 //    }
 
-    public void uppdateSpelNummerInProperties() {//************************************************************************************************ behöver den här metoden vara "syncronized"
-
-        Properties tempProperties = new Properties();
-
-
-        try{
-            tempProperties.load(new FileInputStream("src/Game_Properties.properties"));
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-
-        String nuvarandeSpel = tempProperties.getProperty("spelNummer");
-        int nuvarandeSpelInt = Integer.parseInt(nuvarandeSpel);
-        String nySpelNummer = (nuvarandeSpelInt+1) + "";
-
-        //System.out.println(nuvarandeSpel);
-
-        //System.out.println(nySpelNummer);
-
-        tempProperties.setProperty("spelNummer", nySpelNummer);
-
-
-        try{
-            tempProperties.store(new FileOutputStream("src/Game_Properties.properties"), null);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
+//    public void uppdateSpelNummerInProperties() {//************************************************************************************************ behöver den här metoden vara "syncronized"
+//
+//        Properties tempProperties = new Properties();
+//
+//
+//        try{
+//            tempProperties.load(new FileInputStream("src/Game_Properties.properties"));
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//        }
+//
+//        String nuvarandeSpel = tempProperties.getProperty("spelNummer");
+//        int nuvarandeSpelInt = Integer.parseInt(nuvarandeSpel);
+//        String nySpelNummer = (nuvarandeSpelInt+1) + "";
+//
+//        //System.out.println(nuvarandeSpel);
+//
+//        //System.out.println(nySpelNummer);
+//
+//        tempProperties.setProperty("spelNummer", nySpelNummer);
+//
+//
+//        try{
+//            tempProperties.store(new FileOutputStream("src/Game_Properties.properties"), null);
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+//
+//    }
 
 //    public void visaVariabler(){
 //        System.out.println(

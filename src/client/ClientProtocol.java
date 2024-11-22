@@ -2,7 +2,10 @@ package client;
 
 import gamelogic.Category;
 import gamelogic.Question;
-import server.Response;
+import server.GameInstance;
+import server.response.CategoryPackageResponse;
+import server.response.QuestionPackageResponse;
+import server.response.Response;
 
 import javax.swing.*;
 import java.util.List;
@@ -10,7 +13,7 @@ import java.util.List;
 public class ClientProtocol {
 
     public void processResponse(Response response, Client client){
-        switch (response.getType()){
+        switch (response.getResponseType()){
             case CLIENT_CONNECTED -> {
                 System.out.println("Received client connected");
                 client.gameGUI.switchPanel(2);
@@ -28,11 +31,12 @@ public class ClientProtocol {
             }
             case YOUR_TURN -> {
                 System.out.println("Received your turn");
-                List<Category> categoryChoices = response.getSetOfCategories();
-                client.gameGUI.categoryPanel.category1.setText(categoryChoices.get(0).name());
-                client.gameGUI.categoryPanel.category2.setText(categoryChoices.get(1).name());
-                client.gameGUI.categoryPanel.category3.setText(categoryChoices.get(2).name());
-
+                if (response instanceof CategoryPackageResponse categoryPackageResponse) {
+                    List<Category> categories = categoryPackageResponse.getSetOfCategories();
+                    client.gameGUI.categoryPanel.category1.setText(categories.get(0).name());
+                    client.gameGUI.categoryPanel.category2.setText(categories.get(1).name());
+                    client.gameGUI.categoryPanel.category3.setText(categories.get(2).name());
+                }
                 client.gameGUI.switchPanel(3);
             }
             case OTHER_PLAYERS_TURN -> {
@@ -40,18 +44,14 @@ public class ClientProtocol {
                 client.gameGUI.switchPanel(5);
                 client.gameGUI.waitingPanel.queuedLabel.setText("Waiting for other players turn");
             }
-            case QUESTION -> {
-                System.out.println("Received question");
-                Question questionObj = response.getQuestion();
-                List<JButton> buttons = client.gameGUI.gamePanel.getAllAnswerButtons();
-                List<String> alternatives = questionObj.getAlternatives();
-                buttons.get(0).setText(alternatives.get(0));
-                buttons.get(1).setText(alternatives.get(1));
-                buttons.get(2).setText(alternatives.get(2));
-                buttons.get(3).setText(alternatives.get(3));
-                String question = questionObj.getQuestion();
-                client.gameGUI.gamePanel.getQuestionLabel().setText(question);
-                client.gameGUI.switchPanel(4);
+            case QUESTIONS -> {
+                if (response instanceof QuestionPackageResponse questionPackageResponse) {
+                    System.out.println("Received questions");
+                    client.gameGUI.switchPanel(4);
+                    List<Question> questions = questionPackageResponse.getSetOfQuestions();
+                    GameRound round = new GameRound(client, questions);
+                    client.currentScore = round.score;
+                }
             }
         }
     }
