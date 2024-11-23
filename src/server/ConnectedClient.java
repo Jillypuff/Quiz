@@ -12,19 +12,20 @@ import java.net.Socket;
 public class ConnectedClient implements Runnable {
 
     private boolean running = true;
-    public Server server;
     Socket socket;
     ObjectOutputStream out;
     ObjectInputStream in;
-    private String username;
-    GameInstance gameInstance;
 
+    GameInstance gameInstance;
+    ServerProtocol protocol;
+
+    private String username;
     private int score = 0;
     private int matchesWon = 0;
 
-    public ConnectedClient(Socket socket, Server server){
+    public ConnectedClient(Socket socket, ServerProtocol protocol){
         this.socket = socket;
-        this.server = server;
+        this.protocol = protocol;
     }
 
     public synchronized void sendResponse(Response response) throws IOException {
@@ -39,9 +40,8 @@ public class ConnectedClient implements Runnable {
             out = new ObjectOutputStream(socket.getOutputStream());
             out.flush();
             in = new ObjectInputStream(socket.getInputStream());
-            ServerProtocol protocol = new ServerProtocol();
 
-            while(running && !socket.isClosed()){
+            while(running){
                 Object obj = in.readObject();
                 if (obj instanceof Request request){
                     protocol.processRequest(request, this);

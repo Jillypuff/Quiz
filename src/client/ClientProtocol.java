@@ -78,10 +78,20 @@ public class ClientProtocol {
             }
             case GAME_OVER -> {
                 if (response instanceof ResultResponse resultResponse){
+                    System.out.println("Received game over");
                     int playersScore = resultResponse.getPlayerResult();
                     int opponentsScore = resultResponse.getOpponentResult();
                     client.gameGUI.uglyScorePanel.setOpponentScore(playersScore);
                     client.gameGUI.uglyScorePanel.setPlayerScore(opponentsScore);
+                    if (playersScore > opponentsScore){
+                        client.gameGUI.uglyScorePanel.setResultText("YOU WON THE GAME!");
+                    }
+                    else if (opponentsScore > playersScore){
+                        client.gameGUI.uglyScorePanel.setResultText("You lost.");
+                    }
+                    else{
+                        client.gameGUI.uglyScorePanel.setResultText("The game ended on a draw.");
+                    }
                     client.gameGUI.switchPanel(6);
                 }
             }

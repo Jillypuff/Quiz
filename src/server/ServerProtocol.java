@@ -13,6 +13,12 @@ import java.io.IOException;
 
 public class ServerProtocol {
 
+    GameManager gameManager;
+
+    public ServerProtocol(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
+
     public void processRequest(Request request, ConnectedClient client) throws IOException {
         switch (request.getRequestType()){
             case CONNECT -> {
@@ -25,33 +31,27 @@ public class ServerProtocol {
                 client.sendResponse(new Response(ResponseType.CLIENT_DISCONNECTED));
             }
             case START_GAME -> {
-                client.server.handleStartGame(client);
-            }
-            case EXIT_GAME -> {
-                // Säg hejdå till username
-            }
-            case LEAVE_QUEUE -> {
-                client.server.queue.remove(client);
+                gameManager.handleStartGame(client);
             }
             case CATEGORY_CHOSEN -> {
                 if(client.equals(client.gameInstance.turnHolder)){
                     if (request instanceof StartRoundRequest startRoundRequest){
-                        client.gameInstance.game.setCurrentCategory(startRoundRequest.getChosenCategory());
-                        client.gameInstance.game.loadCurrentSetOfQuestions();
-                        Category currentCategory = client.gameInstance.game.getCurrentCategory();
-
-                        System.out.println("Sending questions to turn holder: " + client.getUsername());
-                        client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, currentCategory, client.gameInstance.game.getCurrentSetOfQuestions()));
+                        gameManager.handleCategoryChosen(client, startRoundRequest.getChosenCategory());
                     }
                 }
-
             }
             case ROUND_FINISHED -> {
                 if(request instanceof RoundFinishedRequest roundFinishedRequest){
                     int score = roundFinishedRequest.getScore();
                     client.gameInstance.awardPointsToTurnHolder(score);
-                    client.server.handleRoundFinished(client.gameInstance, client);
+                    gameManager.handleRoundFinished(client.gameInstance, client);
                 }
+            }
+            case EXIT_GAME -> {
+                // Säg hejdå till username
+            }
+            case LEAVE_QUEUE -> {
+                gameManager.handleLeaveQueue(client);
             }
             case GIVE_UP -> {
                 // Ta bort spelaren ut spelet

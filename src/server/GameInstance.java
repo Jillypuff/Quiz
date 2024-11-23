@@ -45,7 +45,6 @@ public class GameInstance  {
         return roundsFinished == 3;
     }
 
-
     public void setPlayerFinishedRound(ConnectedClient player) {
         if (player.equals(playerOne)) {
             playerOneFinishedRound = true;

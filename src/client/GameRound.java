@@ -6,6 +6,7 @@ import gamelogic.Question;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class GameRound {
@@ -22,7 +23,7 @@ public class GameRound {
         this.questions = questions;
         gameButtons = client.gameGUI.gamePanel.getAllAnswerButtons();
         updateQuestionBoard(questionNumber);
-        addActionListeners();
+        updateQuestionBoard(currentScore);
         addActionListenerToNextQuestionButton();
     }
 
@@ -72,6 +73,35 @@ public class GameRound {
         }
     }
 
+    public void addActionListeners2(){
+        for(JButton button : gameButtons){
+            for(ActionListener actionListener : button.getActionListeners()){
+                button.removeActionListener(actionListener);
+            }
+            button.addActionListener(e -> {
+                handleAnswerSelection(button);
+            });
+        }
+    }
+
+    public void handleAnswerSelection(JButton button){
+        String answerAlternative = button.getText();
+        if(currentQuestion.checkAnswer(answerAlternative)){
+            button.setBackground(Color.GREEN);
+            score++;
+        }
+        else{
+            button.setBackground(Color.RED);
+            for(JButton otherButton : gameButtons){
+                if (currentQuestion.checkAnswer(otherButton.getText())) {
+                    otherButton.setBackground(Color.GREEN);
+                }
+            }
+        }
+        enableButtons(false);
+        client.gameGUI.gamePanel.getNextQuestionButton().setVisible(true);
+    }
+
     public void updateQuestionBoard(int questionNumber){
         currentQuestion = questions.get(questionNumber);
         fillBoardWithCurrentAlternatives(currentQuestion);
@@ -80,10 +110,15 @@ public class GameRound {
             button.setBackground(null);
         }
 
+        addActionListeners2();
         client.gameGUI.gamePanel.getNextQuestionButton().setVisible(false);
     }
 
     public void addActionListenerToNextQuestionButton(){
+        for(ActionListener actionListener:client.gameGUI.gamePanel.getNextQuestionButton().getActionListeners()){
+            client.gameGUI.gamePanel.getNextQuestionButton().removeActionListener(actionListener);
+        }
+
         client.gameGUI.gamePanel.getNextQuestionButton().addActionListener(e->{
             client.gameGUI.gamePanel.resetButtons();
             questionNumber++;
