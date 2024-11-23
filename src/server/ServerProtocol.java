@@ -34,16 +34,17 @@ public class ServerProtocol {
                 client.server.queue.remove(client);
             }
             case CATEGORY_CHOSEN -> {
-                if (request instanceof StartRoundRequest startRoundRequest){
-                    client.gameInstance.game.setCurrentCategory(startRoundRequest.getChosenCategory());
+                if(client.equals(client.gameInstance.turnHolder)){
+                    if (request instanceof StartRoundRequest startRoundRequest){
+                        client.gameInstance.game.setCurrentCategory(startRoundRequest.getChosenCategory());
+                        client.gameInstance.game.loadCurrentSetOfQuestions();
+                        Category currentCategory = client.gameInstance.game.getCurrentCategory();
 
-                    System.out.println("Received get questions request, fetching questions for current category");
-                    client.gameInstance.game.loadCurrentSetOfQuestions();
-                    Category currentCategory = client.gameInstance.game.getCurrentCategory();
-
-                    System.out.println("Sending them");
-                    client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, currentCategory, client.gameInstance.game.getCurrentSetOfQuestions()));
+                        System.out.println("Sending questions to turn holder: " + client.getUsername());
+                        client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, currentCategory, client.gameInstance.game.getCurrentSetOfQuestions()));
+                    }
                 }
+
             }
             case ROUND_FINISHED -> {
                 if(request instanceof RoundFinishedRequest roundFinishedRequest){

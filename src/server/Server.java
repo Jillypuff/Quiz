@@ -38,30 +38,60 @@ public class Server {
         queue.add(client);
         client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
         if(queue.size() >= 2){
-            ConnectedClient player1 = queue.removeFirst();
-            ConnectedClient player2 = queue.removeFirst();
+            ConnectedClient turnHolder = queue.removeFirst();
+            ConnectedClient waitingPlayer = queue.removeFirst();
 
-            GameInstance instance = new GameInstance(player1, player2);
+            GameInstance instance = new GameInstance(turnHolder, waitingPlayer);
 
-            player1.gameInstance = instance;
-            player2.gameInstance = instance;
+            turnHolder.gameInstance = instance;
+            waitingPlayer.gameInstance = instance;
 
             CurrentGame game = instance.game;
 
-            player2.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
-            player1.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, game.getCurrentSetOfCategories()));
+            waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+            turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, game.getSetOfCategories()));
         }
     }
 
     public void handleRoundFinished(GameInstance instance, ConnectedClient client) throws IOException {
         instance.setPlayerFinishedRound(client);
+
         if(instance.bothPlayersFinishedRound()){
+
+            // Skicka rundans resultat
+            System.out.println("Both players finished round");
             instance.roundsFinished++;
             sendRoundResult(instance);
             instance.resetRoundState();
+
+
+            try{
+                Thread.sleep(5000);
+            }
+            catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+
+            // Kollar om alla rundor är klara
             if (instance.allRoundsFinished()){
+                System.out.println("All rounds finished");
                 instance.endGameAndDetermineWinner();
+                //Skickar då slutgiltigt resultat
                 sendFinalGameResult(instance);
+            }
+            else{
+                // Annars byter vi plats på vems tur det är
+                instance.changeTurnHolder();
+                ConnectedClient waitingPlayer = instance.turnHolder.equals(instance.playerOne) ?
+                        instance.playerTwo : instance.playerOne;
+
+                // Skickar nya kategorier till nuvarande turn holder
+                List<Category> newSetOfCategories = instance.game.getSetOfCategories();
+                instance.turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, newSetOfCategories));
+
+                // Andra personen får vänta
+                waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
             }
         }
         else{
@@ -69,19 +99,58 @@ public class Server {
         }
     }
 
+    public void sendNewRound(GameInstance instance) throws IOException {
+        if (!instance.allRoundsFinished()) {
+
+//            ConnectedClient waitingPlayer = instance.turnHolder;
+//            System.out.println(waitingPlayer.getUsername());
+//            instance.changeTurnHolder();
+//            ConnectedClient turnHolder = instance.turnHolder;
+//            System.out.println(turnHolder.getUsername());
+
+            ConnectedClient waitingPlayer = instance.turnHolder.equals(instance.playerOne) ? instance.playerTwo : instance.playerOne;
+            ConnectedClient turnHolder = instance.turnHolder;
+
+            List<Category> newSetOfCategories = instance.game.getSetOfCategories();
+            turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, newSetOfCategories));
+            waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+
+        } else {
+            System.out.println("All rounds finished");
+            instance.endGameAndDetermineWinner();
+            sendFinalGameResult(instance);
+        }
+    }
+
     public void handleTurnSwitch(GameInstance instance) throws IOException {
-        if (instance.turnHolder.equals(instance.playerOne)) {
+        ConnectedClient currentPlayer = instance.turnHolder;
+        ConnectedClient nextPlayer;
 
-            instance.turnHolder = instance.playerTwo;
-            notifyOtherPlayersTurn(instance.playerOne);
-            sendTurnPackage(instance.playerTwo, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
+        if (currentPlayer.equals(instance.playerOne)) {
+            nextPlayer = instance.playerTwo;
+        } else {
+            nextPlayer = instance.playerOne;
         }
-        else if (instance.turnHolder.equals(instance.playerTwo)) {
 
-            instance.turnHolder = instance.playerOne;
-            notifyOtherPlayersTurn(instance.playerTwo);
-            sendTurnPackage(instance.playerOne, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
-        }
+        instance.turnHolder = nextPlayer;
+        currentPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+        sendTurnPackage(nextPlayer, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
+
+
+
+
+//        if (instance.turnHolder.equals(instance.playerOne)) {
+//
+//            instance.turnHolder = instance.playerTwo;
+//            notifyOtherPlayersTurn(instance.playerOne);
+//            sendTurnPackage(instance.playerTwo, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
+//        }
+//        else if (instance.turnHolder.equals(instance.playerTwo)) {
+//
+//            instance.turnHolder = instance.playerOne;
+//            notifyOtherPlayersTurn(instance.playerTwo);
+//            sendTurnPackage(instance.playerOne, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
+//        }
     }
 
     public void sendFinalGameResult(GameInstance instance) throws IOException {
@@ -126,3 +195,51 @@ public class Server {
         server.startServer();
     }
 }
+
+
+//public void handleRoundFinished(GameInstance instance, ConnectedClient client) throws IOException {
+//    instance.setPlayerFinishedRound(client);
+//    if(instance.bothPlayersFinishedRound()){
+//        System.out.println("Both players finished round");
+//        instance.roundsFinished++;
+//        sendRoundResult(instance);
+//        instance.resetRoundState();
+//        try{
+//            Thread.sleep(5000);
+//        }
+//        catch(InterruptedException e){
+//            e.printStackTrace();
+//        }
+//        if (instance.allRoundsFinished()){
+//            System.out.println("All rounds finished");
+//            instance.endGameAndDetermineWinner();
+//            sendFinalGameResult(instance);
+//        }
+//        else{
+//            instance.changeTurnHolder();
+//            ConnectedClient waitingPlayer = instance.turnHolder.equals(instance.playerOne) ?
+//                    instance.playerTwo : instance.playerOne;
+//
+//            // Send new categories to new turn holder
+//            List<Category> newSetOfCategories = instance.game.getSetOfCategories();
+//            instance.turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, newSetOfCategories));
+//
+//            // Tell other player to wait
+//            waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+//        }
+//
+//
+//
+//
+////            sendNewRound(instance);
+////
+////            if (instance.allRoundsFinished()){
+////                System.out.println("All rounds finished");
+////                instance.endGameAndDetermineWinner();
+////                sendFinalGameResult(instance);
+////            }
+//    }
+//    else{
+//        handleTurnSwitch(instance);
+//    }
+//}

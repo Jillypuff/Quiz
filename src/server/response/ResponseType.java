@@ -13,7 +13,6 @@ public enum ResponseType {
     CLIENT_CONNECTED,
     CLIENT_DISCONNECTED,
     QUEUE_JOINED,
-//    GAME_STARTED,      //Skickas till spelarna när en spelinstans skapats
     CATEGORIES,         //Skickas till den spelare vars tur det är (efter GAME_STARTED, till den först i kön)
     OTHER_PLAYERS_TURN, //Skickas till den spelare som ska vänta
     QUESTIONS,         //Sickas till den som valt kategori, sen till den som ska köra efter

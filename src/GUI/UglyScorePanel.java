@@ -63,4 +63,8 @@ public class UglyScorePanel extends JPanel {
         resultLabel.setText(resultText);
     }
 
+    public JButton getContinueButton() {
+        return continueButton;
+    }
+
 }

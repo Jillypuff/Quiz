@@ -35,7 +35,7 @@ public class CurrentGame implements Serializable {
         return currentSetOfQuestions;
     }
 
-    public List<Category> getCurrentSetOfCategories(){
+    public List<Category> getSetOfCategories(){
         Collections.shuffle(allAvailableCategories);
         List<Category> selectedCategories = allAvailableCategories.subList(0, amountOfCategoryAlternatives);
         return new ArrayList<>(selectedCategories);

@@ -91,7 +91,10 @@ public class GameRound {
                 updateQuestionBoard(questionNumber);
             } else {
                 client.gameGUI.switchPanel(5);
+                client.gameGUI.waitingPanel.queuedLabel.setText("Waiting for other player to finish round");
+                System.out.println(client.username + " sending round finished");
                 client.sendRequest(new RoundFinishedRequest(RequestType.ROUND_FINISHED, client.username, score));
+                client.myTurn = false;
             }
         });
     }

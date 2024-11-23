@@ -42,7 +42,7 @@ public class GameInstance  {
     }
 
     public boolean allRoundsFinished(){
-        return roundsFinished == 2;
+        return roundsFinished == 3;
     }
 
 
@@ -61,6 +61,10 @@ public class GameInstance  {
     public void resetRoundState() {
         playerOneFinishedRound = false;
         playerTwoFinishedRound = false;
+    }
+
+    public boolean isCurrentTurnHolder(ConnectedClient client) {
+        return client.equals(turnHolder);
     }
 
     public CurrentGame getCurrentGame(){
