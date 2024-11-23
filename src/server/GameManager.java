@@ -50,52 +50,44 @@ public class GameManager {
         client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, chosenCategory, client.gameInstance.game.getCurrentSetOfQuestions()));
     }
 
+    //roundfinished kan innebära:
+    // att nästa spelare kör med samma frågor
+    // att rundan är klar och resultaten ska skickas, sen ska nästa spelare börja rundan och andra väntar
+    // att alla rundor körts och slutresultatet ska skickas (den klientens vinna match ska sparas hos klienten)
     public void handleRoundFinished(GameInstance instance, ConnectedClient client) throws IOException {
         instance.setPlayerFinishedRound(client);
-
-        // Måste ändra att den kollar both players finished round, sen om alla runder är finished,
-        // i så fall skicka endresult, annars skicka round result
-        //  innan den skickar round result behöver den kunna skicka switch round om inte both players finished
         if(instance.bothPlayersFinishedRound()){
-
-            // Skicka rundans resultat
             System.out.println("Both players finished round");
-
-            // Ökar roundsfinished, när det kommit till 3 bör spelet avlsutas
             instance.roundsFinished++;
-
-            sendRoundResult(instance);
-            instance.resetRoundState();
-
-            try{
-                Thread.sleep(5000);
-            }
-            catch(InterruptedException e){
-                e.printStackTrace();
-            }
-
-            // Kollar om alla rundor är klara
             if (instance.allRoundsFinished()){
                 System.out.println("All rounds finished");
                 instance.endGameAndDetermineWinner();
-                //Skickar då slutgiltigt resultat
                 sendFinalGameResult(instance);
             }
             else{
-                System.out.println("Fortsätter till nästa runda");
-                // Annars byter vi plats på vems tur det är
+                sendRoundResult(instance);
+                instance.resetRoundState();
+
+                try{
+                    Thread.sleep(5000);
+                }
+                catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+
+                System.out.println("Continue to next round");
+
                 ConnectedClient waitingPlayer = instance.turnHolder.equals(instance.playerOne) ? instance.playerTwo : instance.playerOne;
-                System.out.println("Väntande spelare: " + waitingPlayer.getUsername());
+                System.out.println("Waiting player: " + waitingPlayer.getUsername());
                 waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
 
-                // Skickar nya kategorier till nuvarande turn holder
                 List<Category> newSetOfCategories = instance.game.getSetOfCategories();
-                System.out.println("Spelare som får välja nya kategorier: " + instance.turnHolder.getUsername());
+                System.out.println("Active player: " + instance.turnHolder.getUsername());
                 instance.turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, newSetOfCategories));
             }
         }
         else{
-            System.out.println("Hanterar att byta turn");
+            System.out.println("Switch turn in same round");
             handleTurnSwitch(instance);
         }
     }
@@ -132,8 +124,11 @@ public class GameManager {
     }
 
     public void sendFinalGameResult(GameInstance instance) throws IOException {
+        System.out.println("Sending final result");
         int playerOneFinalScore = instance.playerOne.getScore();
+        System.out.println(playerOneFinalScore);
         int playerTwoFinalScore = instance.playerTwo.getScore();
+        System.out.println(playerTwoFinalScore);
 
         instance.playerOne.sendResponse(new ResultResponse(ResponseType.GAME_OVER, playerOneFinalScore, playerTwoFinalScore));
         instance.playerTwo.sendResponse(new ResultResponse(ResponseType.GAME_OVER, playerTwoFinalScore, playerOneFinalScore));
@@ -155,4 +150,54 @@ public class GameManager {
     private void sendTurnPackage(ConnectedClient client, Category category, List<Question> questions) throws IOException {
         client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, category, questions));
     }
+
+
+
+
+
+    // Måste ändra att den kollar both players finished round, sen om alla runder är finished,
+    // i så fall skicka endresult, annars skicka round result
+    //  innan den skickar round result behöver den kunna skicka switch round om inte both players finished
+//        if(instance.bothPlayersFinishedRound()){
+//
+//        // Skicka rundans resultat
+//        System.out.println("Both players finished round");
+//
+//        // Ökar roundsfinished, när det kommit till 3 bör spelet avlsutas
+//        instance.roundsFinished++;
+//
+//        sendRoundResult(instance);
+//        instance.resetRoundState();
+//
+//        try{
+//            Thread.sleep(5000);
+//        }
+//        catch(InterruptedException e){
+//            e.printStackTrace();
+//        }
+//
+//        // Kollar om alla rundor är klara
+//        if (instance.allRoundsFinished()){
+//            System.out.println("All rounds finished");
+//            instance.endGameAndDetermineWinner();
+//            //Skickar då slutgiltigt resultat
+//            sendFinalGameResult(instance);
+//        }
+//        else{
+//            System.out.println("Fortsätter till nästa runda");
+//            // Annars byter vi plats på vems tur det är
+//            ConnectedClient waitingPlayer = instance.turnHolder.equals(instance.playerOne) ? instance.playerTwo : instance.playerOne;
+//            System.out.println("Väntande spelare: " + waitingPlayer.getUsername());
+//            waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+//
+//            // Skickar nya kategorier till nuvarande turn holder
+//            List<Category> newSetOfCategories = instance.game.getSetOfCategories();
+//            System.out.println("Spelare som får välja nya kategorier: " + instance.turnHolder.getUsername());
+//            instance.turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, newSetOfCategories));
+//        }
+//    }
+//        else{
+//        System.out.println("Hanterar att byta turn");
+//        handleTurnSwitch(instance);
+//    }
 }

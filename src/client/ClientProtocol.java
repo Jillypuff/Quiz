@@ -80,7 +80,9 @@ public class ClientProtocol {
                 if (response instanceof ResultResponse resultResponse){
                     System.out.println("Received game over");
                     int playersScore = resultResponse.getPlayerResult();
+                    System.out.println(playersScore);
                     int opponentsScore = resultResponse.getOpponentResult();
+                    System.out.println(opponentsScore);
                     client.gameGUI.uglyScorePanel.setOpponentScore(playersScore);
                     client.gameGUI.uglyScorePanel.setPlayerScore(opponentsScore);
                     if (playersScore > opponentsScore){

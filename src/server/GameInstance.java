@@ -37,8 +37,8 @@ public class GameInstance  {
         } else if (playerTwo.getScore() > playerOne.getScore()) {
             playerTwo.incrementMatchesWon();
         }
-        playerOne.resetScore();
-        playerTwo.resetScore();
+//        playerOne.resetScore();
+//        playerTwo.resetScore();
     }
 
     public boolean allRoundsFinished(){
