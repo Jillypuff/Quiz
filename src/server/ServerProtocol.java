@@ -11,7 +11,13 @@ import server.response.Response;
 import java.io.IOException;
 
 
-public class ServerProtocol {
+public class ServerProtocol implements RequestHandler{
+
+    GameManager gameManager;
+
+    public ServerProtocol(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
 
     public void processRequest(Request request, ConnectedClient client) throws IOException {
         switch (request.getRequestType()){

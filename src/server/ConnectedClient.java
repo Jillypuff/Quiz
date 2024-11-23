@@ -12,22 +12,22 @@ import java.net.Socket;
 public class ConnectedClient implements Runnable {
 
     private boolean running = true;
-    public Server server;
     Socket socket;
     ObjectOutputStream out;
     ObjectInputStream in;
     private String username;
     GameInstance gameInstance;
+    private RequestHandler requestHandler;
 
     private int score = 0;
     private int matchesWon = 0;
 
-    public ConnectedClient(Socket socket, Server server){
+    public ConnectedClient(Socket socket){
         this.socket = socket;
-        this.server = server;
     }
 
-    public synchronized void sendResponse(Response response) throws IOException {
+    public synchronized void sendResponse(Response response, RequestHandler requestHandler) throws IOException {
+        this.requestHandler = requestHandler;
         out.writeObject(response);
         out.flush();
     }
@@ -39,12 +39,11 @@ public class ConnectedClient implements Runnable {
             out = new ObjectOutputStream(socket.getOutputStream());
             out.flush();
             in = new ObjectInputStream(socket.getInputStream());
-            ServerProtocol protocol = new ServerProtocol();
 
             while(running && !socket.isClosed()){
                 Object obj = in.readObject();
                 if (obj instanceof Request request){
-                    protocol.processRequest(request, this);
+                    requestHandler.processRequest(request, this);
                 }
             }
 
