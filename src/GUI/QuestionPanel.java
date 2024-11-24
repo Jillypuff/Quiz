@@ -27,27 +27,28 @@ public class QuestionPanel extends JPanel {
 
         questionLabel = new JLabel();
         questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        questionLabel.setFont(new Font("Malgun Gothic", Font.PLAIN, 16));
 
-        nextQuestionButton = new JButton("Next Question");
+        nextQuestionButton = new JButton("next question");
         nextQuestionButton.setVisible(false);
         nextQuestionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        nextQuestionButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        nextQuestionButton.setFont(new Font("Malgun Gothic", Font.PLAIN, 14));
+        nextQuestionButton.setPreferredSize(new Dimension(50, 30));
 
         button1 = new JButton();
         button2 = new JButton();
         button3 = new JButton();
         button4 = new JButton();
 
-        button1.setPreferredSize(new Dimension(100, 40));
-        button2.setPreferredSize(new Dimension(100, 40));
-        button3.setPreferredSize(new Dimension(100, 40));
-        button4.setPreferredSize(new Dimension(100, 40));
+        button1.setPreferredSize(new Dimension(90, 30));
+        button2.setPreferredSize(new Dimension(90, 30));
+        button3.setPreferredSize(new Dimension(90, 30));
+        button4.setPreferredSize(new Dimension(90, 30));
 
-        button1.setFont(new Font("Arial", Font.PLAIN, 18));
-        button2.setFont(new Font("Arial", Font.PLAIN, 18));
-        button3.setFont(new Font("Arial", Font.PLAIN, 18));
-        button4.setFont(new Font("Arial", Font.PLAIN, 18));
+        button1.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
+        button2.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
+        button3.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
+        button4.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
 
         button1.setFocusable(Boolean.FALSE);
         button2.setFocusable(Boolean.FALSE);
@@ -126,12 +127,12 @@ public class QuestionPanel extends JPanel {
         return questionLabel;
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quiz");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null);
-        frame.add(new QuestionPanel());
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Quiz");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(600, 400);
+//        frame.setLocationRelativeTo(null);
+//        frame.add(new QuestionPanel());
+//        frame.setVisible(true);
+//    }
 }

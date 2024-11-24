@@ -93,7 +93,7 @@ public class Client implements ActionListener {
             String username = gameGUI.loginPanel.usernameTextField.getText().trim();
             if (username.isEmpty()) {
                 JOptionPane.showMessageDialog(gameGUI.loginPanel,
-                        "You must enter a name!",
+                        "You must enter a username!",
                         "Input Error",
                         JOptionPane.WARNING_MESSAGE);
                 return;

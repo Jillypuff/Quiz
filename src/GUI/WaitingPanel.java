@@ -8,14 +8,14 @@ public class WaitingPanel extends JPanel {
 
     private final ImageIcon backgroundImage = new ImageIcon("src/GUI/images/Image2.jpg");
 
-    private final JLabel queuedLabel = new JLabel("Waiting for players..");
+    private final JLabel queuedLabel = new JLabel("waiting for players...");
     private final JButton leaveGameButton;
 
     public WaitingPanel() {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setOpaque(true);
-        add(Box.createVerticalStrut(60));
+        add(Box.createVerticalStrut(90));
 
         queuedLabel.setAlignmentX(CENTER_ALIGNMENT);
         queuedLabel.setFont(new Font("Lucida Console", Font.PLAIN, 14));
@@ -29,13 +29,14 @@ public class WaitingPanel extends JPanel {
         buttonPanel.setOpaque(false);
 
         add(queuedLabel);
-        add(Box.createVerticalStrut(30));
+        add(Box.createVerticalStrut(20));
         add(buttonPanel);
     }
 
     private JButton createButton() {
         JButton button = new JButton();
-        button.setText("Leave Game");
+        button.setText("LEAVE GAME");
+        button.setFont(new Font("Lucida Console", Font.PLAIN, 14));
         button.setPreferredSize(new Dimension(150, 40));
         button.setFocusable(false);
         button.setOpaque(false);

@@ -15,7 +15,7 @@ public class WelcomePanel extends JPanel {
     public WelcomePanel() {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(Box.createVerticalStrut(60));
+        add(Box.createVerticalStrut(80));
 
         welcomePrompt = new JLabel();
         welcomePrompt.setFont(new Font("Lucida Console", Font.PLAIN, 18));
