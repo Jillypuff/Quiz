@@ -16,7 +16,7 @@ public class ClientProtocol {
                 client.gameGUI.switchPanel(2);
                 String username = client.gameGUI.loginPanel.usernameTextField.getText();
                 client.username = username;
-                client.gameGUI.welcomePanel.welcomePrompt.setText("Welcome " + username + "!");
+                client.gameGUI.welcomePanel.getWelcomePrompt().setText("Welcome " + username + "!");
             }
             case CLIENT_DISCONNECTED -> {
                 System.out.println("Client disconnected");
@@ -29,10 +29,13 @@ public class ClientProtocol {
             case YOUR_TURN -> {
                 System.out.println("Received your turn");
                 List<Category> categoryChoices = response.getSetOfCategories();
-                client.gameGUI.categoryPanel.category1.setText(categoryChoices.get(0).name());
-                client.gameGUI.categoryPanel.category2.setText(categoryChoices.get(1).name());
-                client.gameGUI.categoryPanel.category3.setText(categoryChoices.get(2).name());
-
+                for (int i = 0; i < categoryChoices.size(); i++) {
+                    switch (i) {
+                        case 0 -> client.gameGUI.categoryPanel.getCategory1().setText(categoryChoices.get(i).name());
+                        case 1 -> client.gameGUI.categoryPanel.getCategory2().setText(categoryChoices.get(i).name());
+                        case 2 -> client.gameGUI.categoryPanel.getCategory3().setText(categoryChoices.get(i).name());
+                    }
+                }
                 client.gameGUI.switchPanel(3);
             }
             case OTHER_PLAYERS_TURN -> {

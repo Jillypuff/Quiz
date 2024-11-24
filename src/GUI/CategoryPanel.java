@@ -7,9 +7,9 @@ import java.util.List;
 
 public class CategoryPanel extends JPanel {
 
-    public JButton category1;
-    public JButton category2;
-    public JButton category3;
+    private final JButton category1;
+    private final JButton category2;
+    private final JButton category3;
 
     public CategoryPanel() {
 
@@ -18,19 +18,19 @@ public class CategoryPanel extends JPanel {
         add(Box.createVerticalStrut(60));
 
 
-        JLabel label = new JLabel("Choose a category");
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        label.setForeground(new Color(60, 60, 60));
+        JLabel categoryLabel = new JLabel("Choose a category");
+        categoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        categoryLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        categoryLabel.setForeground(new Color(60, 60, 60));
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setBackground(new Color(240, 240, 240));
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        category1 = createCategoryButton("CATEGORY 1");
-        category2 = createCategoryButton("CATEGORY 2");
-        category3 = createCategoryButton("CATEGORY 3");
+        category1 = createCategoryButton();
+        category2 = createCategoryButton();
+        category3 = createCategoryButton();
 
         buttonPanel.add(category1);
         buttonPanel.add(Box.createVerticalStrut(20));
@@ -38,13 +38,13 @@ public class CategoryPanel extends JPanel {
         buttonPanel.add(Box.createVerticalStrut(20));
         buttonPanel.add(category3);
 
-        add(label);
+        add(categoryLabel);
         add(Box.createVerticalStrut(30));
         add(buttonPanel);
     }
 
-    private JButton createCategoryButton(String text) {
-        JButton button = new JButton(text);
+    private JButton createCategoryButton() {
+        JButton button = new JButton("");
         button.setPreferredSize(new Dimension(250, 60));
         button.setFont(new Font("Tahoma", Font.PLAIN, 16));
         button.setForeground(Color.WHITE);
@@ -61,6 +61,18 @@ public class CategoryPanel extends JPanel {
         buttons.add(category2);
         buttons.add(category3);
         return buttons;
+    }
+
+    public JButton getCategory1() {
+        return category1;
+    }
+
+    public JButton getCategory2() {
+        return category2;
+    }
+
+    public JButton getCategory3() {
+        return category3;
     }
 
 //    public static void main(String[] args) {

@@ -108,7 +108,7 @@ public class Client implements ActionListener {
             if (confirm == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
-        } else if (button == gameGUI.welcomePanel.logoutButton){
+        } else if (button == gameGUI.welcomePanel.getLogoutButton()){
 
             int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
                     "Are you sure you want to log out?",
@@ -117,7 +117,7 @@ public class Client implements ActionListener {
             if (confirm == JOptionPane.YES_OPTION) {
             sendRequest(new Request(RequestType.DISCONNECT));
             }
-        } else if (button == gameGUI.welcomePanel.newGameButton){
+        } else if (button == gameGUI.welcomePanel.getNewGameButton()){
             System.out.println("Starting new game");
             sendRequest(new Request(RequestType.START_GAME, username));
         }

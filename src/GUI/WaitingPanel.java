@@ -16,6 +16,8 @@ public class WaitingPanel extends JPanel {
         queuedLabel.setAlignmentX(CENTER_ALIGNMENT);
 
         leaveQueueButton = new JButton("Leave Queue");
+        leaveQueueButton.setBackground(Color.RED);
+        leaveQueueButton.setFocusable(false);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
