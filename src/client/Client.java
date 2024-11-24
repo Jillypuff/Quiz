@@ -8,9 +8,9 @@ import gamelogic.Category;
 import server.response.Response;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
@@ -22,8 +22,6 @@ public class Client {
     String username;
     GameGUI gameGUI;
     boolean running = true;
-    int currentScore;
-    boolean myTurn = false;
 
     public Client(Socket socket){
         try{
@@ -38,13 +36,13 @@ public class Client {
     }
 
     public void startListening() {
+        ClientProtocol protocol = new ClientProtocol();
         new Thread(() -> {
-            ClientProtocol protocol = new ClientProtocol();
             try{
                 while(running){
                     Object obj = in.readObject();
                     if (obj instanceof Response response){
-                        protocol.processResponse(response, this);
+                        protocol.processResponse(this, response);
                     }
                 }
             }
@@ -87,8 +85,10 @@ public class Client {
 
     public void addActionListenersToButtons(){
         gameGUI.loginPanel.loginButton.addActionListener(e->{
-            System.out.println(gameGUI.loginPanel.usernameTextField.getText() + " sending connect-request");
-            sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
+            String givenUsername = gameGUI.loginPanel.usernameTextField.getText();
+            username = givenUsername;
+            System.out.println(givenUsername + " sending connect-request");
+            sendRequest(new Request(RequestType.CONNECT, givenUsername));
         });
         gameGUI.loginPanel.exitGameButton.addActionListener(e->{
             System.out.println("Shutting down");

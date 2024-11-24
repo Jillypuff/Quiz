@@ -48,6 +48,21 @@ public class UglyScorePanel extends JPanel {
         add(continueButton, gbc);
     }
 
+    public void setScoreDisplay(int playerScore, int opponentScore) {
+        playerScoreLabel.setText("Your Score: " + playerScore);
+        opponentScoreLabel.setText("Opponent's Score: " + opponentScore);
+        if (playerScore > opponentScore){
+            resultLabel.setText("You won this round!");
+        }
+        else if (opponentScore > playerScore){
+            resultLabel.setText("You lost this round!");
+        }
+        else{
+            resultLabel.setText("It was a draw");
+        }
+    }
+
+
     // Method to update the player score
     public void setPlayerScore(int score) {
         playerScoreLabel.setText("Your Score: " + score);

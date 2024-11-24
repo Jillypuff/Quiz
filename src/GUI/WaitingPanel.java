@@ -20,4 +20,14 @@ public class WaitingPanel extends JPanel {
         add(queuedLabel);
         add(leaveQueueButton);
     }
+
+    public void setUpQueuePanel(){
+        queuedLabel.setText("In queue for another player to join the game");
+        leaveQueueButton.setText("Leave Queue");
+    }
+
+    public void setUpWaitingForYourTurnPanel(){
+        queuedLabel.setText("Waiting for other player to do its round");
+        leaveQueueButton.setText("Exit game");
+    }
 }

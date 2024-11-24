@@ -1,23 +1,19 @@
 package server.response;
 
-import gamelogic.Category;
 import gamelogic.Question;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class QuestionPackageResponse extends Response implements Serializable {
+public class QuestionPackageResponse extends GamePackageResponse {
 
-    Category category;
-    List<Question> setOfQuestions;
+    List<Question> questions;
 
-    public QuestionPackageResponse(ResponseType responseType, Category category, List<Question> setOfQuestions) {
-        super(responseType);
-        this.category = category;
-        this.setOfQuestions = setOfQuestions;
+    public QuestionPackageResponse(ResponseType responseType, String currentPlayer, String opponentPlayer, List<Question> questions) {
+        super(responseType, currentPlayer, opponentPlayer);
+        this.questions = questions;
     }
 
-    public List<Question> getSetOfQuestions() {
-        return setOfQuestions;
+    public List<Question> getQuestions() {
+        return questions;
     }
 }

@@ -2,14 +2,14 @@ package client.request;
 
 public class RoundFinishedRequest extends Request {
 
-    int score;
+    private int myScore;
 
-    public RoundFinishedRequest(RequestType requestType, String username, int score) {
+    public RoundFinishedRequest(RequestType requestType, String username, int myScore) {
         super(requestType, username);
-        this.score = score;
+        this.myScore = myScore;
     }
 
-    public int getScore() {
-        return score;
+    public int getMyScore() {
+        return myScore;
     }
 }

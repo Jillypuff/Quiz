@@ -18,12 +18,11 @@ public class GameRound {
     int questionNumber = 0;
     Question currentQuestion;
 
-    public GameRound(Client client, List<Question> questions, int currentScore) {
+    public GameRound(Client client, List<Question> questions) {
         this.client = client;
         this.questions = questions;
         gameButtons = client.gameGUI.gamePanel.getAllAnswerButtons();
         updateQuestionBoard(questionNumber);
-        updateQuestionBoard(currentScore);
         addActionListenerToNextQuestionButton();
     }
 
@@ -50,30 +49,6 @@ public class GameRound {
     }
 
     public void addActionListeners(){
-        List<JButton> buttons = client.gameGUI.gamePanel.getAllAnswerButtons();
-
-        for(JButton button : buttons){
-            button.addActionListener(e -> {
-                String answer = button.getText();
-                if (currentQuestion.checkAnswer(answer)){
-                    button.setBackground(Color.GREEN);
-                    score++;
-                }
-                else{
-                    button.setBackground(Color.RED);
-                    for (JButton otherButton : gameButtons) {
-                        if (currentQuestion.checkAnswer(otherButton.getText())) {
-                            otherButton.setBackground(Color.GREEN);
-                        }
-                    }
-                }
-                enableButtons(false);
-                client.gameGUI.gamePanel.getNextQuestionButton().setVisible(true);
-            });
-        }
-    }
-
-    public void addActionListeners2(){
         for(JButton button : gameButtons){
             for(ActionListener actionListener : button.getActionListeners()){
                 button.removeActionListener(actionListener);
@@ -110,7 +85,7 @@ public class GameRound {
             button.setBackground(null);
         }
 
-        addActionListeners2();
+        addActionListeners();
         client.gameGUI.gamePanel.getNextQuestionButton().setVisible(false);
     }
 
@@ -129,7 +104,6 @@ public class GameRound {
                 client.gameGUI.waitingPanel.queuedLabel.setText("Waiting for other player to finish round");
                 System.out.println(client.username + " sending round finished");
                 client.sendRequest(new RoundFinishedRequest(RequestType.ROUND_FINISHED, client.username, score));
-                client.myTurn = false;
             }
         });
     }

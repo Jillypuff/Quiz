@@ -4,12 +4,8 @@ import client.request.Request;
 import client.request.RoundFinishedRequest;
 import client.request.StartRoundRequest;
 import gamelogic.Category;
-import server.response.QuestionPackageResponse;
-import server.response.ResponseType;
-import server.response.Response;
 
 import java.io.IOException;
-
 
 public class ServerProtocol {
 
@@ -19,44 +15,34 @@ public class ServerProtocol {
         this.gameManager = gameManager;
     }
 
-    public void processRequest(Request request, ConnectedClient client) throws IOException {
-        switch (request.getRequestType()){
+    public void processRequest(ConnectedClient client, Request request) throws IOException {
+        switch(request.getRequestType()){
             case CONNECT -> {
-                System.out.println("Received connect request; sending connected response");
-                client.setUsername(request.username);
-                client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
+                String selectedUsername = request.getUsername();
+                gameManager.handleConnectRequest(client, selectedUsername);
             }
             case DISCONNECT -> {
-                System.out.println("Received disconnect request; sending disconnected response");
-                client.sendResponse(new Response(ResponseType.CLIENT_DISCONNECTED));
+                gameManager.handleDisconnectRequest(client);
             }
             case START_GAME -> {
-                gameManager.handleStartGame(client);
+                gameManager.handleStartGameRequest(client);
             }
             case CATEGORY_CHOSEN -> {
-                if(client.equals(client.gameInstance.turnHolder)){
-                    if (request instanceof StartRoundRequest startRoundRequest){
-                        gameManager.handleCategoryChosen(client, startRoundRequest.getChosenCategory());
-                    }
+                if (request instanceof StartRoundRequest startRoundRequest) {
+                    Category selectedCategory = startRoundRequest.getSelectedCategory();
+                    gameManager.handleCategoryChosen(client, selectedCategory);
                 }
             }
             case ROUND_FINISHED -> {
-                if(request instanceof RoundFinishedRequest roundFinishedRequest){
-                    int score = roundFinishedRequest.getScore();
-                    client.gameInstance.awardPointsToTurnHolder(score);
-                    gameManager.handleRoundFinished(client.gameInstance, client);
+                if (request instanceof RoundFinishedRequest roundFinishedRequest) {
+                    int score = roundFinishedRequest.getMyScore();
+                    gameManager.handleRoundFinished(client, score);
                 }
-            }
-            case EXIT_GAME -> {
-                // Säg hejdå till username
             }
             case LEAVE_QUEUE -> {
                 gameManager.handleLeaveQueue(client);
             }
-            case GIVE_UP -> {
-                // Ta bort spelaren ut spelet
-            }
-            default -> System.err.println("How did we end up here!?");
         }
     }
+
 }

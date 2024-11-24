@@ -1,7 +1,6 @@
 package server;
-
 import client.request.Request;
-import gamelogic.CurrentGame;
+import gamelogic.GameInstance;
 import server.response.Response;
 
 import java.io.IOException;
@@ -16,10 +15,11 @@ public class ConnectedClient implements Runnable {
     ObjectOutputStream out;
     ObjectInputStream in;
 
-    GameInstance gameInstance;
     ServerProtocol protocol;
+    GameInstance instance;
 
     private String username;
+
     private int score = 0;
     private int matchesWon = 0; // ??
 
@@ -44,7 +44,7 @@ public class ConnectedClient implements Runnable {
             while(running){
                 Object obj = in.readObject();
                 if (obj instanceof Request request){
-                    protocol.processRequest(request, this);
+                    protocol.processRequest(this, request);
                 }
             }
 
@@ -74,32 +74,15 @@ public class ConnectedClient implements Runnable {
         }
     }
 
-    public void setUsername(String username){
-        this.username = username;
-    }
-
     public String getUsername(){
         return username;
     }
 
-
-    public void increaseScore(int points) {
-        this.score += points;
+    public void setUsername(String username){
+        this.username = username;
     }
 
-    public void resetScore() {
-        this.score = 0;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void incrementMatchesWon() {
-        this.matchesWon++;
-    }
-
-    public int getMatchesWon() {
-        return matchesWon;
+    public void setInstance(GameInstance instance) {
+        this.instance = instance;
     }
 }

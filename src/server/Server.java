@@ -8,15 +8,16 @@ import java.util.List;
 
 public class Server {
 
-    final private ServerSocket serverSocket;
-    List<ConnectedClient> queue;
-    ServerProtocol protocol;
-    GameManager gameManager;
+    private final ServerSocket serverSocket;
+    private List<ConnectedClient> queue;
+    private GameManager gameManager;
+    private final ServerProtocol protocol;
 
     Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
         this.gameManager = new GameManager(this);
-        this.protocol = new ServerProtocol(gameManager);
+        protocol = new ServerProtocol(gameManager);
+        queue = new ArrayList<>();
     }
 
     public void startServer() {
@@ -44,9 +45,27 @@ public class Server {
         }
     }
 
+    public void putInQueue(ConnectedClient client) {
+        queue.add(client);
+    }
+
+    public List<ConnectedClient> getQueue(){
+        return queue;
+    }
+
+    public ConnectedClient takeFromQueue() {
+        return queue.removeFirst();
+    }
+
+    public void removeFromQueue(ConnectedClient client){
+        queue.remove(client);
+    }
+
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(55554);
         Server server = new Server(serverSocket);
         server.startServer();
     }
+
 }
+

@@ -2,18 +2,16 @@ package client.request;
 
 import gamelogic.Category;
 
-import java.io.Serializable;
+public class StartRoundRequest extends Request {
 
-public class StartRoundRequest extends Request implements Serializable {
+    Category selectedCategory;
 
-    Category chosenCategory;
-
-    public StartRoundRequest(RequestType requestType, String username, Category chosenCategory){
+    public StartRoundRequest(RequestType requestType, String username, Category selectedCategory) {
         super(requestType, username);
-        this.chosenCategory = chosenCategory;
+        this.selectedCategory = selectedCategory;
     }
 
-    public Category getChosenCategory() {
-        return chosenCategory;
+    public Category getSelectedCategory() {
+        return selectedCategory;
     }
 }

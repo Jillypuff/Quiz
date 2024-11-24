@@ -1,8 +1,8 @@
 package server;
 
-import client.request.StartRoundRequest;
 import gamelogic.Category;
-import gamelogic.CurrentGame;
+import gamelogic.GameInstance;
+import gamelogic.Player;
 import gamelogic.Question;
 import server.response.*;
 
@@ -17,187 +17,113 @@ public class GameManager {
         this.server = server;
     }
 
-    public void handleLeaveQueue(ConnectedClient client) {
-        server.queue.remove(client);
+    public void handleConnectRequest(ConnectedClient client, String selectedUsername) throws IOException {
+        client.setUsername(selectedUsername);
+        client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
+    }
+
+    public void handleDisconnectRequest(ConnectedClient client) {
 
     }
 
-    public void handleStartGame(ConnectedClient client) throws IOException {
-        server.queue.add(client);
+    public void handleStartGameRequest(ConnectedClient client) throws IOException {
+        server.putInQueue(client);
         client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
+        createGameInstanceIfReady();
+    }
 
-        if(server.queue.size() >= 2){
-            ConnectedClient turnHolder = server.queue.removeFirst();
-            ConnectedClient waitingPlayer = server.queue.removeFirst();
+    public void handleLeaveQueue(ConnectedClient client) throws IOException {
+        server.removeFromQueue(client);
+    }
 
-            GameInstance instance = new GameInstance(turnHolder, waitingPlayer);
+    public void createGameInstanceIfReady() throws IOException {
+        if (server.getQueue().size() >= 2) {
 
-            turnHolder.gameInstance = instance;
-            waitingPlayer.gameInstance = instance;
+            ConnectedClient clientOne = server.takeFromQueue();
+            ConnectedClient clientTwo = server.takeFromQueue();
 
-            // Hämtar ett set av slumpade kategorier
-            List<Category> setOfCategories = instance.game.getSetOfCategories();
+            GameInstance instance = new GameInstance();
+            instance.setPlayers(clientOne, clientTwo);
 
-            waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
-            turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, setOfCategories));
+            clientOne.setInstance(instance);
+            clientTwo.setInstance(instance);
+
+            startRound(instance);
         }
     }
-    public void handleCategoryChosen(ConnectedClient client, Category chosenCategory) throws IOException {
-        client.gameInstance.game.setCurrentCategory(chosenCategory);
-        client.gameInstance.game.loadCurrentSetOfQuestions();
 
-        System.out.println("Sending questions to turn holder: " + client.getUsername());
-        client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, chosenCategory, client.gameInstance.game.getCurrentSetOfQuestions()));
+    public void startRound(GameInstance instance) throws IOException {
+        instance.getQuizPackage().loadSetOfCategories();
+        List<Category> setOfCategories = instance.getQuizPackage().getCurrentSetOfCategories();
+
+        Player currentPlayer = instance.getCurrentTurnHolder();
+        Player opponent = instance.getOpponent(currentPlayer);
+
+        currentPlayer.getConnection().sendResponse(new CategoryPackageResponse(ResponseType.ROUND_STARTED, currentPlayer.getUsername(), opponent.getUsername(), setOfCategories));
+        opponent.getConnection().sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+
     }
 
-    //roundfinished kan innebära:
-    // att nästa spelare kör med samma frågor
-    // att rundan är klar och resultaten ska skickas, sen ska nästa spelare börja rundan och andra väntar
-    // att alla rundor körts och slutresultatet ska skickas (den klientens vinna match ska sparas hos klienten)
-    public void handleRoundFinished(GameInstance instance, ConnectedClient client) throws IOException {
-        instance.setPlayerFinishedRound(client);
-        if(instance.bothPlayersFinishedRound()){
+    public void handleCategoryChosen(ConnectedClient client, Category category) throws IOException {
+        GameInstance instance = client.instance;
+        instance.getQuizPackage().setCurrentCategory(category);
+
+        instance.getQuizPackage().loadCurrentSetOfQuestions();
+        List<Question> questions = instance.getQuizPackage().getCurrentSetOfQuestions();
+        sendQuestions(instance, questions);
+    }
+
+    public void handleRoundFinished(ConnectedClient client, int clientScore) throws IOException {
+        GameInstance instance = client.instance;
+        Player currentPlayer = instance.getCurrentTurnHolder();
+
+        currentPlayer.setRoundScore(clientScore);
+        currentPlayer.addToTotalScore(clientScore);
+
+        currentPlayer.setHasFinishedRound(true);
+
+        if (instance.bothPlayersFinishedRound()) {
             System.out.println("Both players finished round");
-            instance.roundsFinished++;
-            if (instance.allRoundsFinished()){
-                System.out.println("All rounds finished");
-                instance.endGameAndDetermineWinner();
-                sendFinalGameResult(instance);
+            instance.incrementRoundsFinished();
+            sendRoundResult(instance);
+
+            instance.resetRound();
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            else{
-                sendRoundResult(instance);
-                instance.resetRoundState();
 
-                try{
-                    Thread.sleep(5000);
-                }
-                catch(InterruptedException e){
-                    e.printStackTrace();
-                }
-
-                System.out.println("Continue to next round");
-
-                ConnectedClient waitingPlayer = instance.turnHolder.equals(instance.playerOne) ? instance.playerTwo : instance.playerOne;
-                System.out.println("Waiting player: " + waitingPlayer.getUsername());
-                waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
-
-                List<Category> newSetOfCategories = instance.game.getSetOfCategories();
-                System.out.println("Active player: " + instance.turnHolder.getUsername());
-                instance.turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, newSetOfCategories));
+            if (instance.isGameOver()) {
+                sendFinalResult(instance);
+            } else {
+                startRound(instance);
             }
-        }
-        else{
-            System.out.println("Switch turn in same round");
-            handleTurnSwitch(instance);
-        }
-    }
-
-    public void sendNewRound(GameInstance instance) throws IOException {
-        if (!instance.allRoundsFinished()) {
-            ConnectedClient waitingPlayer = instance.turnHolder.equals(instance.playerOne) ? instance.playerTwo : instance.playerOne;
-            ConnectedClient turnHolder = instance.turnHolder;
-
-            List<Category> newSetOfCategories = instance.game.getSetOfCategories();
-            turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, newSetOfCategories));
-            waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
-
         } else {
-            System.out.println("All rounds finished");
-            instance.endGameAndDetermineWinner();
-            sendFinalGameResult(instance);
+            instance.switchTurn();
+            List<Question> currentQuestions = instance.getQuizPackage().getCurrentSetOfQuestions();
+            sendQuestions(instance, currentQuestions);
         }
     }
 
-    public void handleTurnSwitch(GameInstance instance) throws IOException {
-        if (instance.turnHolder.equals(instance.playerOne)) {
+    public void sendQuestions(GameInstance instance, List<Question> questions) throws IOException {
+        Player currentPlayer = instance.getCurrentTurnHolder();
+        Player opponent = instance.getOpponent(currentPlayer);
 
-            instance.turnHolder = instance.playerTwo;
-            notifyOtherPlayersTurn(instance.playerOne);
-            sendTurnPackage(instance.playerTwo, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
-        }
-        else if (instance.turnHolder.equals(instance.playerTwo)) {
-
-            instance.turnHolder = instance.playerOne;
-            notifyOtherPlayersTurn(instance.playerTwo);
-            sendTurnPackage(instance.playerOne, instance.game.getCurrentCategory(), instance.game.getCurrentSetOfQuestions());
-        }
-    }
-
-    public void sendFinalGameResult(GameInstance instance) throws IOException {
-        System.out.println("Sending final result");
-        int playerOneFinalScore = instance.playerOne.getScore();
-        System.out.println(playerOneFinalScore);
-        int playerTwoFinalScore = instance.playerTwo.getScore();
-        System.out.println(playerTwoFinalScore);
-
-        instance.playerOne.sendResponse(new ResultResponse(ResponseType.GAME_OVER, playerOneFinalScore, playerTwoFinalScore));
-        instance.playerTwo.sendResponse(new ResultResponse(ResponseType.GAME_OVER, playerTwoFinalScore, playerOneFinalScore));
+        currentPlayer.getConnection().sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, currentPlayer.getUsername(), opponent.getUsername(), questions));
+        opponent.getConnection().sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
     }
 
     public void sendRoundResult(GameInstance instance) throws IOException {
-        int playerOneScore = instance.playerOne.getScore();
-        int playerTwoScore = instance.playerTwo.getScore();
+        Player currentPlayer = instance.getCurrentTurnHolder();
+        Player opponent = instance.getOpponent(currentPlayer);
 
-        instance.playerOne.sendResponse(new ResultResponse(ResponseType.ROUND_RESULT, playerOneScore, playerTwoScore));
-        instance.playerTwo.sendResponse(new ResultResponse(ResponseType.ROUND_RESULT, playerTwoScore, playerOneScore));
+        currentPlayer.getConnection().sendResponse(new ResultPackageResponse(ResponseType.ROUND_RESULT, currentPlayer.getRoundScore(), opponent.getRoundScore()));
+        opponent.getConnection().sendResponse(new ResultPackageResponse(ResponseType.ROUND_RESULT, opponent.getRoundScore(), currentPlayer.getRoundScore()));
     }
 
+    public void sendFinalResult(GameInstance instance) throws IOException {
 
-    private void notifyOtherPlayersTurn(ConnectedClient client) throws IOException {
-        client.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
     }
-
-    private void sendTurnPackage(ConnectedClient client, Category category, List<Question> questions) throws IOException {
-        client.sendResponse(new QuestionPackageResponse(ResponseType.QUESTIONS, category, questions));
-    }
-
-
-
-
-
-    // Måste ändra att den kollar both players finished round, sen om alla runder är finished,
-    // i så fall skicka endresult, annars skicka round result
-    //  innan den skickar round result behöver den kunna skicka switch round om inte both players finished
-//        if(instance.bothPlayersFinishedRound()){
-//
-//        // Skicka rundans resultat
-//        System.out.println("Both players finished round");
-//
-//        // Ökar roundsfinished, när det kommit till 3 bör spelet avlsutas
-//        instance.roundsFinished++;
-//
-//        sendRoundResult(instance);
-//        instance.resetRoundState();
-//
-//        try{
-//            Thread.sleep(5000);
-//        }
-//        catch(InterruptedException e){
-//            e.printStackTrace();
-//        }
-//
-//        // Kollar om alla rundor är klara
-//        if (instance.allRoundsFinished()){
-//            System.out.println("All rounds finished");
-//            instance.endGameAndDetermineWinner();
-//            //Skickar då slutgiltigt resultat
-//            sendFinalGameResult(instance);
-//        }
-//        else{
-//            System.out.println("Fortsätter till nästa runda");
-//            // Annars byter vi plats på vems tur det är
-//            ConnectedClient waitingPlayer = instance.turnHolder.equals(instance.playerOne) ? instance.playerTwo : instance.playerOne;
-//            System.out.println("Väntande spelare: " + waitingPlayer.getUsername());
-//            waitingPlayer.sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
-//
-//            // Skickar nya kategorier till nuvarande turn holder
-//            List<Category> newSetOfCategories = instance.game.getSetOfCategories();
-//            System.out.println("Spelare som får välja nya kategorier: " + instance.turnHolder.getUsername());
-//            instance.turnHolder.sendResponse(new CategoryPackageResponse(ResponseType.CATEGORIES, newSetOfCategories));
-//        }
-//    }
-//        else{
-//        System.out.println("Hanterar att byta turn");
-//        handleTurnSwitch(instance);
-//    }
 }

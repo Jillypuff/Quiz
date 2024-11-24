@@ -1,4 +1,6 @@
 package GUI;
+import gamelogic.Category;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -53,5 +55,11 @@ public class CategoryPanel extends JPanel {
         buttons.add(category2);
         buttons.add(category3);
         return buttons;
+    }
+
+    public void setUpCategories(List<Category> categories){
+        category1.setText(categories.get(0).name());
+        category2.setText(categories.get(1).name());
+        category3.setText(categories.get(2).name());
     }
 }
