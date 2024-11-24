@@ -29,19 +29,16 @@ public class ClientProtocol {
             case YOUR_TURN -> {
                 System.out.println("Received your turn");
                 List<Category> categoryChoices = response.getSetOfCategories();
-                for (int i = 0; i < categoryChoices.size(); i++) {
-                    switch (i) {
-                        case 0 -> client.gameGUI.categoryPanel.getCategory1().setText(categoryChoices.get(i).name());
-                        case 1 -> client.gameGUI.categoryPanel.getCategory2().setText(categoryChoices.get(i).name());
-                        case 2 -> client.gameGUI.categoryPanel.getCategory3().setText(categoryChoices.get(i).name());
-                    }
-                }
+                client.gameGUI.categoryPanel.getCategory1().setText(categoryChoices.get(0).name());
+                client.gameGUI.categoryPanel.getCategory2().setText(categoryChoices.get(1).name());
+                client.gameGUI.categoryPanel.getCategory3().setText(categoryChoices.get(2).name());
+
                 client.gameGUI.switchPanel(3);
             }
             case OTHER_PLAYERS_TURN -> {
                 System.out.println("Received other players turn");
                 client.gameGUI.switchPanel(5);
-                client.gameGUI.waitingPanel.queuedLabel.setText("Waiting for other players turn");
+                client.gameGUI.waitingPanel.getQueuedLabel().setText("Waiting for other players turn");
             }
             case QUESTION -> {
                 System.out.println("Received question");

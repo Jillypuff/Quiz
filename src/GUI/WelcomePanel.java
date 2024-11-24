@@ -37,6 +37,7 @@ public class WelcomePanel extends JPanel {
 
     private JButton createButton(String text, Color backgroundColor) {
         JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(150, 40));
         button.setBackground(backgroundColor);
         button.setForeground(Color.WHITE);
         return button;

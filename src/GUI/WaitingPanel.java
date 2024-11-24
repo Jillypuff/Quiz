@@ -6,30 +6,45 @@ import java.awt.event.ActionListener;
 
 public class WaitingPanel extends JPanel {
 
-    public JLabel queuedLabel = new JLabel("Waiting for a player to join..");
-    public JButton leaveQueueButton;
+    private final JLabel queuedLabel = new JLabel("Your new game starts soon..");
+    private final JButton leaveGameButton;
 
     public WaitingPanel() {
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(Box.createVerticalStrut(50));
+        add(Box.createVerticalStrut(70));
 
         queuedLabel.setAlignmentX(CENTER_ALIGNMENT);
 
-        leaveQueueButton = new JButton("Leave Queue");
-        leaveQueueButton.setBackground(Color.RED);
-        leaveQueueButton.setFocusable(false);
+        leaveGameButton = createButton();
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(leaveQueueButton);
-
+        buttonPanel.add(leaveGameButton);
 
         add(queuedLabel);
-        add(Box.createVerticalStrut(40));
+        add(Box.createVerticalStrut(30));
         add(buttonPanel);
     }
 
+    private JButton createButton() {
+        JButton button = new JButton();
+        button.setText("Leave Game");
+        button.setPreferredSize(new Dimension(150, 40));
+        button.setBackground(new Color(Color.RED.getRGB()));
+        button.setFocusable(false);
+        return button;
+    }
+
     public void addActionListener(ActionListener listener){
-        leaveQueueButton.addActionListener(listener);
+        leaveGameButton.addActionListener(listener);
+    }
+
+    public JLabel getQueuedLabel() {
+        return queuedLabel;
+    }
+
+    public JButton getLeaveGameButton() {
+        return leaveGameButton;
     }
 }

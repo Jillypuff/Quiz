@@ -121,7 +121,7 @@ public class Client implements ActionListener {
             System.out.println("Starting new game");
             sendRequest(new Request(RequestType.START_GAME, username));
         }
-        else if (button == gameGUI.waitingPanel.leaveQueueButton){
+        else if (button == gameGUI.waitingPanel.getLeaveGameButton()){
             System.out.println("Leaving queue");
             sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
             gameGUI.switchPanel(2);
