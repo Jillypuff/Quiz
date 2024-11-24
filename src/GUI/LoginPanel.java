@@ -1,66 +1,69 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class LoginPanel extends JPanel {
 
+    private final ImageIcon backgroundImage = new ImageIcon("src/GUI/Image.jpg");
+
     public JTextField usernameTextField;
     public JButton startButton;
     public JButton exitButton;
 
-    private static final Color startButtonColor = new Color(1, 214, 196);
-    private static final Color exitButtonColor = new Color (0, 153, 255);
-    private static final Color welcomeLabelColor = new Color (22, 153, 153);
-
     public LoginPanel() {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(Box.createVerticalStrut(40));
+        add(Box.createVerticalStrut(60));
 
-        JLabel welcomeLabel = createLabel("Welcome to QUIZ!", welcomeLabelColor, 20);
-        JLabel enterNameLabel = createLabel("Enter your name:", Color.BLACK, 14);
-        usernameTextField = new JTextField(50);
+        JLabel welcomeLabel = createLabel("Welcome to QUIZ!", 21);
+        JLabel enterNameLabel = createLabel("Username", 14);
+        usernameTextField = new JTextField(30);
 
-        startButton = createButton("START", startButtonColor);
-        exitButton = createButton("EXIT", exitButtonColor);
+        startButton = createButton("START");
+        exitButton = createButton("EXIT");
 
-        usernameTextField.setForeground(Color.BLACK);
+        usernameTextField.setForeground(new Color(0xFF878787, true));
         usernameTextField.setHorizontalAlignment(SwingConstants.CENTER);
+        usernameTextField.setPreferredSize(new Dimension(250, 35));
+        usernameTextField.setMaximumSize(new Dimension(250, 35));
+        usernameTextField.setOpaque(false);
+        Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
+        usernameTextField.setBorder(bottomBorder);
 
         JPanel namePanel = new JPanel();
-        namePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
+        namePanel.setOpaque(false);
         namePanel.add(enterNameLabel);
-        namePanel.add(Box.createHorizontalStrut(5));
         namePanel.add(usernameTextField);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
         buttonPanel.add(startButton);
-        buttonPanel.add(Box.createHorizontalStrut(100));
+        buttonPanel.add(Box.createHorizontalStrut(90));
         buttonPanel.add(exitButton);
 
         add(welcomeLabel);
         add(Box.createVerticalStrut(50));
         add(namePanel);
+        add(Box.createVerticalStrut(50));
         add(buttonPanel);
     }
 
-    private JLabel createLabel(String text, Color color, int size) {
+    private JLabel createLabel(String text, int size) {
         JLabel label = new JLabel(text);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setFont(new Font("Arial", Font.BOLD, size));
-        label.setForeground(color);
+        label.setFont(new Font("Lucida Console", Font.PLAIN, size));
         return label;
     }
 
-    private JButton createButton(String text, Color backgroundColor) {
+    private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(150,40));
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setForeground(Color.WHITE);
-        button.setBackground(backgroundColor);
+        button.setFont(new Font("Lucida Console", Font.PLAIN, 14));
         button.setFocusable(false);
         return button;
     }
@@ -68,5 +71,11 @@ public class LoginPanel extends JPanel {
     public void addActionListener(ActionListener listener){
         startButton.addActionListener(listener);
         exitButton.addActionListener(listener);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage.getImage(), 0, 0, 600, 360, this);
     }
 }

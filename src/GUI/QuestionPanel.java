@@ -20,13 +20,12 @@ public class QuestionPanel extends JPanel {
 
     JLabel questionLabel;
 
-
     public QuestionPanel() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(Box.createVerticalStrut(30));
 
-        questionLabel = new JLabel("In which city does the show 'Friends' take place?");
+        questionLabel = new JLabel();
         questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
@@ -35,10 +34,10 @@ public class QuestionPanel extends JPanel {
         nextQuestionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         nextQuestionButton.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        button1 = new JButton("Los Angeles");
-        button2 = new JButton("Chicago");
-        button3 = new JButton("New York City");
-        button4 = new JButton("Boston");
+        button1 = new JButton();
+        button2 = new JButton();
+        button3 = new JButton();
+        button4 = new JButton();
 
         button1.setPreferredSize(new Dimension(100, 40));
         button2.setPreferredSize(new Dimension(100, 40));
@@ -83,7 +82,7 @@ public class QuestionPanel extends JPanel {
                 nextQuestionButton.setVisible(true);
             } else {
                 clickedButton.setBackground(wrongAnswerColor);
-                button3.setBackground(rightAnswerColor);
+                button3.setBorder(BorderFactory.createLineBorder(rightAnswerColor, 4));
             }
             disableButtons();
             nextQuestionButton.setVisible(true);
