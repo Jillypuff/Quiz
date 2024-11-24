@@ -83,8 +83,8 @@ public class ClientProtocol {
                     System.out.println(playersScore);
                     int opponentsScore = resultResponse.getOpponentResult();
                     System.out.println(opponentsScore);
-                    client.gameGUI.uglyScorePanel.setOpponentScore(playersScore);
-                    client.gameGUI.uglyScorePanel.setPlayerScore(opponentsScore);
+                    client.gameGUI.uglyScorePanel.setOpponentScore(opponentsScore);
+                    client.gameGUI.uglyScorePanel.setPlayerScore(playersScore);
                     if (playersScore > opponentsScore){
                         client.gameGUI.uglyScorePanel.setResultText("YOU WON THE GAME!");
                     }

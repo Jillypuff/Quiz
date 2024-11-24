@@ -21,7 +21,7 @@ public class ConnectedClient implements Runnable {
 
     private String username;
     private int score = 0;
-    private int matchesWon = 0;
+    private int matchesWon = 0; // ??
 
     public ConnectedClient(Socket socket, ServerProtocol protocol){
         this.socket = socket;
