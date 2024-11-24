@@ -47,7 +47,16 @@ public class ClientProtocol {
                 if(response instanceof ResultPackageResponse resultPackageResponse) {
                     int myScore = resultPackageResponse.getYourScore();
                     int opponentScore = resultPackageResponse.getOpponentsScore();
-                    client.gameGUI.uglyScorePanel.setScoreDisplay(myScore, opponentScore);
+                    client.gameGUI.uglyScorePanel.setScoreDisplay(myScore, opponentScore, false);
+                    client.gameGUI.switchPanel(6);
+                }
+            }
+            case FINAL_RESULT -> {
+                System.out.println("Final result");
+                if(response instanceof ResultPackageResponse resultPackageResponse) {
+                    int myFinalScore = resultPackageResponse.getYourScore();
+                    int opponentFinalScore = resultPackageResponse.getOpponentsScore();
+                    client.gameGUI.uglyScorePanel.setScoreDisplay(myFinalScore, opponentFinalScore, true);
                     client.gameGUI.switchPanel(6);
                 }
             }

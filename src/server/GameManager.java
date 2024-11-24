@@ -124,6 +124,10 @@ public class GameManager {
     }
 
     public void sendFinalResult(GameInstance instance) throws IOException {
+        Player currentPlayer = instance.getCurrentTurnHolder();
+        Player opponent = instance.getOpponent(currentPlayer);
 
+        currentPlayer.getConnection().sendResponse(new ResultPackageResponse(ResponseType.FINAL_RESULT, currentPlayer.getTotalScore(), opponent.getTotalScore()));
+        opponent.getConnection().sendResponse(new ResultPackageResponse(ResponseType.FINAL_RESULT, opponent.getTotalScore(), currentPlayer.getTotalScore()));
     }
 }
