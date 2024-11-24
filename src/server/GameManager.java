@@ -11,10 +11,10 @@ import java.util.List;
 
 public class GameManager {
 
-    Server server;
+    private final ClientQueueManager clientQueueManager;
 
-    public GameManager(Server server) {
-        this.server = server;
+    public GameManager(ClientQueueManager clientQueueManager) {
+        this.clientQueueManager = clientQueueManager;
     }
 
     public void handleConnectRequest(ConnectedClient client, String selectedUsername) throws IOException {
@@ -27,20 +27,20 @@ public class GameManager {
     }
 
     public void handleStartGameRequest(ConnectedClient client) throws IOException {
-        server.putInQueue(client);
+        clientQueueManager.putInQueue(client);
         client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
         createGameInstanceIfReady();
     }
 
     public void handleLeaveQueue(ConnectedClient client) throws IOException {
-        server.removeFromQueue(client);
+        clientQueueManager.removeFromQueue(client);
     }
 
     public void createGameInstanceIfReady() throws IOException {
-        if (server.getQueue().size() >= 2) {
+        if (clientQueueManager.getQueue().size() >= 2) {
 
-            ConnectedClient clientOne = server.takeFromQueue();
-            ConnectedClient clientTwo = server.takeFromQueue();
+            ConnectedClient clientOne = clientQueueManager.takeFromQueue();
+            ConnectedClient clientTwo = clientQueueManager.takeFromQueue();
 
             GameInstance instance = new GameInstance();
             instance.setPlayers(clientOne, clientTwo);

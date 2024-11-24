@@ -6,17 +6,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server {
+public class Server implements ClientQueueManager{
 
     private final ServerSocket serverSocket;
     private List<ConnectedClient> queue;
-    private GameManager gameManager;
     private final ServerProtocol protocol;
 
     Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
-        this.gameManager = new GameManager(this);
-        protocol = new ServerProtocol(gameManager);
+        protocol = new ServerProtocol(new GameManager(this));
         queue = new ArrayList<>();
     }
 
@@ -45,18 +43,22 @@ public class Server {
         }
     }
 
+    @Override
     public void putInQueue(ConnectedClient client) {
         queue.add(client);
     }
 
+    @Override
     public List<ConnectedClient> getQueue(){
         return queue;
     }
 
+    @Override
     public ConnectedClient takeFromQueue() {
         return queue.removeFirst();
     }
 
+    @Override
     public void removeFromQueue(ConnectedClient client){
         queue.remove(client);
     }
@@ -66,6 +68,5 @@ public class Server {
         Server server = new Server(serverSocket);
         server.startServer();
     }
-
 }
 
