@@ -14,10 +14,8 @@ public class QuestionDatabase {
     public static List<Question> getQuestionsFromCategory(Category category) {
         List<Question> questions = new ArrayList<>();
 
-        System.out.println("Start reading from file");
         try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            System.out.println("Stream opened, beginning loop");
             while((line = reader.readLine()) != null){
                 String[] parts = line.split(";");
                 if (parts.length>= 6){

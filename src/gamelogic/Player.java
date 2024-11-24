@@ -15,7 +15,7 @@ public class Player {
     }
 
     public String getUsername(){
-        return player.getUsername();
+        return player.getClientUsername();
     }
 
     public ClientConnection getConnection() {

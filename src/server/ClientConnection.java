@@ -18,7 +18,7 @@ public class ClientConnection implements Runnable {
     ServerProtocol protocol;
     GameInstance instance;
 
-    private String username;
+    private String clientUsername;
 
     public ClientConnection(Socket socket, ServerProtocol protocol){
         this.socket = socket;
@@ -71,12 +71,12 @@ public class ClientConnection implements Runnable {
         }
     }
 
-    public String getUsername(){
-        return username;
+    public String getClientUsername(){
+        return clientUsername;
     }
 
-    public void setUsername(String username){
-        this.username = username;
+    public void setClientUsername(String clientUsername){
+        this.clientUsername = clientUsername;
     }
 
     public void setInstance(GameInstance instance) {

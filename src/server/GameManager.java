@@ -18,7 +18,7 @@ public class GameManager {
     }
 
     public void handleConnectRequest(ClientConnection client, String selectedUsername) throws IOException {
-        client.setUsername(selectedUsername);
+        client.setClientUsername(selectedUsername);
         client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
     }
 
