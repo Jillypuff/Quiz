@@ -6,40 +6,43 @@ import java.awt.event.ActionListener;
 
 public class WelcomePanel extends JPanel {
 
+    private final ImageIcon backgroundImage = new ImageIcon("src/GUI/images/Image2.jpg");
+
     private final JLabel welcomePrompt;
     private final JButton newGameButton;
     private final JButton logoutButton;
 
-    private static final Color newGameButtonColor = new Color(1, 214, 196);
-    private static final Color logoutButtonColor = new Color (0, 153, 255);
-
     public WelcomePanel() {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(Box.createVerticalStrut(50));
+        add(Box.createVerticalStrut(60));
 
         welcomePrompt = new JLabel();
+        welcomePrompt.setFont(new Font("Lucida Console", Font.PLAIN, 18));
         welcomePrompt.setAlignmentX(CENTER_ALIGNMENT);
+        getWelcomePrompt().setOpaque(false);
 
-        newGameButton = createButton("New Game", newGameButtonColor);
-        logoutButton = createButton("Logout", logoutButtonColor);
+        newGameButton = createButton("NEW GAME");
+        newGameButton.setFocusable(false);
+        logoutButton = createButton("LOG OUT");
+        logoutButton.setFocusable(false);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(newGameButton);
         buttonPanel.add(Box.createHorizontalStrut(20));
         buttonPanel.add(logoutButton);
+        buttonPanel.setOpaque(false);
 
         add(welcomePrompt);
         add(Box.createVerticalStrut(60));
         add(buttonPanel);
     }
 
-    private JButton createButton(String text, Color backgroundColor) {
+    private JButton createButton(String text) {
         JButton button = new JButton(text);
+        button.setFont(new Font("Lucida Console", Font.PLAIN, 14));
         button.setPreferredSize(new Dimension(150, 40));
-        button.setBackground(backgroundColor);
-        button.setForeground(Color.WHITE);
         return button;
     }
 
@@ -58,5 +61,11 @@ public class WelcomePanel extends JPanel {
     public void addActionListener(ActionListener listener){
         newGameButton.addActionListener(listener);
         logoutButton.addActionListener(listener);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage.getImage(), 0, 0, 600, 360, this);
     }
 }

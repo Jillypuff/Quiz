@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class LoginPanel extends JPanel {
 
-    private final ImageIcon backgroundImage = new ImageIcon("src/GUI/Image.jpg");
+    private final ImageIcon backgroundImage = new ImageIcon("src/GUI/images/Image.jpg");
 
     public JTextField usernameTextField;
     public JButton startButton;
@@ -19,7 +19,7 @@ public class LoginPanel extends JPanel {
         add(Box.createVerticalStrut(60));
 
         JLabel welcomeLabel = createLabel("Welcome to QUIZ!", 21);
-        JLabel enterNameLabel = createLabel("Username", 14);
+        JLabel usernameLabel = createLabel("Enter username", 14);
         usernameTextField = new JTextField(30);
 
         startButton = createButton("START");
@@ -36,7 +36,7 @@ public class LoginPanel extends JPanel {
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
         namePanel.setOpaque(false);
-        namePanel.add(enterNameLabel);
+        namePanel.add(usernameLabel);
         namePanel.add(usernameTextField);
 
         JPanel buttonPanel = new JPanel();

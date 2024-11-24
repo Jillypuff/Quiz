@@ -109,14 +109,7 @@ public class Client implements ActionListener {
                 System.exit(0);
             }
         } else if (button == gameGUI.welcomePanel.getLogoutButton()){
-
-            int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
-                    "Are you sure you want to log out?",
-                    "Log out", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-
-            if (confirm == JOptionPane.YES_OPTION) {
             sendRequest(new Request(RequestType.DISCONNECT));
-            }
         } else if (button == gameGUI.welcomePanel.getNewGameButton()){
             System.out.println("Starting new game");
             sendRequest(new Request(RequestType.START_GAME, username));
