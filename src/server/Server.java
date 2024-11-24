@@ -9,7 +9,7 @@ import java.util.List;
 public class Server implements ClientQueueManager{
 
     private final ServerSocket serverSocket;
-    private List<ConnectedClient> queue;
+    private List<ClientConnection> queue;
     private final ServerProtocol protocol;
 
     Server(ServerSocket serverSocket) {
@@ -24,7 +24,7 @@ public class Server implements ClientQueueManager{
         try {
             while(!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
-                ConnectedClient client = new ConnectedClient(socket, protocol);
+                ClientConnection client = new ClientConnection(socket, protocol);
                 new Thread(client).start();
             }
         } catch (IOException e) {
@@ -44,22 +44,22 @@ public class Server implements ClientQueueManager{
     }
 
     @Override
-    public void putInQueue(ConnectedClient client) {
+    public void putInQueue(ClientConnection client) {
         queue.add(client);
     }
 
     @Override
-    public List<ConnectedClient> getQueue(){
+    public List<ClientConnection> getQueue(){
         return queue;
     }
 
     @Override
-    public ConnectedClient takeFromQueue() {
+    public ClientConnection takeFromQueue() {
         return queue.removeFirst();
     }
 
     @Override
-    public void removeFromQueue(ConnectedClient client){
+    public void removeFromQueue(ClientConnection client){
         queue.remove(client);
     }
 

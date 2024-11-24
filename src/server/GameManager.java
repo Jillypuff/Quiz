@@ -17,30 +17,30 @@ public class GameManager {
         this.clientQueueManager = clientQueueManager;
     }
 
-    public void handleConnectRequest(ConnectedClient client, String selectedUsername) throws IOException {
+    public void handleConnectRequest(ClientConnection client, String selectedUsername) throws IOException {
         client.setUsername(selectedUsername);
         client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
     }
 
-    public void handleDisconnectRequest(ConnectedClient client) {
+    public void handleDisconnectRequest(ClientConnection client) {
 
     }
 
-    public void handleStartGameRequest(ConnectedClient client) throws IOException {
+    public void handleStartGameRequest(ClientConnection client) throws IOException {
         clientQueueManager.putInQueue(client);
         client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
         createGameInstanceIfReady();
     }
 
-    public void handleLeaveQueue(ConnectedClient client) throws IOException {
+    public void handleLeaveQueue(ClientConnection client) throws IOException {
         clientQueueManager.removeFromQueue(client);
     }
 
     public void createGameInstanceIfReady() throws IOException {
         if (clientQueueManager.getQueue().size() >= 2) {
 
-            ConnectedClient clientOne = clientQueueManager.takeFromQueue();
-            ConnectedClient clientTwo = clientQueueManager.takeFromQueue();
+            ClientConnection clientOne = clientQueueManager.takeFromQueue();
+            ClientConnection clientTwo = clientQueueManager.takeFromQueue();
 
             GameInstance instance = new GameInstance();
             instance.setPlayers(clientOne, clientTwo);
@@ -64,7 +64,7 @@ public class GameManager {
 
     }
 
-    public void handleCategoryChosen(ConnectedClient client, Category category) throws IOException {
+    public void handleCategoryChosen(ClientConnection client, Category category) throws IOException {
         GameInstance instance = client.instance;
         instance.getQuizPackage().setCurrentCategory(category);
 
@@ -73,7 +73,7 @@ public class GameManager {
         sendQuestions(instance, questions);
     }
 
-    public void handleRoundFinished(ConnectedClient client, int clientScore) throws IOException {
+    public void handleRoundFinished(ClientConnection client, int clientScore) throws IOException {
         GameInstance instance = client.instance;
         Player currentPlayer = instance.getCurrentTurnHolder();
 

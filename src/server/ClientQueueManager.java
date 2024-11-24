@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface ClientQueueManager {
 
-    void putInQueue(ConnectedClient client);
+    void putInQueue(ClientConnection client);
 
-    List<ConnectedClient> getQueue();
+    List<ClientConnection> getQueue();
 
-    ConnectedClient takeFromQueue();
+    ClientConnection takeFromQueue();
 
-    void removeFromQueue(ConnectedClient client);
+    void removeFromQueue(ClientConnection client);
 }

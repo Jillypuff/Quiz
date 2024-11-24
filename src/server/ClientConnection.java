@@ -8,7 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ConnectedClient implements Runnable {
+public class ClientConnection implements Runnable {
 
     private boolean running = true;
     Socket socket;
@@ -20,7 +20,7 @@ public class ConnectedClient implements Runnable {
 
     private String username;
 
-    public ConnectedClient(Socket socket, ServerProtocol protocol){
+    public ClientConnection(Socket socket, ServerProtocol protocol){
         this.socket = socket;
         this.protocol = protocol;
     }

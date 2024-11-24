@@ -38,7 +38,7 @@ public class ClientProtocol {
                 System.out.println("Questions received");
                 if(response instanceof QuestionPackageResponse questionPackageResponse) {
                     List<Question> questions = questionPackageResponse.getQuestions();
-                    GameRound round = new GameRound(client, questions);
+                    GameQuestionRound round = new GameQuestionRound(client, questions);
                     client.gameGUI.switchPanel(4);
                 }
             }

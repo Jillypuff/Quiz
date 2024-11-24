@@ -14,7 +14,7 @@ public class GameInstance {
         quizPackage = new QuizPackage();
     }
 
-    public void setPlayers(ConnectedClient clientOne, ConnectedClient clientTwo) {
+    public void setPlayers(ClientConnection clientOne, ClientConnection clientTwo) {
         playerOne = new Player(clientOne);
         playerTwo = new Player(clientTwo);
         currentTurnHolder = playerOne;

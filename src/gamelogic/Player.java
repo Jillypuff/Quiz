@@ -1,16 +1,16 @@
 package gamelogic;
 
-import server.ConnectedClient;
+import server.ClientConnection;
 
 public class Player {
 
-    ConnectedClient player;
+    ClientConnection player;
     int roundScore;
     int totalScore;
     public boolean finishedRound = false;
     public boolean isTurnHolder = false;
 
-    public Player(ConnectedClient player) {
+    public Player(ClientConnection player) {
         this.player = player;
     }
 
@@ -18,7 +18,7 @@ public class Player {
         return player.getUsername();
     }
 
-    public ConnectedClient getConnection() {
+    public ClientConnection getConnection() {
         return player;
     }
 

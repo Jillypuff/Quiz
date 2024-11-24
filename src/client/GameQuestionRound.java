@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class GameRound {
+public class GameQuestionRound {
 
     Client client;
     List<JButton> gameButtons;
@@ -18,7 +18,7 @@ public class GameRound {
     int questionNumber = 0;
     Question currentQuestion;
 
-    public GameRound(Client client, List<Question> questions) {
+    public GameQuestionRound(Client client, List<Question> questions) {
         this.client = client;
         this.questions = questions;
         gameButtons = client.gameGUI.gamePanel.getAllAnswerButtons();

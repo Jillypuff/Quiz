@@ -15,7 +15,7 @@ public class ServerProtocol {
         this.gameManager = gameManager;
     }
 
-    public void processRequest(ConnectedClient client, Request request) throws IOException {
+    public void processRequest(ClientConnection client, Request request) throws IOException {
         switch(request.getRequestType()){
             case CONNECT -> {
                 String selectedUsername = request.getUsername();
