@@ -26,8 +26,10 @@ public class GameInstance {
     ConnectedClient spelare2;
 
     public GameInstance(ConnectedClient spelare1, ConnectedClient spelare2) {
+
         availableCategories = new ArrayList<>(List.of(Category.values()));
         properties = new Properties();
+
         loadProperties();
 
         gameBoard = new QuestionInPanel[amountOfQuestions][amountOfRounds];
@@ -63,12 +65,14 @@ public class GameInstance {
     public void gameBoardSetUpp(QuestionInPanel[][] gameBoard, String player1, String player2){
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard[i].length; j++) {
+
                 QuestionInPanel questionInPanel = new QuestionInPanel();
                 gameBoard[i][j] = questionInPanel;
-                gameBoard[j][i].setCorrectPlayer1(false);
-                gameBoard[j][i].setCorrectPlayer2(false);
-                gameBoard[j][i].setPlayer1(player1);
-                gameBoard[j][i].setPlayer2(player2);
+                gameBoard[i][j].setCorrectPlayer1(false);
+                gameBoard[i][j].setCorrectPlayer2(false);
+                gameBoard[i][j].setPlayer1(player1);
+                gameBoard[i][j].setPlayer2(player2);
+
             }
         }
     }
@@ -107,7 +111,7 @@ public class GameInstance {
         this.amountOfRounds = Integer.parseInt(this.properties.getProperty("amountOfRounds", "2"));
 
         //felsök
-        System.out.println("Amount of questions:"+amountOfQuestions+"\nAmount of rounds:"+amountOfRounds);
+        //System.out.println("Amount of questions:"+amountOfQuestions+"\nAmount of rounds:"+amountOfRounds);
 
     }
 
