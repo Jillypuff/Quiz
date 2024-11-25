@@ -2,10 +2,12 @@ package Modules;
 
 import gamelogic.Question;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionInPanel {
+public class QuestionInPanel implements Serializable {
+
     Question question;
     protected String receivedAnswerPlayer1;
     protected String receivedAnswerPlayer2;
@@ -17,7 +19,7 @@ public class QuestionInPanel {
     // Variables for players to select category from list
     protected Category valdkategori;
     // ska uppdateras efter varje runda, och den valda ska tas ut ur listan med alla möjliga kategorier
-    protected List<Category> randomCategoryChoices=new ArrayList<Category>();
+    protected List<Category> randomCategoryChoices = new ArrayList<>();
 
     public Question getQuestion() {
         return question;
@@ -76,7 +78,7 @@ public class QuestionInPanel {
     }
 
     public void setRandomCategoryChoices(List<Category> randomCategoryChoices) {
-        this.randomCategoryChoices = randomCategoryChoices;
+        this.randomCategoryChoices = new ArrayList<>(randomCategoryChoices);
     }
 
     public String getReceivedAnswerPlayer1() {

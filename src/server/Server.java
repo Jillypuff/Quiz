@@ -1,9 +1,11 @@
 package server;
 
+import Modules.Category;
 import Modules.QuestionInPanel;
 import Modules.ReponseType;
 import Modules.Response;
 import gamelogic.GameInstance;
+import gamelogic.Question;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -45,11 +47,17 @@ public class Server {
 
 
             GameInstance instance = new GameInstance(player1, player2);
-            System.out.println("gameboardproblem");
             QuestionInPanel[][] gameBoard = instance.getSpelbrade();
-            System.out.println("category problem");
 
-            gameBoard[0][0].setRandomCategoryChoices(instance.randomizeCategories());
+            List<Category> categories = instance.randomizeCategories();
+
+            QuestionInPanel questionInPanel = new QuestionInPanel();
+            gameBoard[0][0] = questionInPanel;
+            gameBoard[0][0].setRandomCategoryChoices(categories);
+
+            gameBoard[0][0].setPlayer1(player1.username);
+            gameBoard[0][0].setPlayer2(player2.username);
+
             System.out.println("Players found: " + player1.username + " vs " + player2.username);
             player2.sendResponse(new Response(ReponseType.GAME, gameBoard));
             player1.sendResponse(new Response(ReponseType.GAME, gameBoard));

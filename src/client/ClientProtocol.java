@@ -35,6 +35,9 @@ public class ClientProtocol {
 
                 if(isFirstRoundAndImPlayer1(gameBoard,client)){
                     client.gameGUI.switchPanel(3);
+                    client.gameGUI.categoryPanel.getCategory1().setText(gameBoard[0][0].getRandomCategoryChoices().get(0).name());
+                    client.gameGUI.categoryPanel.getCategory2().setText(gameBoard[0][0].getRandomCategoryChoices().get(1).name());
+                    client.gameGUI.categoryPanel.getCategory3().setText(gameBoard[0][0].getRandomCategoryChoices().get(2).name());
                 }else{
                     client.gameGUI.switchPanel(6);
                     client.gameGUI.gameBoardPanel.uppdateGameBoardPannel(gameBoard);
