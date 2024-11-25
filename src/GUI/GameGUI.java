@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.panels.*;
 import client.Client;
 import javax.swing.*;
 import java.awt.event.ActionListener;

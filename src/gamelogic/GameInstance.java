@@ -18,7 +18,8 @@ public class GameInstance {
     ConnectedClient spelare1;
     ConnectedClient spelare2;
 
-    GameInstance(ConnectedClient spelare1, ConnectedClient spelare2) {
+    public GameInstance(ConnectedClient spelare1, ConnectedClient spelare2) {
+        availableCategories = new ArrayList<>(List.of(Category.values()));
         properties = new Properties();
         loadProperties();
 

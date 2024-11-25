@@ -2,7 +2,7 @@ package server;
 
 import Modules.ReponseType;
 import Modules.Response;
-import gamelogic.CurrentGame;
+import gamelogic.GameInstance;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -42,22 +42,12 @@ public class Server {
             ConnectedClient player1 = queue.removeFirst();
             ConnectedClient player2 = queue.removeFirst();
 
-            System.out.println("Players found: " + player1.username + " " + player2.username);
+            System.out.println("Players found: " + player1.username + " vs " + player2.username);
             GameInstance instance = new GameInstance(player1, player2);
+            QuestionInPanel[][] gameBoard = instance.getSpelbrade();
 
-            player1.currentGame = instance.game;
-            player2.currentGame = instance.game;
-
-            System.out.println("Trying to update current set of categories");
-            instance.game.updateCurrentSetOfCategories();
-            System.out.println("Fetching current game from instance");
-            CurrentGame game = instance.game;
-
-            System.out.println("Sending other-players-turn to " + player2.username);
-            player2.sendResponse(new Response(ReponseType.OTHER_PLAYERS_TURN));
-
-            System.out.println("Sending your-turn to " + player1.username);
-            player1.sendResponse(new Response(ReponseType.YOUR_TURN, game.getCurrentSetOfCategories()));
+            player2.sendResponse(new Response(ReponseType.GAME, gameBoard));
+            player1.sendResponse(new Response(ReponseType.GAME, gameBoard));
         }
     }
 

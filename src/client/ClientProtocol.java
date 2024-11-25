@@ -55,5 +55,9 @@ public class ClientProtocol {
             }
         }
     }
+    //Skriv metoder här *****Joakim***** Till GAME case
+
+    public void 
+
 
 }

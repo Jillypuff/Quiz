@@ -8,10 +8,18 @@ public class QuestionInPanel {
     protected int recivedAwnser2;
     protected boolean isCorrectPlayer1;
     protected boolean isCorrectPlayer2;
+    protected String player1;
+    protected String player2;
+
+    // Variables for players to select category from list
     protected Category valdkategori;
 
     public Question getQuestion() {
         return question;
+    }
+
+    boolean checkAnswer(String answer){
+        return checkAnswer(answer);
     }
 
     public void setQuestion(Question question) {
