@@ -18,8 +18,8 @@ public class LoginPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(Box.createVerticalStrut(60));
 
-        JLabel welcomeLabel = createLabel("Welcome to QUIZ!", 21);
-        JLabel usernameLabel = createLabel("Enter username", 14);
+        JLabel welcomeLabel = createLabel("QUIZ!", "Arial Black", 26);
+        JLabel usernameLabel = createLabel("Enter username", "Lucida Console", 12);
         usernameTextField = new JTextField(30);
 
         startButton = createButton("START");
@@ -53,17 +53,17 @@ public class LoginPanel extends JPanel {
         add(buttonPanel);
     }
 
-    private JLabel createLabel(String text, int size) {
+    private JLabel createLabel(String text, String font, int size) {
         JLabel label = new JLabel(text);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setFont(new Font("Lucida Console", Font.PLAIN, size));
+        label.setFont(new Font(font, Font.PLAIN, size));
         return label;
     }
 
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(150,40));
-        button.setFont(new Font("Lucida Console", Font.PLAIN, 14));
+        button.setFont(new Font("Arial Black", Font.PLAIN, 14));
         button.setFocusable(false);
         return button;
     }
