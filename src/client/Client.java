@@ -85,13 +85,13 @@ public class Client {
     }
 
     public void addActionListenersToButtons(){
-        gameGUI.loginPanel.loginButton.addActionListener(e->{
+        gameGUI.loginPanel.startButton.addActionListener(e->{
             String givenUsername = gameGUI.loginPanel.usernameTextField.getText();
             username = givenUsername;
             System.out.println(givenUsername + " sending connect-request");
             sendRequest(new Request(RequestType.CONNECT, givenUsername));
         });
-        gameGUI.loginPanel.exitGameButton.addActionListener(e->{
+        gameGUI.loginPanel.exitButton.addActionListener(e->{
             System.out.println("Shutting down");
             System.exit(0);
         });
