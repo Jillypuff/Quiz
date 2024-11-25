@@ -1,4 +1,6 @@
-package gamelogic;
+package Modules;
+
+import gamelogic.Question;
 
 public class QuestionInPannel {
     Question question;
