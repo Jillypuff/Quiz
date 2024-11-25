@@ -1,4 +1,4 @@
-package gamelogic;
+package Modules;
 
 public enum Category {
     SCIENCE,

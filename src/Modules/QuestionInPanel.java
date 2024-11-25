@@ -2,7 +2,7 @@ package Modules;
 
 import gamelogic.Question;
 
-public class QuestionInPannel {
+public class QuestionInPanel {
     Question question;
     protected int recivedAwnser1;
     protected int recivedAwnser2;

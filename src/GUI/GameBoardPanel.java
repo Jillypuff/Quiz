@@ -1,7 +1,7 @@
 package GUI;
 
-import gamelogic.Category;
-import gamelogic.QuestionInPannel;
+import Modules.Category;
+import Modules.QuestionInPanel;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -13,7 +13,7 @@ public class GameBoardPanel {                           //DETTA ÄR EN TESTKLASS
 
 
 
-    public GameBoardPanel(QuestionInPannel[][] gameBorad){
+    public GameBoardPanel(QuestionInPanel[][] gameBorad){
         JFrame frame = new JFrame("GameBoard");
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -114,11 +114,11 @@ public class GameBoardPanel {                           //DETTA ÄR EN TESTKLASS
     public static void main(String[] args) {
 
 
-        QuestionInPannel[][] testBoard = new QuestionInPannel[4][3];
+        QuestionInPanel[][] testBoard = new QuestionInPanel[4][3];
 
         for (int i = 0; i < testBoard.length; i++) {
             for (int j = 0; j < testBoard[0].length; j++) {
-                testBoard[i][j] = new QuestionInPannel();
+                testBoard[i][j] = new QuestionInPanel();
             }
         }
 

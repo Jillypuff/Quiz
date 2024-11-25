@@ -1,8 +1,8 @@
 package client;
 
-import gamelogic.Category;
+import Modules.Category;
 import gamelogic.Question;
-import server.Response;
+import Modules.Response;
 
 import javax.swing.*;
 import java.util.List;

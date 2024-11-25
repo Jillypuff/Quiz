@@ -1,6 +1,4 @@
-package client;
-
-import gamelogic.Category;
+package Modules;
 
 import java.io.Serializable;
 

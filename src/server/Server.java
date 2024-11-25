@@ -1,5 +1,7 @@
 package server;
 
+import Modules.ReponseType;
+import Modules.Response;
 import gamelogic.CurrentGame;
 
 import java.io.IOException;

@@ -1,7 +1,8 @@
 package server;
 
-import client.Request;
-import gamelogic.Category;
+import Modules.ReponseType;
+import Modules.Request;
+import Modules.Response;
 import gamelogic.Question;
 
 import java.io.IOException;

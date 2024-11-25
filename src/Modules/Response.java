@@ -1,6 +1,5 @@
-package server;
+package Modules;
 
-import gamelogic.Category;
 import gamelogic.CurrentGame;
 import gamelogic.Question;
 

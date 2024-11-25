@@ -1,4 +1,4 @@
-package server;
+package Modules;
 
 public enum ReponseType {
     CLIENT_CONNECTED,

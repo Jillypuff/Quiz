@@ -1,4 +1,4 @@
-package client;
+package Modules;
 
 public enum RequestType {
     CONNECT,

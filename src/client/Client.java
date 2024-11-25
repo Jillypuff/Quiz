@@ -1,8 +1,10 @@
 package client;
 
 import GUI.GameGUI;
-import gamelogic.Category;
-import server.Response;
+import Modules.Request;
+import Modules.RequestType;
+import Modules.Category;
+import Modules.Response;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
