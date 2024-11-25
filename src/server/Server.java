@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Server implements ClientQueueManager{
+public class Server implements ClientQueueManager {
 
     private final ServerSocket serverSocket;
     private List<ClientConnection> queue;
