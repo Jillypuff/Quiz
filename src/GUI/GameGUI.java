@@ -3,7 +3,6 @@ package GUI;
 import GUI.panels.*;
 import client.Client;
 import javax.swing.*;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class GameGUI extends JFrame {
@@ -50,9 +49,5 @@ public class GameGUI extends JFrame {
         }
         revalidate();
         repaint();
-    }
-
-    public void actionListener(ActionListener actionListener){
-
     }
 }

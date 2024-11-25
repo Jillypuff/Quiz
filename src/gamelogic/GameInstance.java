@@ -1,10 +1,14 @@
 package gamelogic;
 
+import Modules.Category;
 import Modules.QuestionInPanel;
 import server.ConnectedClient;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 public class GameInstance {
@@ -14,6 +18,7 @@ public class GameInstance {
     private Properties properties;
     private QuestionInPanel[][] Spelbrade;
     private int round;
+    protected List<Category> availableCategories;
 
     ConnectedClient spelare1;
     ConnectedClient spelare2;
@@ -33,7 +38,12 @@ public class GameInstance {
         loadProperties();
     }
 
-
+    // Används för att setta kategorilistan i questioninpanel objektet
+    public List<Category> randomizeCategories(){
+        Collections.shuffle(availableCategories);
+        List<Category> setOfCategories = availableCategories.subList(0,3);
+        return new ArrayList<>(setOfCategories);
+    }
 
     //metod för att läsa in sparad sessionsid
     //metod för att uppdatera sessionsid tar int (nuvarande sessions id)

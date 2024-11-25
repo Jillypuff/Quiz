@@ -10,6 +10,8 @@ public enum ReponseType {
     YOUR_TURN,
     OTHER_PLAYERS_TURN,
 
+    GAME_STARTED,
+    GAME,
     QUESTION,
     SEND_ANSWER,
 

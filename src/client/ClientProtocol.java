@@ -1,6 +1,8 @@
 package client;
 
+import GUI.panels.GameBoardPanel;
 import Modules.Category;
+import Modules.QuestionInPanel;
 import gamelogic.Question;
 import Modules.Response;
 
@@ -24,8 +26,14 @@ public class ClientProtocol {
             }
             case QUEUE_JOINED -> {
                 System.out.println("Received queue joined");
-                client.gameGUI.switchPanel(5);
+                client.gameGUI.switchPanel(2);
+
             }
+            case GAME-> {
+                QuestionInPanel[][] gameBoard = response.getGameBoard();
+
+            }
+            /*
             case YOUR_TURN -> {
                 System.out.println("Received your turn");
                 List<Category> categoryChoices = response.getSetOfCategories();
@@ -35,11 +43,13 @@ public class ClientProtocol {
 
                 client.gameGUI.switchPanel(3);
             }
+            */
             case OTHER_PLAYERS_TURN -> {
                 System.out.println("Received other players turn");
                 client.gameGUI.switchPanel(5);
                 client.gameGUI.waitingPanel.getQueuedLabel().setText("Waiting for other players turn");
             }
+            /*
             case QUESTION -> {
                 System.out.println("Received question");
                 Question questionObj = response.getQuestion();
@@ -53,6 +63,7 @@ public class ClientProtocol {
                 client.gameGUI.questionPanel.getQuestionLabel().setText(question);
                 client.gameGUI.switchPanel(4);
             }
+            */
         }
     }
     //Skriv metoder här *****Joakim***** Till GAME case

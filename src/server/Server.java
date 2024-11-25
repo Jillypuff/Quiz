@@ -1,5 +1,6 @@
 package server;
 
+import Modules.QuestionInPanel;
 import Modules.ReponseType;
 import Modules.Response;
 import gamelogic.GameInstance;
@@ -77,3 +78,4 @@ public class Server {
         server.startServer();
     }
 }
+

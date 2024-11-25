@@ -2,10 +2,12 @@ package Modules;
 
 import gamelogic.Question;
 
+import java.util.List;
+
 public class QuestionInPanel {
     Question question;
-    protected int recivedAwnser1;
-    protected int recivedAwnser2;
+    protected int receivedAnswer1;
+    protected int receivedAnswer2;
     protected boolean isCorrectPlayer1;
     protected boolean isCorrectPlayer2;
     protected String player1;
@@ -13,6 +15,8 @@ public class QuestionInPanel {
 
     // Variables for players to select category from list
     protected Category valdkategori;
+    // ska uppdateras efter varje runda, och den valda ska tas ut ur listan med alla möjliga kategorier
+    protected List<Category> randomCategoryChoices;
 
     public Question getQuestion() {
         return question;
@@ -26,12 +30,12 @@ public class QuestionInPanel {
         this.question = question;
     }
 
-    public int getRecivedAwnser() {
-        return recivedAwnser1;
+    public int getReceivedAnswer1() {
+        return receivedAnswer1;
     }
 
-    public void setRecivedAwnser(int recivedAwnser) {
-        this.recivedAwnser1 = recivedAwnser;
+    public void setReceivedAnswer1(int receivedAnswer) {
+        this.receivedAnswer1 = receivedAnswer;
     }
 
     public boolean isCorrectPlayer1() {
