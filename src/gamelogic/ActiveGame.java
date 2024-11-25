@@ -1,5 +1,7 @@
 package gamelogic;
 
+import server.ConnectedClient;
+
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -14,11 +16,12 @@ public class ActiveGame {
     private int antalKategoriSet;
     private Properties properties;
     private QuestionInPannel[][] Spelbrade;
+    private int round;
 
-    ServerSocket spelare1;
-    ServerSocket spelare2;
+    ConnectedClient spelare1;
+    ConnectedClient spelare2;
 
-    ActiveGame(ServerSocket spelare1, ServerSocket spelare2) {
+    ActiveGame(ConnectedClient spelare1, ConnectedClient spelare2) {
         properties = new Properties();
         loadProperties();
         uppdateSpelNummerInProperties();
@@ -26,7 +29,6 @@ public class ActiveGame {
         Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
         //spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
         //gameState = new int[(antalFragor*2)][antalKategoriSet];
-
     }
 
     ActiveGame(){
@@ -98,4 +100,7 @@ public class ActiveGame {
         );
     }
 
+    public QuestionInPannel[][] getSpelbrade() {
+        return Spelbrade;
+    }
 }
