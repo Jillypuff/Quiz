@@ -16,7 +16,7 @@ public class QuizPackage implements Serializable {
     // läs in från properties?
     final int AMOUNT_OF_QUESTIONS_PER_ROUND = 3;
     final int AMOUNT_OF_CATEGORY_ALTERNATIVES = 3;
-    final int MAX_ROUNDS_PER_GAME = 4;
+    final int MAX_ROUNDS_PER_GAME = 2;
 
 
     public QuizPackage(){

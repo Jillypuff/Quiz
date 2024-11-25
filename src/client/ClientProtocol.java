@@ -44,7 +44,14 @@ public class ClientProtocol {
             }
             case GAME_STARTED -> {
                 System.out.println("Game started");
-                client.gameGUI.switchPanel(7);
+                client.inActiveGame = true;
+                if (response.isMyTurn()){
+                    client.gameGUI.switchPanel(7);
+                }
+                else{
+                    client.gameGUI.waitingPanel.setUpWaitingForYourTurnPanel();
+                    client.gameGUI.switchPanel(5);
+                }
                 //byt till Du är i ett spel! starta runda, knapp
             }
             case ROUND_RESULT -> {
@@ -58,6 +65,7 @@ public class ClientProtocol {
             }
             case FINAL_RESULT -> {
                 System.out.println("Final result");
+                client.inActiveGame = false;
                 if(response instanceof ResultPackageResponse resultPackageResponse) {
                     int myFinalScore = resultPackageResponse.getYourScore();
                     int opponentFinalScore = resultPackageResponse.getOpponentsScore();

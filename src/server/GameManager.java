@@ -48,8 +48,11 @@ public class GameManager {
             clientOne.setInstance(instance);
             clientTwo.setInstance(instance);
 
-            clientOne.sendResponse(new Response(ResponseType.GAME_STARTED));
-            clientTwo.sendResponse(new Response(ResponseType.GAME_STARTED));
+
+            // La till variabel i responseobjektet som visar vems tur det är
+            // kan användas hos klienten för att titta vilken panel som ska visas
+            clientOne.sendResponse(new Response(ResponseType.GAME_STARTED, true));
+            clientTwo.sendResponse(new Response(ResponseType.GAME_STARTED, false));
         }
     }
 

@@ -21,6 +21,7 @@ public class Client {
     private ObjectInputStream in;
     String username;
     GameGUI gameGUI;
+    boolean inActiveGame = false;
     boolean running = true;
 
     public Client(Socket socket){
@@ -109,7 +110,12 @@ public class Client {
         });
         // Behöver urskilja när det är slutet på spelet. olika paneler för det? olika knappar?
         gameGUI.uglyScorePanel.getContinueButton().addActionListener(e ->{
-            sendRequest(new Request(RequestType.START_ROUND, username));
+            if (inActiveGame){
+                sendRequest(new Request(RequestType.START_ROUND, username));
+            }
+            else{
+                gameGUI.switchPanel(2);
+            }
         });
         gameGUI.inGamePanel.getStartRoundButton().addActionListener(e->{
             System.out.println("Starting round");

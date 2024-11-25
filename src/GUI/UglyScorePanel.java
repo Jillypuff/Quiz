@@ -63,6 +63,8 @@ public class UglyScorePanel extends JPanel {
             String resultText = (gameOver) ? "Game ended on a draw" : "It was a draw.";
             resultLabel.setText(resultText);
         }
+        String buttonText = (gameOver) ? "EXIT GAME" : "CONTINUE";
+        continueButton.setText(buttonText);
     }
 
 
