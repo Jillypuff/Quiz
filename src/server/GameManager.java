@@ -32,7 +32,7 @@ public class GameManager {
         createGameInstanceIfReady();
     }
 
-    public void handleLeaveQueue(ClientConnection client) throws IOException {
+    public void handleLeaveQueue(ClientConnection client) {
         clientQueueManager.removeFromQueue(client);
     }
 
@@ -48,20 +48,25 @@ public class GameManager {
             clientOne.setInstance(instance);
             clientTwo.setInstance(instance);
 
-            startRound(instance);
+            clientOne.sendResponse(new Response(ResponseType.GAME_STARTED));
+            clientTwo.sendResponse(new Response(ResponseType.GAME_STARTED));
         }
     }
 
-    public void startRound(GameInstance instance) throws IOException {
+    public void startRoundVersion2(ClientConnection client) throws IOException {
+        GameInstance instance = client.instance;
         instance.getQuizPackage().loadSetOfCategories();
         List<Category> setOfCategories = instance.getQuizPackage().getCurrentSetOfCategories();
 
-        Player currentPlayer = instance.getCurrentTurnHolder();
-        Player opponent = instance.getOpponent(currentPlayer);
+        Player turnHolder = instance.getCurrentTurnHolder();
+        Player waitingPlayer = instance.getOpponent(turnHolder);
 
-        currentPlayer.getConnection().sendResponse(new CategoryPackageResponse(ResponseType.ROUND_STARTED, currentPlayer.getUsername(), opponent.getUsername(), setOfCategories));
-        opponent.getConnection().sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
-
+        if (turnHolder.getConnection().equals(client)){
+            turnHolder.getConnection().sendResponse(new CategoryPackageResponse(ResponseType.ROUND_STARTED, turnHolder.getUsername(), waitingPlayer.getUsername(), setOfCategories));
+        }
+        else{
+            waitingPlayer.getConnection().sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+        }
     }
 
     public void handleCategoryChosen(ClientConnection client, Category category) throws IOException {
@@ -86,19 +91,9 @@ public class GameManager {
             System.out.println("Both players finished round");
             instance.incrementRoundsFinished();
             sendRoundResult(instance);
-
             instance.resetRound();
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             if (instance.isGameOver()) {
                 sendFinalResult(instance);
-            } else {
-                startRound(instance);
             }
         } else {
             instance.switchTurn();
@@ -131,3 +126,60 @@ public class GameManager {
         opponent.getConnection().sendResponse(new ResultPackageResponse(ResponseType.FINAL_RESULT, opponent.getTotalScore(), currentPlayer.getTotalScore()));
     }
 }
+
+
+//public void handleRoundFinished(ClientConnection client, int clientScore) throws IOException {
+//    GameInstance instance = client.instance;
+//    Player currentPlayer = instance.getCurrentTurnHolder();
+//
+//    currentPlayer.setRoundScore(clientScore);
+//    currentPlayer.addToTotalScore(clientScore);
+//
+//    currentPlayer.setHasFinishedRound(true);
+//
+//    if (instance.bothPlayersFinishedRound()) {
+//        System.out.println("Both players finished round");
+//        instance.incrementRoundsFinished();
+//        sendRoundResult(instance);
+//
+//        instance.resetRound();
+//
+////            try {
+////                Thread.sleep(5000);
+////            } catch (InterruptedException e) {
+////                e.printStackTrace();
+////            }
+//
+//        if (instance.isGameOver()) {
+//            sendFinalResult(instance);
+//        }
+////            else {
+////                startRound(instance);
+////            }
+//    } else {
+//        instance.switchTurn();
+//        List<Question> currentQuestions = instance.getQuizPackage().getCurrentSetOfQuestions();
+//        sendQuestions(instance, currentQuestions);
+//    }
+//}
+
+
+
+//    public void handleStartRoundRequest(ClientConnection client) throws IOException {
+//        GameInstance instance = client.instance;
+//        startRound(instance);
+//    }
+//
+
+// Nu verkar den andra usern bestämma när rundan ska starta, detta funkar ej?
+//    public void startRound(GameInstance instance) throws IOException {
+//        instance.getQuizPackage().loadSetOfCategories();
+//        List<Category> setOfCategories = instance.getQuizPackage().getCurrentSetOfCategories();
+//
+//        Player currentPlayer = instance.getCurrentTurnHolder();
+//        Player opponent = instance.getOpponent(currentPlayer);
+//
+//        currentPlayer.getConnection().sendResponse(new CategoryPackageResponse(ResponseType.ROUND_STARTED, currentPlayer.getUsername(), opponent.getUsername(), setOfCategories));
+//        opponent.getConnection().sendResponse(new Response(ResponseType.OTHER_PLAYERS_TURN));
+//
+//    }

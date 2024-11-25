@@ -107,8 +107,13 @@ public class Client {
             sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
             gameGUI.switchPanel(2);
         });
+        // Behöver urskilja när det är slutet på spelet. olika paneler för det? olika knappar?
         gameGUI.uglyScorePanel.getContinueButton().addActionListener(e ->{
-
+            sendRequest(new Request(RequestType.START_ROUND, username));
+        });
+        gameGUI.inGamePanel.getStartRoundButton().addActionListener(e->{
+            System.out.println("Starting round");
+            sendRequest(new Request(RequestType.START_ROUND, username));
         });
 
         addActionListenersToCategoryButtons();

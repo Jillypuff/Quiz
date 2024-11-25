@@ -27,6 +27,9 @@ public class ServerProtocol {
             case START_GAME -> {
                 gameManager.handleStartGameRequest(client);
             }
+            case START_ROUND ->{
+                gameManager.startRoundVersion2(client);
+            }
             case CATEGORY_CHOSEN -> {
                 if (request instanceof StartRoundRequest startRoundRequest) {
                     Category selectedCategory = startRoundRequest.getSelectedCategory();

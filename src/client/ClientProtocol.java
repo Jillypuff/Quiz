@@ -42,6 +42,11 @@ public class ClientProtocol {
                     client.gameGUI.switchPanel(4);
                 }
             }
+            case GAME_STARTED -> {
+                System.out.println("Game started");
+                client.gameGUI.switchPanel(7);
+                //byt till Du är i ett spel! starta runda, knapp
+            }
             case ROUND_RESULT -> {
                 System.out.println("Round result");
                 if(response instanceof ResultPackageResponse resultPackageResponse) {
