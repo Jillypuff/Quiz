@@ -7,10 +7,10 @@ import java.io.IOException;
 
 public class GameGUI extends JFrame {
 
-    public GamePanel gamePanel;
+    public QuestionPanel questionPanel;
     public CategoryPanel categoryPanel;
     public LoginPanel loginPanel;
-    public MainPanel mainPanel;
+    public WelcomePanel welcomePanel;
     public WaitingPanel waitingPanel;
 
     Client client;
@@ -21,20 +21,19 @@ public class GameGUI extends JFrame {
         add(loginPanel);
         setupMainFrame();
         loadPanel();
-//        Thread.sleep(5000);
-//        switchPanel(2);
     }
 
     public void setupMainFrame(){
-        setSize(800, 600);
+        setSize(600, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+        setResizable(false);
     }
 
     public void loadPanel(){
-        mainPanel = new MainPanel();
-        gamePanel = new GamePanel();
+        welcomePanel = new WelcomePanel();
+        questionPanel = new QuestionPanel();
         categoryPanel = new CategoryPanel();
         waitingPanel = new WaitingPanel();
     }
@@ -43,9 +42,9 @@ public class GameGUI extends JFrame {
         getContentPane().removeAll();
         switch (panel){
             case 1 -> this.add(loginPanel);
-            case 2 -> this.add(mainPanel);
+            case 2 -> this.add(welcomePanel);
             case 3 -> this.add(categoryPanel);
-            case 4 -> this.add(gamePanel);
+            case 4 -> this.add(questionPanel);
             case 5 -> this.add(waitingPanel);
         }
         revalidate();

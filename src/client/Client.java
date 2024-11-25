@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Client implements ActionListener {
@@ -35,9 +34,9 @@ public class Client implements ActionListener {
 
     public void addListeners(){
         gameGUI.loginPanel.addActionListener(this);
-        gameGUI.mainPanel.addActionListener(this);
+        gameGUI.welcomePanel.addActionListener(this);
         gameGUI.waitingPanel.addActionListener(this);
-        gameGUI.gamePanel.addActionListeners(this);
+        gameGUI.questionPanel.addActionListeners(this);
         addActionListenersToCategoryButtons();
     }
 
@@ -90,20 +89,32 @@ public class Client implements ActionListener {
     }
 
     public void sendRequest(JButton button) throws IOException {
-        if(button == gameGUI.loginPanel.loginButton){
+        if (button == gameGUI.loginPanel.startButton) {
+            String username = gameGUI.loginPanel.usernameTextField.getText().trim();
+            if (username.isEmpty()) {
+                JOptionPane.showMessageDialog(gameGUI.loginPanel,
+                        "You must enter a username!",
+                        "Input Error",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             System.out.println("Sending connect-request");
             sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
-        } else if (button == gameGUI.loginPanel.exitGameButton){
-            System.out.println("Shutting down");
-            System.exit(0);
-        } else if (button == gameGUI.mainPanel.logoutButton){
-            System.out.println("Logging out");
+        } else if (button == gameGUI.loginPanel.exitButton){
+            int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
+                    "Are you sure you want to exit?",
+                    "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        } else if (button == gameGUI.welcomePanel.getLogoutButton()){
             sendRequest(new Request(RequestType.DISCONNECT));
-        } else if (button == gameGUI.mainPanel.newGameButton){
+        } else if (button == gameGUI.welcomePanel.getNewGameButton()){
             System.out.println("Starting new game");
             sendRequest(new Request(RequestType.START_GAME, username));
         }
-        else if (button == gameGUI.waitingPanel.leaveQueueButton){
+        else if (button == gameGUI.waitingPanel.getLeaveGameButton()){
             System.out.println("Leaving queue");
             sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
             gameGUI.switchPanel(2);
@@ -122,7 +133,7 @@ public class Client implements ActionListener {
     }
 
 //    public void addActionListenerToAnswerButtons(){
-//        List<JButton> buttons = gameGUI.gamePanel.getAllAnswerButtons();
+//        List<JButton> buttons = gameGUI.questionPanel.getAllAnswerButtons();
 //        for(JButton button : buttons){
 //            button.addActionListener(e -> {
 //                sendRequest(new Request(RequestType.ANSWER, username));

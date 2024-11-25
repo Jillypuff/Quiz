@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GamePanel extends JPanel {
-
-    // static ImageIcon icon = new ImageIcon("src/CategoryLogo.png");
+public class QuestionPanel extends JPanel {
 
     Color rightAnswerColor = new Color(1, 172, 1);
     Color wrongAnswerColor = new Color(255, 0, 0);
@@ -22,35 +20,35 @@ public class GamePanel extends JPanel {
 
     JLabel questionLabel;
 
+    public QuestionPanel() {
 
-    public GamePanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         add(Box.createVerticalStrut(30));
 
-        questionLabel = new JLabel("In which city does the show 'Friends' take place?");
+        questionLabel = new JLabel();
         questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        questionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        questionLabel.setFont(new Font("Malgun Gothic", Font.PLAIN, 16));
 
-        nextQuestionButton = new JButton("Next Question");
+        nextQuestionButton = new JButton("next question");
         nextQuestionButton.setVisible(false);
         nextQuestionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        nextQuestionButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        nextQuestionButton.setFont(new Font("Malgun Gothic", Font.PLAIN, 14));
+        nextQuestionButton.setPreferredSize(new Dimension(50, 30));
 
-        button1 = new JButton("Los Angeles");
-        button2 = new JButton("Chicago");
-        button3 = new JButton("New York City");
-        button4 = new JButton("Boston");
+        button1 = new JButton();
+        button2 = new JButton();
+        button3 = new JButton();
+        button4 = new JButton();
 
-        button1.setPreferredSize(new Dimension(100, 40));
-        button2.setPreferredSize(new Dimension(100, 40));
-        button3.setPreferredSize(new Dimension(100, 40));
-        button4.setPreferredSize(new Dimension(100, 40));
+        button1.setPreferredSize(new Dimension(90, 30));
+        button2.setPreferredSize(new Dimension(90, 30));
+        button3.setPreferredSize(new Dimension(90, 30));
+        button4.setPreferredSize(new Dimension(90, 30));
 
-        button1.setFont(new Font("Arial", Font.PLAIN, 18));
-        button2.setFont(new Font("Arial", Font.PLAIN, 18));
-        button3.setFont(new Font("Arial", Font.PLAIN, 18));
-        button4.setFont(new Font("Arial", Font.PLAIN, 18));
+        button1.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
+        button2.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
+        button3.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
+        button4.setFont(new Font("Malgun Gothic", Font.PLAIN, 18));
 
         button1.setFocusable(Boolean.FALSE);
         button2.setFocusable(Boolean.FALSE);
@@ -85,9 +83,10 @@ public class GamePanel extends JPanel {
                 nextQuestionButton.setVisible(true);
             } else {
                 clickedButton.setBackground(wrongAnswerColor);
-                button3.setBackground(rightAnswerColor);
-                nextQuestionButton.setVisible(true);
+                button3.setBorder(BorderFactory.createLineBorder(rightAnswerColor, 4));
             }
+            disableButtons();
+            nextQuestionButton.setVisible(true);
         };
 
         button1.addActionListener(buttonListener);
@@ -96,20 +95,16 @@ public class GamePanel extends JPanel {
         button4.addActionListener(buttonListener);
 
         add(questionLabel);
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(10));
         add(nextQuestionButton);
         add(buttonPanel);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quiz");
-        // frame.setIconImage(icon.getImage());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(550, 450);
-        frame.setLocationRelativeTo(null);
-
-        frame.add(new GamePanel());
-        frame.setVisible(true);
+    private void disableButtons() {
+        button1.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+        button4.setEnabled(false);
     }
 
     public void addActionListeners(ActionListener listener){
@@ -131,4 +126,13 @@ public class GamePanel extends JPanel {
     public JLabel getQuestionLabel(){
         return questionLabel;
     }
+
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Quiz");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(600, 400);
+//        frame.setLocationRelativeTo(null);
+//        frame.add(new QuestionPanel());
+//        frame.setVisible(true);
+//    }
 }
