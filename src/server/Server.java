@@ -1,9 +1,12 @@
 package server;
 
+import gamelogic.GameInstance;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Server implements ClientQueueManager {
@@ -11,6 +14,8 @@ public class Server implements ClientQueueManager {
     private final ServerSocket serverSocket;
     private List<ClientConnection> queue;
     private final ServerProtocol protocol;
+
+    private HashMap<Integer, GameInstance> gameInstanceMap;
 
     Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
@@ -31,6 +36,11 @@ public class Server implements ClientQueueManager {
             closeServerSocket();
         }
     }
+
+    public HashMap<Integer, GameInstance> getGameInstanceMap() {
+        return gameInstanceMap;
+    }
+
 
     public void closeServerSocket() {
         try  {

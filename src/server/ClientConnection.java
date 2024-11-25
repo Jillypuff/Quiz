@@ -15,14 +15,24 @@ public class ClientConnection implements Runnable {
     ObjectOutputStream out;
     ObjectInputStream in;
 
+    int currentGameId;
+
     ServerProtocol protocol;
-    GameInstance instance;
+//    GameInstance instance;
 
     private String clientUsername;
 
     public ClientConnection(Socket socket, ServerProtocol protocol){
         this.socket = socket;
         this.protocol = protocol;
+    }
+
+    public int getCurrentGameId(){
+        return currentGameId;
+    }
+
+    public void setCurrentGameId(int currentGameId){
+        this.currentGameId = currentGameId;
     }
 
     public synchronized void sendResponse(Response response) throws IOException {
@@ -79,7 +89,7 @@ public class ClientConnection implements Runnable {
         this.clientUsername = clientUsername;
     }
 
-    public void setInstance(GameInstance instance) {
-        this.instance = instance;
-    }
+//    public void setInstance(GameInstance instance) {
+//        this.instance = instance;
+//    }
 }

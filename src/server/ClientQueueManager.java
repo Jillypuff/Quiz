@@ -11,4 +11,5 @@ public interface ClientQueueManager {
     ClientConnection takeFromQueue();
 
     void removeFromQueue(ClientConnection client);
+
 }

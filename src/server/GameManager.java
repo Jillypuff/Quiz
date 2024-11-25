@@ -7,14 +7,24 @@ import gamelogic.Question;
 import server.response.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameManager {
 
     private final ClientQueueManager clientQueueManager;
+    private final HashMap<Integer, GameInstance> gameInstanceMap;
+
+    private int gameId;
+    private static int gameIdIncrementor = 1;
 
     public GameManager(ClientQueueManager clientQueueManager) {
         this.clientQueueManager = clientQueueManager;
+        gameInstanceMap = new HashMap<>();
+    }
+
+    public HashMap<Integer, GameInstance> getGameInstanceMap() {
+        return gameInstanceMap;
     }
 
     public void handleConnectRequest(ClientConnection client, String selectedUsername) throws IOException {
@@ -45,20 +55,34 @@ public class GameManager {
             GameInstance instance = new GameInstance();
             instance.setPlayers(clientOne, clientTwo);
 
-            clientOne.setInstance(instance);
-            clientTwo.setInstance(instance);
+            //detta måste lösas. hur gör jag ett unikt id för varje spelinstans?
+            gameId = gameIdIncrementor++;
+            int instanceId = gameId;
 
+            // DETTA BORDE FUNKA.
+            gameInstanceMap.put(instanceId, instance);
+            clientOne.setCurrentGameId(gameId);
+            clientTwo.setCurrentGameId(gameId);
 
-            // La till variabel i responseobjektet som visar vems tur det är
+            // Detta vill jag slippa.
+//            clientOne.setInstance(instance);
+//            clientTwo.setInstance(instance);
+
+            // La till variabel i response-objektet som visar vems tur det är
             // kan användas hos klienten för att titta vilken panel som ska visas
-            // detta kanske bör ändras för att göras snyggare
+            // detta kanske bör ändras för att göras snyggare!!!
             clientOne.sendResponse(new Response(ResponseType.GAME_STARTED, true));
             clientTwo.sendResponse(new Response(ResponseType.GAME_STARTED, false));
         }
     }
 
     public void startRoundVersion2(ClientConnection client) throws IOException {
-        GameInstance instance = client.instance;
+        // och sen slippa hämta instansen såhär.
+//        GameInstance instance = client.instance;
+
+        // LÖSER DET?
+        GameInstance instance = gameInstanceMap.get(client.getCurrentGameId());
+
         instance.getQuizPackage().loadSetOfCategories();
         List<Category> setOfCategories = instance.getQuizPackage().getCurrentSetOfCategories();
 
@@ -74,7 +98,9 @@ public class GameManager {
     }
 
     public void handleCategoryChosen(ClientConnection client, Category category) throws IOException {
-        GameInstance instance = client.instance;
+//        GameInstance instance = client.instance;
+
+        GameInstance instance = gameInstanceMap.get(client.getCurrentGameId());
         instance.getQuizPackage().setCurrentCategory(category);
 
         instance.getQuizPackage().loadCurrentSetOfQuestions();
@@ -83,7 +109,8 @@ public class GameManager {
     }
 
     public void handleRoundFinished(ClientConnection client, int clientScore) throws IOException {
-        GameInstance instance = client.instance;
+//        GameInstance instance = client.instance;
+        GameInstance instance = gameInstanceMap.get(client.getCurrentGameId());
         Player currentPlayer = instance.getCurrentTurnHolder();
 
         currentPlayer.setRoundScore(clientScore);
@@ -118,16 +145,16 @@ public class GameManager {
         Player currentPlayer = instance.getCurrentTurnHolder();
         Player opponent = instance.getOpponent(currentPlayer);
 
-        currentPlayer.getConnection().sendResponse(new ResultPackageResponse(ResponseType.ROUND_RESULT, currentPlayer.getRoundScore(), opponent.getRoundScore()));
-        opponent.getConnection().sendResponse(new ResultPackageResponse(ResponseType.ROUND_RESULT, opponent.getRoundScore(), currentPlayer.getRoundScore()));
+        currentPlayer.getConnection().sendResponse(new ResultPackageResponse(ResponseType.ROUND_RESULT, currentPlayer.getRoundScore(), opponent.getRoundScore(), opponent.getUsername()));
+        opponent.getConnection().sendResponse(new ResultPackageResponse(ResponseType.ROUND_RESULT, opponent.getRoundScore(), currentPlayer.getRoundScore(), currentPlayer.getUsername()));
     }
 
     public void sendFinalResult(GameInstance instance) throws IOException {
         Player currentPlayer = instance.getCurrentTurnHolder();
         Player opponent = instance.getOpponent(currentPlayer);
 
-        currentPlayer.getConnection().sendResponse(new ResultPackageResponse(ResponseType.FINAL_RESULT, currentPlayer.getTotalScore(), opponent.getTotalScore()));
-        opponent.getConnection().sendResponse(new ResultPackageResponse(ResponseType.FINAL_RESULT, opponent.getTotalScore(), currentPlayer.getTotalScore()));
+        currentPlayer.getConnection().sendResponse(new ResultPackageResponse(ResponseType.FINAL_RESULT, currentPlayer.getTotalScore(), opponent.getTotalScore(), opponent.getUsername()));
+        opponent.getConnection().sendResponse(new ResultPackageResponse(ResponseType.FINAL_RESULT, opponent.getTotalScore(), currentPlayer.getTotalScore(), currentPlayer.getUsername()));
     }
 }
 

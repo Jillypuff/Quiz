@@ -59,6 +59,8 @@ public class ClientProtocol {
                 if(response instanceof ResultPackageResponse resultPackageResponse) {
                     int myScore = resultPackageResponse.getYourScore();
                     int opponentScore = resultPackageResponse.getOpponentsScore();
+                    String opponentName = resultPackageResponse.getOpponentName();
+                    client.gameGUI.uglyScorePanel.setPlayerNames(client.username, opponentName);
                     client.gameGUI.uglyScorePanel.setScoreDisplay(myScore, opponentScore, false);
                     client.gameGUI.switchPanel(6);
                 }
