@@ -128,7 +128,7 @@ public class GameBoardPanel {                           //DETTA ÄR EN TESTKLASS
         testBoard[0][2].setCorrectPlayer1(true);
         testBoard[0][0].setCorrectPlayer2(false);
         testBoard[0][1].setCorrectPlayer2(true);
-        testBoard[0][2].setCorrectPlayer2(false);
+        testBoard[0][2].setCorrectPlayer2(true);
 
         testBoard[0][0].setRecivedAwnser(1);
         testBoard[0][1].setRecivedAwnser(1);

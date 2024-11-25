@@ -2,7 +2,8 @@ package gamelogic;
 
 public class QuestionInPannel {
     Question question;
-    protected int recivedAwnser;
+    protected int recivedAwnser1;
+    protected int recivedAwnser2;
     protected boolean isCorrectPlayer1;
     protected boolean isCorrectPlayer2;
     protected Category valdkategori;
@@ -16,11 +17,11 @@ public class QuestionInPannel {
     }
 
     public int getRecivedAwnser() {
-        return recivedAwnser;
+        return recivedAwnser1;
     }
 
     public void setRecivedAwnser(int recivedAwnser) {
-        this.recivedAwnser = recivedAwnser;
+        this.recivedAwnser1 = recivedAwnser;
     }
 
     public boolean isCorrectPlayer1() {
