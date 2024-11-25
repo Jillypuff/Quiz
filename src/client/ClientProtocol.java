@@ -30,8 +30,15 @@ public class ClientProtocol {
 
             }
             case GAME-> {
+
                 QuestionInPanel[][] gameBoard = response.getGameBoard();
 
+                if(isFirstRoundAndImPlayer1(gameBoard,client)){
+                    client.gameGUI.switchPanel(3);
+                }else{
+                    client.gameGUI.switchPanel(6);
+                    client.gameGUI.gameBoardPanel.uppdateGameBoardPannel(gameBoard);
+                }
             }
             /*
             case YOUR_TURN -> {
@@ -68,7 +75,19 @@ public class ClientProtocol {
     }
     //Skriv metoder här *****Joakim***** Till GAME case
 
-    public void 
+    public boolean isFirstRoundAndImPlayer1(QuestionInPanel[][] gameBoard, Client client){
+        if(gameBoard[0][0].getValdkategori()==null){
+            if(gameBoard[0][0].getPlayer1().equals(client.username)){
+                return true;
+            }
+            else {
+                return false;
+            }
+        } else{
+            return false;
+        }
+
+    }
 
 
 }

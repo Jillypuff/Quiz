@@ -40,14 +40,14 @@ public class ServerProtocol {
                 // Valde svaret request.getAnswer();
                 // Ge feedback om korrekt eller inte
             }
-            case NEXT_QUESTION -> {
-                client.currentGame.setCurrentCategory(request.getChosenCategory());
-                System.out.println("Set current category to " + request.getChosenCategory());
-                System.out.println("Trying to fetch current question");
-                Question question = client.currentGame.getCurrentQuestion();
-                System.out.println("Question: " + question.getQuestion());
-                client.sendResponse(new Response(ReponseType.QUESTION, question));
-            }
+//            case NEXT_QUESTION -> {
+//                client.currentGame.setCurrentCategory(request.getChosenCategory());
+//                System.out.println("Set current category to " + request.getChosenCategory());
+//                System.out.println("Trying to fetch current question");
+//                Question question = client.currentGame.getCurrentQuestion();
+//                System.out.println("Question: " + question.getQuestion());
+//                client.sendResponse(new Response(ReponseType.QUESTION, question));
+//            }
             case GIVE_UP -> {
                 // Ta bort spelaren ut spelet
                 // Anropa båda spelarna att en spelare har gett upp

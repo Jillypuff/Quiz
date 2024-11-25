@@ -54,7 +54,7 @@ public class GameInstance {
 
     public void loadProperties(){
         try {
-            this.properties.store(new FileWriter("src/Game_properties.properties"), "Game Properties");
+            this.properties.store(new FileWriter("src/gamelogic/Game_Properties.properties"), "Game Properties");
         }
         catch(IOException e){
             e.printStackTrace();

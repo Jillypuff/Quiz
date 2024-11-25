@@ -43,10 +43,14 @@ public class Server {
             ConnectedClient player1 = queue.removeFirst();
             ConnectedClient player2 = queue.removeFirst();
 
-            System.out.println("Players found: " + player1.username + " vs " + player2.username);
-            GameInstance instance = new GameInstance(player1, player2);
-            QuestionInPanel[][] gameBoard = instance.getSpelbrade();
 
+            GameInstance instance = new GameInstance(player1, player2);
+            System.out.println("gameboardproblem");
+            QuestionInPanel[][] gameBoard = instance.getSpelbrade();
+            System.out.println("category problem");
+
+            gameBoard[0][0].setRandomCategoryChoices(instance.randomizeCategories());
+            System.out.println("Players found: " + player1.username + " vs " + player2.username);
             player2.sendResponse(new Response(ReponseType.GAME, gameBoard));
             player1.sendResponse(new Response(ReponseType.GAME, gameBoard));
         }

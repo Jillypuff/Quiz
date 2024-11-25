@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.panels.*;
+import Modules.QuestionInPanel;
 import client.Client;
 import javax.swing.*;
 import java.io.IOException;
@@ -12,6 +13,7 @@ public class GameGUI extends JFrame {
     public LoginPanel loginPanel;
     public WelcomePanel welcomePanel;
     public WaitingPanel waitingPanel;
+    public GameBoardPanel gameBoardPanel;
 
     Client client;
 
@@ -22,6 +24,7 @@ public class GameGUI extends JFrame {
         setupMainFrame();
         loadPanel();
     }
+
 
     public void setupMainFrame(){
         setSize(600, 400);
@@ -36,6 +39,7 @@ public class GameGUI extends JFrame {
         questionPanel = new QuestionPanel();
         categoryPanel = new CategoryPanel();
         waitingPanel = new WaitingPanel();
+        gameBoardPanel = new GameBoardPanel();
     }
 
     public void switchPanel(int panel){
@@ -46,8 +50,11 @@ public class GameGUI extends JFrame {
             case 3 -> this.add(categoryPanel);
             case 4 -> this.add(questionPanel);
             case 5 -> this.add(waitingPanel);
+            case 6 -> this.add(gameBoardPanel);
         }
         revalidate();
         repaint();
     }
+
+
 }

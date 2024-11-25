@@ -103,7 +103,7 @@ public class CurrentGame implements Serializable {
 
 //    public void loadProperties(){
 //        try {
-//            this.properties.load(new FileInputStream("src/Game_Properties.properties"));
+//            this.properties.load(new FileInputStream("src/gamelogic/Game_Properties.properties"));
 //        }
 //        catch(IOException e){
 //            e.printStackTrace();
@@ -121,7 +121,7 @@ public class CurrentGame implements Serializable {
 
 
         try{
-            tempProperties.load(new FileInputStream("src/Game_Properties.properties"));
+            tempProperties.load(new FileInputStream("src/gamelogic/Game_Properties.properties"));
         }
         catch(Exception e){
             e.printStackTrace();
@@ -139,7 +139,7 @@ public class CurrentGame implements Serializable {
 
 
         try{
-            tempProperties.store(new FileOutputStream("src/Game_Properties.properties"), null);
+            tempProperties.store(new FileOutputStream("src/gamelogic/Game_Properties.properties"), null);
         }
         catch (Exception e){
             e.printStackTrace();

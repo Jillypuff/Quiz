@@ -2,12 +2,13 @@ package Modules;
 
 import gamelogic.Question;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionInPanel {
     Question question;
-    protected int receivedAnswer1;
-    protected int receivedAnswer2;
+    protected String receivedAnswerPlayer1;
+    protected String receivedAnswerPlayer2;
     protected boolean isCorrectPlayer1;
     protected boolean isCorrectPlayer2;
     protected String player1;
@@ -16,7 +17,7 @@ public class QuestionInPanel {
     // Variables for players to select category from list
     protected Category valdkategori;
     // ska uppdateras efter varje runda, och den valda ska tas ut ur listan med alla möjliga kategorier
-    protected List<Category> randomCategoryChoices;
+    protected List<Category> randomCategoryChoices=new ArrayList<Category>();
 
     public Question getQuestion() {
         return question;
@@ -28,14 +29,6 @@ public class QuestionInPanel {
 
     public void setQuestion(Question question) {
         this.question = question;
-    }
-
-    public int getReceivedAnswer1() {
-        return receivedAnswer1;
-    }
-
-    public void setReceivedAnswer1(int receivedAnswer) {
-        this.receivedAnswer1 = receivedAnswer;
     }
 
     public boolean isCorrectPlayer1() {
@@ -60,5 +53,45 @@ public class QuestionInPanel {
 
     public void setValdkategori(Category valdkategori) {
         this.valdkategori = valdkategori;
+    }
+
+    public String getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(String player1) {
+        this.player1 = player1;
+    }
+
+    public String getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(String player2) {
+        this.player2 = player2;
+    }
+
+    public List<Category> getRandomCategoryChoices() {
+        return randomCategoryChoices;
+    }
+
+    public void setRandomCategoryChoices(List<Category> randomCategoryChoices) {
+        this.randomCategoryChoices = randomCategoryChoices;
+    }
+
+    public String getReceivedAnswerPlayer1() {
+        return receivedAnswerPlayer1;
+    }
+
+    public void setReceivedAnswerPlayer1(String receivedAnswerPlayer1) {
+        this.receivedAnswerPlayer1 = receivedAnswerPlayer1;
+    }
+
+    public String getReceivedAnswerPlayer2() {
+        return receivedAnswerPlayer2;
+    }
+
+    public void setReceivedAnswerPlayer2(String receivedAnswerPlayer2) {
+        this.receivedAnswerPlayer2 = receivedAnswerPlayer2;
     }
 }
