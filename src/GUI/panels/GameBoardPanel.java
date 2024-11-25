@@ -203,6 +203,17 @@ public class GameBoardPanel extends JPanel implements ActionListener {          
 
             }
         }
+
+        add(gameBoardPannelPlayer1,BorderLayout.WEST);
+        add(gameBoardPannelPlayer2,BorderLayout.EAST);
+
+        gameBoardPannelPlayer1.revalidate();
+        gameBoardPannelPlayer1.repaint();
+        gameBoardPannelPlayer2.revalidate();
+        gameBoardPannelPlayer2.repaint();
+        revalidate();
+        repaint();
+        setVisible(true);
         
         
     }

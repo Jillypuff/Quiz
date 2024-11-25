@@ -34,11 +34,13 @@ public class ClientProtocol {
                 QuestionInPanel[][] gameBoard = response.getGameBoard();
 
                 if(isFirstRoundAndImPlayer1(gameBoard,client)){
+                    System.out.println("isFirstRoundAndImPlayer1 1 category pannel");
                     client.gameGUI.switchPanel(3);
                     client.gameGUI.categoryPanel.getCategory1().setText(gameBoard[0][0].getRandomCategoryChoices().get(0).name());
                     client.gameGUI.categoryPanel.getCategory2().setText(gameBoard[0][0].getRandomCategoryChoices().get(1).name());
                     client.gameGUI.categoryPanel.getCategory3().setText(gameBoard[0][0].getRandomCategoryChoices().get(2).name());
                 }else{
+                    System.out.println("isFirstRoundAndImPlayer1 2 (gamebordpannel)");
                     client.gameGUI.switchPanel(6);
                     client.gameGUI.gameBoardPanel.uppdateGameBoardPannel(gameBoard);
                 }

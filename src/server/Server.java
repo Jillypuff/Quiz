@@ -47,20 +47,20 @@ public class Server {
 
 
             GameInstance instance = new GameInstance(player1, player2);
-            QuestionInPanel[][] gameBoard = instance.getSpelbrade();
-
-            List<Category> categories = instance.randomizeCategories();
-
-            QuestionInPanel questionInPanel = new QuestionInPanel();
-            gameBoard[0][0] = questionInPanel;
-            gameBoard[0][0].setRandomCategoryChoices(categories);
-
-            gameBoard[0][0].setPlayer1(player1.username);
-            gameBoard[0][0].setPlayer2(player2.username);
+//            QuestionInPanel[][] gameBoard = instance.getGameBoard();//***************************************************************
+//
+//            List<Category> categories = instance.randomizeCategories();
+//
+//            QuestionInPanel questionInPanel = new QuestionInPanel();
+//            gameBoard[0][0] = questionInPanel;
+//            gameBoard[0][0].setRandomCategoryChoices(categories);
+//
+//            gameBoard[0][0].setPlayer1(player1.username);
+//            gameBoard[0][0].setPlayer2(player2.username);
 
             System.out.println("Players found: " + player1.username + " vs " + player2.username);
-            player2.sendResponse(new Response(ReponseType.GAME, gameBoard));
-            player1.sendResponse(new Response(ReponseType.GAME, gameBoard));
+            player2.sendResponse(new Response(ReponseType.GAME, instance.getGameBoard()));
+            player1.sendResponse(new Response(ReponseType.GAME, instance.getGameBoard()));
         }
     }
 

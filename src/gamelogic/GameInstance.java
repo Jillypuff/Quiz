@@ -4,6 +4,8 @@ import Modules.Category;
 import Modules.QuestionInPanel;
 import server.ConnectedClient;
 
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class GameInstance {
     private int amountOfQuestions;
     private int amountOfRounds;
     private Properties properties;
-    private QuestionInPanel[][] Spelbrade;
+    private QuestionInPanel[][] gameBoard;
     private int round;
     protected List<Category> availableCategories;
 
@@ -28,7 +30,11 @@ public class GameInstance {
         properties = new Properties();
         loadProperties();
 
-        Spelbrade = new QuestionInPanel[amountOfQuestions][amountOfRounds];
+        gameBoard = new QuestionInPanel[amountOfQuestions][amountOfRounds];
+
+        gameBoardSetUpp(gameBoard,spelare1.username,spelare2.username);
+        addRandomCategoryChoises(gameBoard);
+
         //spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
         //gameState = new int[(antalFragor*2)][antalKategoriSet];
     }
@@ -52,9 +58,46 @@ public class GameInstance {
 
 
 
+
+
+    public void gameBoardSetUpp(QuestionInPanel[][] gameBoard, String player1, String player2){
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+                QuestionInPanel questionInPanel = new QuestionInPanel();
+                gameBoard[i][j] = questionInPanel;
+                gameBoard[j][i].setCorrectPlayer1(false);
+                gameBoard[j][i].setCorrectPlayer2(false);
+                gameBoard[j][i].setPlayer1(player1);
+                gameBoard[j][i].setPlayer2(player2);
+            }
+        }
+    }
+
+
+    public void addRandomCategoryChoises(QuestionInPanel[][] gameBoard){
+
+        List<Category> categoriChoises = randomizeCategories();
+        boolean categoryChoicesSet = false;
+
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard[i].length; j++) {
+             if(gameBoard[i][j].getValdkategori()==null){
+                 gameBoard[i][j].setRandomCategoryChoices(categoriChoises);
+             }
+             if(categoryChoicesSet){
+                 return;
+             }
+            }
+        }
+    }
+
+
+
+
+
     public void loadProperties(){
         try {
-            this.properties.store(new FileWriter("src/gamelogic/Game_Properties.properties"), "Game Properties");
+            this.properties.load(new FileInputStream("src/gamelogic/Game_Properties.properties"));
         }
         catch(IOException e){
             e.printStackTrace();
@@ -62,9 +105,17 @@ public class GameInstance {
         }
         this.amountOfQuestions = Integer.parseInt(this.properties.getProperty("amountOfQuestions", "2"));
         this.amountOfRounds = Integer.parseInt(this.properties.getProperty("amountOfRounds", "2"));
+
+        //felsök
+        System.out.println("Amount of questions:"+amountOfQuestions+"\nAmount of rounds:"+amountOfRounds);
+
     }
 
-    public QuestionInPanel[][] getSpelbrade() {
-        return Spelbrade;
+    public QuestionInPanel[][] getGameBoard() {
+        return gameBoard;
     }
+
+
+
+
 }
