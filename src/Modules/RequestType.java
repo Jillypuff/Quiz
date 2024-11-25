@@ -12,7 +12,8 @@ public enum RequestType {
 
     CATEGORY_CHOSEN,
 
-    ANSWER,
-    NEXT_QUESTION,
+    NEXT_ROUND,
+    ROUND_RESULT,
+    FINAL_RESULT,
     GIVE_UP,
 }

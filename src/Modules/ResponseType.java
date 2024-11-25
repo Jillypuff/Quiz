@@ -1,18 +1,16 @@
 package Modules;
 
-public enum ReponseType {
+public enum ResponseType {
     CLIENT_CONNECTED,
     CLIENT_DISCONNECTED,
 
     QUEUE_JOINED,
     GAME_JOINED,
 
-    YOUR_TURN,
-    OTHER_PLAYERS_TURN,
+    CHOSE_CATEGORY,
+    WAITING_FOR_CATEGORY_CHOICE,
 
     GAME_STARTED,
-    GAME,
-    QUESTION,
     SEND_ANSWER,
 
     SEND_SCORE,

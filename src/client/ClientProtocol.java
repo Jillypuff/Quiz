@@ -1,18 +1,14 @@
 package client;
 
-import GUI.panels.GameBoardPanel;
 import Modules.Category;
-import Modules.QuestionInPanel;
-import gamelogic.Question;
 import Modules.Response;
 
-import javax.swing.*;
 import java.util.List;
 
 public class ClientProtocol {
 
     public void processResponse(Response response, Client client){
-        switch (response.getType()){
+        switch (response.getResponse()){
             case CLIENT_CONNECTED -> {
                 System.out.println("Received client connected");
                 client.gameGUI.switchPanel(2);
@@ -27,27 +23,29 @@ public class ClientProtocol {
             case QUEUE_JOINED -> {
                 System.out.println("Received queue joined");
                 client.gameGUI.switchPanel(2);
-
             }
-            case GAME-> {
-                QuestionInPanel[][] gameBoard = response.getGameBoard();
-
+            case GAME_JOINED -> {
+                System.out.println("Game joined");
+                client.gameManager = new GameManager
+                        (response.getAmountOfRounds(), response.isActivePlayer(), client.gameGUI);
             }
-            /*
-            case YOUR_TURN -> {
-                System.out.println("Received your turn");
-                List<Category> categoryChoices = response.getSetOfCategories();
+            case CHOSE_CATEGORY -> {
+                System.out.println("Choose category");
+                List<Category> categoryChoices = response.getCategories();
                 client.gameGUI.categoryPanel.getCategory1().setText(categoryChoices.get(0).name());
                 client.gameGUI.categoryPanel.getCategory2().setText(categoryChoices.get(1).name());
                 client.gameGUI.categoryPanel.getCategory3().setText(categoryChoices.get(2).name());
 
                 client.gameGUI.switchPanel(3);
             }
-            */
-            case OTHER_PLAYERS_TURN -> {
-                System.out.println("Received other players turn");
+            case WAITING_FOR_CATEGORY_CHOICE -> {
+                System.out.println("Waiting for opponent to select category");
                 client.gameGUI.switchPanel(5);
                 client.gameGUI.waitingPanel.getQueuedLabel().setText("Waiting for other players turn");
+            }
+            case GAME_STARTED -> {
+                System.out.println("Game started");
+                client.gameManager.startNewRound(response.getQuestionPackage());
             }
             /*
             case QUESTION -> {
@@ -66,9 +64,4 @@ public class ClientProtocol {
             */
         }
     }
-    //Skriv metoder här *****Joakim***** Till GAME case
-
-    public void 
-
-
 }

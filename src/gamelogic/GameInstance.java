@@ -1,7 +1,6 @@
 package gamelogic;
 
-import Modules.Category;
-import Modules.QuestionInPanel;
+import Modules.*;
 import server.ConnectedClient;
 
 import java.io.FileWriter;
@@ -16,40 +15,46 @@ public class GameInstance {
     private int amountOfQuestions;
     private int amountOfRounds;
     private Properties properties;
-    private QuestionInPanel[][] Spelbrade;
-    private int round;
+    private int round = 1;
     protected List<Category> availableCategories;
+    private Category currentCategory;
+    int activePlayer = 1;
 
-    ConnectedClient spelare1;
-    ConnectedClient spelare2;
+    ConnectedClient player1;
+    ConnectedClient player2;
 
-    public GameInstance(ConnectedClient spelare1, ConnectedClient spelare2) {
+    public GameInstance(ConnectedClient player1, ConnectedClient player2) {
         availableCategories = new ArrayList<>(List.of(Category.values()));
         properties = new Properties();
         loadProperties();
-
-        Spelbrade = new QuestionInPanel[amountOfQuestions][amountOfRounds];
-        //spelare2Spelbrade = new QuestionInPannel[antalFragor][antalKategoriSet];
-        //gameState = new int[(antalFragor*2)][antalKategoriSet];
+        this.player1 = player1;
+        this.player2 = player2;
+        amountOfQuestions = Integer.parseInt(properties.getProperty("amountOfQuestions"));
+        amountOfRounds = Integer.parseInt(properties.getProperty("amountOfRounds"));
+        try{
+            this.player1.sendResponse(new Response(ResponseType.GAME_STARTED, this.amountOfRounds, true));
+            this.player2.sendResponse(new Response(ResponseType.GAME_STARTED, this.amountOfRounds, false));
+        } catch (Exception e){
+            player1.closeEverything();
+            player2.closeEverything();
+        }
     }
 
-    GameInstance(){
-        properties = new Properties();
-        loadProperties();
-    }
-
-    // Används för att setta kategorilistan i questioninpanel objektet
     public List<Category> randomizeCategories(){
         Collections.shuffle(availableCategories);
         List<Category> setOfCategories = availableCategories.subList(0,3);
         return new ArrayList<>(setOfCategories);
     }
 
-    //metod för att läsa in sparad sessionsid
-    //metod för att uppdatera sessionsid tar int (nuvarande sessions id)
+    public QuestionPackage createQuestionPackage(){
+        return new QuestionPackage(createListOfQuestions(), this.amountOfQuestions);
+    }
 
-    //konstruktor som tar int (sesionsid)
-
+    public List<Question> createListOfQuestions(){
+        List<Question> questions = QuestionDatabase.getQuestionsFromCategory(currentCategory);
+        Collections.shuffle(questions);
+        return questions;
+    }
 
 
     public void loadProperties(){
@@ -58,13 +63,8 @@ public class GameInstance {
         }
         catch(IOException e){
             e.printStackTrace();
-            //***************************************************************************************************************************lägg till sout kommentar
         }
         this.amountOfQuestions = Integer.parseInt(this.properties.getProperty("amountOfQuestions", "2"));
         this.amountOfRounds = Integer.parseInt(this.properties.getProperty("amountOfRounds", "2"));
-    }
-
-    public QuestionInPanel[][] getSpelbrade() {
-        return Spelbrade;
     }
 }

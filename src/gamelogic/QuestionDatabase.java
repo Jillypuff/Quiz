@@ -1,6 +1,7 @@
 package gamelogic;
 
 import Modules.Category;
+import Modules.Question;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,7 +1,6 @@
 package server;
 
-import Modules.QuestionInPanel;
-import Modules.ReponseType;
+import Modules.ResponseType;
 import Modules.Response;
 import gamelogic.GameInstance;
 
@@ -37,7 +36,7 @@ public class Server {
     public void handleStartGame(ConnectedClient client) throws IOException {
         queue.add(client);
         System.out.println("Sending queue joined response to " + client.username);
-        client.sendResponse(new Response(ReponseType.QUEUE_JOINED));
+        client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
         if(queue.size() >= 2){
             System.out.println("Queue as two players, attempting to create instance");
             ConnectedClient player1 = queue.removeFirst();
@@ -45,10 +44,6 @@ public class Server {
 
             System.out.println("Players found: " + player1.username + " vs " + player2.username);
             GameInstance instance = new GameInstance(player1, player2);
-            QuestionInPanel[][] gameBoard = instance.getSpelbrade();
-
-            player2.sendResponse(new Response(ReponseType.GAME, gameBoard));
-            player1.sendResponse(new Response(ReponseType.GAME, gameBoard));
         }
     }
 

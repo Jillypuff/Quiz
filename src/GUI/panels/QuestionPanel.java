@@ -127,6 +127,14 @@ public class QuestionPanel extends JPanel {
         return questionLabel;
     }
 
+    public void getQuestion(String question, String answer1, String answer2, String answer3, String answer4){
+        questionLabel.setText(question);
+        button1.setText(answer1);
+        button2.setText(answer2);
+        button3.setText(answer3);
+        button4.setText(answer4);
+    }
+
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame("Quiz");
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

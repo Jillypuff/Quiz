@@ -1,9 +1,8 @@
 package server;
 
-import Modules.ReponseType;
+import Modules.ResponseType;
 import Modules.Request;
 import Modules.Response;
-import gamelogic.Question;
 
 import java.io.IOException;
 
@@ -14,11 +13,11 @@ public class ServerProtocol {
             case CONNECT -> {
                 System.out.println("Received connect request; sending connected response");
                 client.username = request.username;
-                client.sendResponse(new Response(ReponseType.CLIENT_CONNECTED));
+                client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
             }
             case DISCONNECT -> {
                 System.out.println("Received disconnect request; sending disconnected response");
-                client.sendResponse(new Response(ReponseType.CLIENT_DISCONNECTED));
+                client.sendResponse(new Response(ResponseType.CLIENT_DISCONNECTED));
             }
             case START_GAME -> {
                 client.server.handleStartGame(client);
@@ -40,13 +39,8 @@ public class ServerProtocol {
                 // Valde svaret request.getAnswer();
                 // Ge feedback om korrekt eller inte
             }
-            case NEXT_QUESTION -> {
-                client.currentGame.setCurrentCategory(request.getChosenCategory());
-                System.out.println("Set current category to " + request.getChosenCategory());
-                System.out.println("Trying to fetch current question");
-                Question question = client.currentGame.getCurrentQuestion();
-                System.out.println("Question: " + question.getQuestion());
-                client.sendResponse(new Response(ReponseType.QUESTION, question));
+            case NEXT_ROUND -> {
+
             }
             case GIVE_UP -> {
                 // Ta bort spelaren ut spelet

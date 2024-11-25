@@ -46,7 +46,7 @@ public class ConnectedClient implements Runnable {
             }
 
         } catch (Exception e) {
-            closeEverything(socket, out, in);
+            closeEverything();
         }
     }
 
@@ -54,7 +54,7 @@ public class ConnectedClient implements Runnable {
         running = false;
     }
 
-    public void closeEverything(Socket socket, ObjectOutputStream out, ObjectInputStream in){
+    public void closeEverything(){
         stop();
         try{
             if (out != null){
