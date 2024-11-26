@@ -40,7 +40,7 @@ public class Client implements ActionListener {
         gameGUI.welcomePanel.addActionListener(this);
         gameGUI.waitingPanel.addActionListener(this);
         gameGUI.questionPanel.addActionListeners(this);
-        addActionListenersToCategoryButtons();
+        // addActionListenersToCategoryButtons();
     }
 
     public void startListening() {
@@ -124,22 +124,13 @@ public class Client implements ActionListener {
         }
     }
 
-    public void addActionListenersToCategoryButtons(){
-        List<JButton> buttons = gameGUI.categoryPanel.getCategoryButtons();
-        for(JButton button : buttons){
-            button.addActionListener(e ->{
-                Category selectedCategory = Category.valueOf(button.getText());
-                System.out.println("Sending next question request");
-                sendRequest(new Request(RequestType.NEXT_QUESTION, username, selectedCategory));
-            });
-        }
-    }
-
-//    public void addActionListenerToAnswerButtons(){
-//        List<JButton> buttons = gameGUI.questionPanel.getAllAnswerButtons();
+//    public void addActionListenersToCategoryButtons(){
+//        List<JButton> buttons = gameGUI.categoryPanel.getCategoryButtons();
 //        for(JButton button : buttons){
-//            button.addActionListener(e -> {
-//                sendRequest(new Request(RequestType.ANSWER, username));
+//            button.addActionListener(e ->{
+//                Category selectedCategory = Category.valueOf(button.getText());
+//                System.out.println("Sending next question request");
+//                sendRequest(new Request(RequestType.NEXT_QUESTION, username, selectedCategory));
 //            });
 //        }
 //    }

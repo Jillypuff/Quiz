@@ -35,10 +35,6 @@ public class ServerProtocol {
                 // Valde kategorin request.getAnswer();
                 // Ge feedback
             }
-            case ANSWER -> {
-                // Valde svaret request.getAnswer();
-                // Ge feedback om korrekt eller inte
-            }
             case NEXT_ROUND -> {
 
             }

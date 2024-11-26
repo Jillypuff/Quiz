@@ -47,15 +47,6 @@ public class Server {
         }
     }
 
-    public void handleTurnSwitch(ConnectedClient client) throws IOException {
-
-    }
-
-//    public void broadcastInstance(GameInstance instance) throws IOException {
-//        instance.playerOne.sendResponse(new Response(ReponseType.GAME_JOINED, instance.game));
-//        instance.playerTwo.sendResponse(new Response(ReponseType.GAME_JOINED, instance.game));
-//    }
-
     public void closeServerSocket() {
         try  {
             if (serverSocket != null){
