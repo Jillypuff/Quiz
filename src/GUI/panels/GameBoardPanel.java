@@ -16,6 +16,7 @@ public class GameBoardPanel extends JPanel implements ActionListener {          
     int[][] responeList;
     JPanel gameBoardPannelPlayer1;
     JPanel gameBoardPannelPlayer2;
+    QuestionInPanel[][] gameBoardHolder;
 
 
 
@@ -27,6 +28,8 @@ public class GameBoardPanel extends JPanel implements ActionListener {          
 //        frame.setSize(800, 800);
 //        frame.setLocationRelativeTo(null);
 
+        gameBoardHolder = new QuestionInPanel[20][20];
+
         gameBoardPannelPlayer1 = new JPanel();
         gameBoardPannelPlayer2 = new JPanel();
 
@@ -34,6 +37,108 @@ public class GameBoardPanel extends JPanel implements ActionListener {          
         
         
 
+        JButton[][] game_board_dispaly_button= new JButton[gameBoardHolder.length][gameBoardHolder[0].length];
+        gameBoardPannelPlayer1.setLayout(new GridLayout(gameBoardHolder.length, gameBoardHolder[0].length));
+        gameBoardPannelPlayer1.setBackground(Color.WHITE);
+        gameBoardPannelPlayer2.setLayout(new GridLayout(gameBoardHolder.length, gameBoardHolder[0].length));
+        gameBoardPannelPlayer2.setBackground(Color.WHITE);
+
+
+
+
+
+
+        for (int i = 0; i < gameBoardHolder.length; i++) {
+
+            for (int j = 0; j < gameBoardHolder[0].length; j++) {
+
+                game_board_dispaly_button[i][j] = new JButton();
+
+                gameBoardPannelPlayer1.add(game_board_dispaly_button[i][j]);
+
+                if(gameBoardHolder[i][j].getReceivedAnswerPlayer1() != null){
+                    if (gameBoardHolder[i][j].isCorrectPlayer1()) {
+                        game_board_dispaly_button[i][j].setBackground(new Color(102, 225, 51));
+                    }
+                    else{
+                        game_board_dispaly_button[i][j].setBackground(new Color(255, 0, 0));
+                    }
+                } else if (gameBoardHolder[i][j].getReceivedAnswerPlayer1() == null && gameBoardHolder[i][j].getValdkategori()!=null) {
+                    game_board_dispaly_button[i][j].setText(j+"");
+                    game_board_dispaly_button[i][j].setForeground(game_board_dispaly_button[i][j].getBackground());
+
+                    game_board_dispaly_button[i][j].setBackground(new Color(153, 204, 255));
+                    game_board_dispaly_button[i][j].addActionListener(this);
+                } else if (gameBoardHolder[i][j].getValdkategori()==null) {
+                    game_board_dispaly_button[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+                    game_board_dispaly_button[i][j].setBackground(new Color(128, 128, 128));
+                }
+
+
+
+
+                game_board_dispaly_button[i][j].setFocusable(false);
+                //game_board_dispaly_button[i][j].addActionListener(this);
+
+            }
+        }
+
+        for (int i = 0; i < gameBoardHolder.length; i++) {
+
+            for (int j = 0; j < gameBoardHolder[0].length; j++) {
+
+                game_board_dispaly_button[i][j] = new JButton();
+
+                gameBoardPannelPlayer2.add(game_board_dispaly_button[i][j]);
+
+                if(gameBoardHolder[i][j].getReceivedAnswerPlayer2() != null){
+                    if (gameBoardHolder[i][j].isCorrectPlayer2()) {
+                        game_board_dispaly_button[i][j].setBackground(new Color(102, 225, 51));
+                    }
+                    else{
+                        game_board_dispaly_button[i][j].setBackground(new Color(255, 0, 0));
+                    }
+                } else if (gameBoardHolder[i][j].getReceivedAnswerPlayer2() == null && gameBoardHolder[i][j].getValdkategori()!=null) {
+                    game_board_dispaly_button[i][j].setBackground(new Color(153, 204, 255));
+                } else if (gameBoardHolder[i][j].getValdkategori()==null) {
+                    game_board_dispaly_button[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+                    game_board_dispaly_button[i][j].setBackground(new Color(128, 128, 128));
+                }
+
+
+
+
+                game_board_dispaly_button[i][j].setFocusable(false);
+                //game_board_dispaly_button[i][j].addActionListener(this);
+
+            }
+        }
+
+
+
+        add(gameBoardPannelPlayer1,BorderLayout.WEST);
+        add(gameBoardPannelPlayer2,BorderLayout.EAST);
+
+        gameBoardPannelPlayer1.revalidate();
+        gameBoardPannelPlayer1.repaint();
+        gameBoardPannelPlayer2.revalidate();
+        gameBoardPannelPlayer2.repaint();
+        revalidate();
+        repaint();
+        setVisible(true);
+    }
+    
+//    public void uppdateGameBoardPannel(QuestionInPanel[][] gameBoard){
+//
+//        JFrame frame = new JFrame("GameBoard");
+//
+//        gameBoardPannelPlayer1 = new JPanel();
+//        gameBoardPannelPlayer2 = new JPanel();
+//
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(800, 800);
+//        frame.setLocationRelativeTo(null);
+//
 //        JButton[][] game_board_dispaly_button= new JButton[gameBoard.length][gameBoard[0].length];
 //        gameBoardPannelPlayer1.setLayout(new GridLayout(gameBoard.length, gameBoard[0].length));
 //        gameBoardPannelPlayer1.setBackground(Color.WHITE);
@@ -51,16 +156,16 @@ public class GameBoardPanel extends JPanel implements ActionListener {          
 //
 //                game_board_dispaly_button[i][j] = new JButton();
 //
-//                gameBoardPannelPlayer1.add(game_board_dispaly_button[i][j]);
+//                this.gameBoardPannelPlayer1.add(game_board_dispaly_button[i][j]);
 //
-//                if(gameBoard[i][j].getReceivedAnswerPlayer1() != 0){
+//                if(gameBoard[i][j].getReceivedAnswerPlayer1() != null){
 //                    if (gameBoard[i][j].isCorrectPlayer1()) {
 //                        game_board_dispaly_button[i][j].setBackground(new Color(102, 225, 51));
 //                    }
 //                    else{
 //                        game_board_dispaly_button[i][j].setBackground(new Color(255, 0, 0));
 //                    }
-//                } else if (gameBoard[i][j].getReceivedAnswerPlayer1()==0 && gameBoard[i][j].getValdkategori()!=null) {
+//                } else if (gameBoard[i][j].getReceivedAnswerPlayer1()==null && gameBoard[i][j].getValdkategori()!=null) {
 //                    game_board_dispaly_button[i][j].setText(j+"");
 //                    game_board_dispaly_button[i][j].setForeground(game_board_dispaly_button[i][j].getBackground());
 //
@@ -70,9 +175,6 @@ public class GameBoardPanel extends JPanel implements ActionListener {          
 //                    game_board_dispaly_button[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 //                    game_board_dispaly_button[i][j].setBackground(new Color(128, 128, 128));
 //                }
-//
-//
-//
 //
 //                game_board_dispaly_button[i][j].setFocusable(false);
 //                //game_board_dispaly_button[i][j].addActionListener(this);
@@ -86,16 +188,16 @@ public class GameBoardPanel extends JPanel implements ActionListener {          
 //
 //                game_board_dispaly_button[i][j] = new JButton();
 //
-//                gameBoardPannelPlayer2.add(game_board_dispaly_button[i][j]);
+//                this.gameBoardPannelPlayer2.add(game_board_dispaly_button[i][j]);
 //
-//                if(gameBoard[i][j].getReceivedAnswerPlayer2() != 0){
+//                if(gameBoard[i][j].getReceivedAnswerPlayer2() != null){
 //                    if (gameBoard[i][j].isCorrectPlayer2()) {
 //                        game_board_dispaly_button[i][j].setBackground(new Color(102, 225, 51));
 //                    }
 //                    else{
 //                        game_board_dispaly_button[i][j].setBackground(new Color(255, 0, 0));
 //                    }
-//                } else if (gameBoard[i][j].getReceivedAnswerPlayer2()==0 && gameBoard[i][j].getValdkategori()!=null) {
+//                } else if (gameBoard[i][j].getReceivedAnswerPlayer2()==null && gameBoard[i][j].getValdkategori()!=null) {
 //                    game_board_dispaly_button[i][j].setBackground(new Color(153, 204, 255));
 //                } else if (gameBoard[i][j].getValdkategori()==null) {
 //                    game_board_dispaly_button[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -110,113 +212,30 @@ public class GameBoardPanel extends JPanel implements ActionListener {          
 //
 //            }
 //        }
+//
+//        add(gameBoardPannelPlayer1,BorderLayout.WEST);
+//        add(gameBoardPannelPlayer2,BorderLayout.EAST);
+//
+//        gameBoardPannelPlayer1.revalidate();
+//        gameBoardPannelPlayer1.repaint();
+//        gameBoardPannelPlayer2.revalidate();
+//        gameBoardPannelPlayer2.repaint();
+//        revalidate();
+//        repaint();
+//        setVisible(true);
+//
+//
+//    }
 
 
-
-        add(gameBoardPannelPlayer1,BorderLayout.WEST);
-        add(gameBoardPannelPlayer2,BorderLayout.EAST);
-
-        gameBoardPannelPlayer1.revalidate();
-        gameBoardPannelPlayer1.repaint();
-        gameBoardPannelPlayer2.revalidate();
-        gameBoardPannelPlayer2.repaint();
-        revalidate();
-        repaint();
-        setVisible(true);
-    }
-    
-    public void uppdateGameBoardPannel(QuestionInPanel[][] gameBoard){
-        
-        JButton[][] game_board_dispaly_button= new JButton[gameBoard.length][gameBoard[0].length];
-        gameBoardPannelPlayer1.setLayout(new GridLayout(gameBoard.length, gameBoard[0].length));
-        gameBoardPannelPlayer1.setBackground(Color.WHITE);
-        gameBoardPannelPlayer2.setLayout(new GridLayout(gameBoard.length, gameBoard[0].length));
-        gameBoardPannelPlayer2.setBackground(Color.WHITE);
-
-
-
-
-
-
+    public void upploadGameBoardToPanel (QuestionInPanel[][] gameBoard){
         for (int i = 0; i < gameBoard.length; i++) {
-
             for (int j = 0; j < gameBoard[0].length; j++) {
-
-                game_board_dispaly_button[i][j] = new JButton();
-
-                this.gameBoardPannelPlayer1.add(game_board_dispaly_button[i][j]);
-
-                if(gameBoard[i][j].getReceivedAnswerPlayer1() != null){
-                    if (gameBoard[i][j].isCorrectPlayer1()) {
-                        game_board_dispaly_button[i][j].setBackground(new Color(102, 225, 51));
-                    }
-                    else{
-                        game_board_dispaly_button[i][j].setBackground(new Color(255, 0, 0));
-                    }
-                } else if (gameBoard[i][j].getReceivedAnswerPlayer1()==null && gameBoard[i][j].getValdkategori()!=null) {
-                    game_board_dispaly_button[i][j].setText(j+"");
-                    game_board_dispaly_button[i][j].setForeground(game_board_dispaly_button[i][j].getBackground());
-
-                    game_board_dispaly_button[i][j].setBackground(new Color(153, 204, 255));
-                    game_board_dispaly_button[i][j].addActionListener(this);
-                } else if (gameBoard[i][j].getValdkategori()==null) {
-                    game_board_dispaly_button[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-                    game_board_dispaly_button[i][j].setBackground(new Color(128, 128, 128));
-                }
-
-
-
-
-                game_board_dispaly_button[i][j].setFocusable(false);
-                //game_board_dispaly_button[i][j].addActionListener(this);
-
+                gameBoardHolder[i][j]=gameBoard[i][j];
             }
         }
-
-        for (int i = 0; i < gameBoard.length; i++) {
-
-            for (int j = 0; j < gameBoard[0].length; j++) {
-
-                game_board_dispaly_button[i][j] = new JButton();
-
-                this.gameBoardPannelPlayer2.add(game_board_dispaly_button[i][j]);
-
-                if(gameBoard[i][j].getReceivedAnswerPlayer2() != null){
-                    if (gameBoard[i][j].isCorrectPlayer2()) {
-                        game_board_dispaly_button[i][j].setBackground(new Color(102, 225, 51));
-                    }
-                    else{
-                        game_board_dispaly_button[i][j].setBackground(new Color(255, 0, 0));
-                    }
-                } else if (gameBoard[i][j].getReceivedAnswerPlayer2()==null && gameBoard[i][j].getValdkategori()!=null) {
-                    game_board_dispaly_button[i][j].setBackground(new Color(153, 204, 255));
-                } else if (gameBoard[i][j].getValdkategori()==null) {
-                    game_board_dispaly_button[i][j].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-                    game_board_dispaly_button[i][j].setBackground(new Color(128, 128, 128));
-                }
-
-
-
-
-                game_board_dispaly_button[i][j].setFocusable(false);
-                //game_board_dispaly_button[i][j].addActionListener(this);
-
-            }
-        }
-
-        add(gameBoardPannelPlayer1,BorderLayout.WEST);
-        add(gameBoardPannelPlayer2,BorderLayout.EAST);
-
-        gameBoardPannelPlayer1.revalidate();
-        gameBoardPannelPlayer1.repaint();
-        gameBoardPannelPlayer2.revalidate();
-        gameBoardPannelPlayer2.repaint();
-        revalidate();
-        repaint();
-        setVisible(true);
-        
-        
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

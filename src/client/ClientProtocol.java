@@ -41,8 +41,10 @@ public class ClientProtocol {
                     client.gameGUI.categoryPanel.getCategory3().setText(gameBoard[0][0].getRandomCategoryChoices().get(2).name());
                 }else{
                     System.out.println("isFirstRoundAndImPlayer1 2 (gamebordpannel)");
+
+                    client.gameGUI.gameBoardPanel.upploadGameBoardToPanel(gameBoard);
                     client.gameGUI.switchPanel(6);
-                    client.gameGUI.gameBoardPanel.uppdateGameBoardPannel(gameBoard);
+                    //client.gameGUI.gameBoardPanel.uppdateGameBoardPannel(gameBoard);
                 }
             }
             /*
@@ -91,8 +93,9 @@ public class ClientProtocol {
         } else{
             return false;
         }
-
     }
+
+
 
 
 }
