@@ -16,7 +16,7 @@ public class QuestionPanel extends JPanel {
     JButton button2;
     JButton button3;
     JButton button4;
-    JButton nextQuestionButton;
+    public JButton nextQuestionButton;
 
     JLabel questionLabel;
 
@@ -71,28 +71,28 @@ public class QuestionPanel extends JPanel {
             buttonPanel.add(button);
         }
 
-        ActionListener buttonListener = e -> {
-            button1.setBackground(null);
-            button2.setBackground(null);
-            button3.setBackground(null);
-            button4.setBackground(null);
-
-            JButton clickedButton = (JButton) e.getSource();
-            if (clickedButton.getText().equals("New York City")) {
-                clickedButton.setBackground(rightAnswerColor);
-                nextQuestionButton.setVisible(true);
-            } else {
-                clickedButton.setBackground(wrongAnswerColor);
-                button3.setBorder(BorderFactory.createLineBorder(rightAnswerColor, 4));
-            }
-            disableButtons();
-            nextQuestionButton.setVisible(true);
-        };
-
-        button1.addActionListener(buttonListener);
-        button2.addActionListener(buttonListener);
-        button3.addActionListener(buttonListener);
-        button4.addActionListener(buttonListener);
+//        ActionListener buttonListener = e -> {
+//            button1.setBackground(null);
+//            button2.setBackground(null);
+//            button3.setBackground(null);
+//            button4.setBackground(null);
+//
+//            JButton clickedButton = (JButton) e.getSource();
+//            if (clickedButton.getText().equals("New York City")) {
+//                clickedButton.setBackground(rightAnswerColor);
+//                nextQuestionButton.setVisible(true);
+//            } else {
+//                clickedButton.setBackground(wrongAnswerColor);
+//                button3.setBorder(BorderFactory.createLineBorder(rightAnswerColor, 4));
+//            }
+//            disableButtons();
+//            nextQuestionButton.setVisible(true);
+//        };
+//
+//        button1.addActionListener(buttonListener);
+//        button2.addActionListener(buttonListener);
+//        button3.addActionListener(buttonListener);
+//        button4.addActionListener(buttonListener);
 
         add(questionLabel);
         add(Box.createVerticalStrut(10));
@@ -100,11 +100,20 @@ public class QuestionPanel extends JPanel {
         add(buttonPanel);
     }
 
-    private void disableButtons() {
+    public void disableButtons() {
         button1.setEnabled(false);
         button2.setEnabled(false);
         button3.setEnabled(false);
         button4.setEnabled(false);
+        nextQuestionButton.setVisible(true);
+    }
+
+    public void enableButtons(){
+        nextQuestionButton.setVisible(false);
+        button1.setEnabled(true);
+        button2.setEnabled(true);
+        button3.setEnabled(true);
+        button4.setEnabled(true);
     }
 
     public void addActionListeners(ActionListener listener){
@@ -133,6 +142,7 @@ public class QuestionPanel extends JPanel {
         button2.setText(answer2);
         button3.setText(answer3);
         button4.setText(answer4);
+        enableButtons();
     }
 
 //    public static void main(String[] args) {

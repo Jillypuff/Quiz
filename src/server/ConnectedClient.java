@@ -2,6 +2,7 @@ package server;
 
 import Modules.Response;
 import Modules.Request;
+import gamelogic.GameInstance;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,6 +17,7 @@ public class ConnectedClient implements Runnable {
     ObjectInputStream in;
     public String username;
     private boolean running = true;
+    public GameInstance instance;
 
     public ConnectedClient(Socket socket, Server server){
         this.socket = socket;

@@ -3,6 +3,7 @@ package gamelogic;
 import Modules.*;
 import server.ConnectedClient;
 
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ public class GameInstance {
     private Category currentCategory;
     int activePlayer = 1;
 
-    ConnectedClient player1;
-    ConnectedClient player2;
+    public ConnectedClient player1;
+    public ConnectedClient player2;
 
     public GameInstance(ConnectedClient player1, ConnectedClient player2) {
         availableCategories = new ArrayList<>(List.of(Category.values()));
@@ -32,9 +33,37 @@ public class GameInstance {
         amountOfQuestions = Integer.parseInt(properties.getProperty("amountOfQuestions"));
         amountOfRounds = Integer.parseInt(properties.getProperty("amountOfRounds"));
         try{
-            this.player1.sendResponse(new Response(ResponseType.GAME_STARTED, this.amountOfRounds, true));
-            this.player2.sendResponse(new Response(ResponseType.GAME_STARTED, this.amountOfRounds, false));
+            player1.sendResponse(new Response(ResponseType.GAME_JOINED, amountOfRounds, true));
+            player2.sendResponse(new Response(ResponseType.GAME_JOINED, amountOfRounds, false));
         } catch (Exception e){
+            player1.closeEverything();
+            player2.closeEverything();
+        }
+        sendRandomizedCategories();
+    }
+
+    public void sendRandomizedCategories(){
+        try{
+            if (activePlayer == 1){
+                player1.sendResponse(new Response(ResponseType.CHOSE_CATEGORY, randomizeCategories()));
+                player2.sendResponse(new Response(ResponseType.WAITING_FOR_CATEGORY_CHOICE));
+            } else {
+                player2.sendResponse(new Response(ResponseType.CHOSE_CATEGORY, randomizeCategories()));
+                player1.sendResponse(new Response(ResponseType.WAITING_FOR_CATEGORY_CHOICE));
+            }
+        } catch (Exception e){
+            player1.closeEverything();
+            player2.closeEverything();
+            System.err.println("It's broke yo");
+        }
+    }
+
+    public void sendQuestionPackage(){
+        try {
+            QuestionPackage questionPackage = createQuestionPackage();
+            player1.sendResponse(new Response(ResponseType.GAME_STARTED, questionPackage));
+            player2.sendResponse(new Response(ResponseType.GAME_STARTED, questionPackage));
+        } catch (IOException e) {
             player1.closeEverything();
             player2.closeEverything();
         }
@@ -50,21 +79,30 @@ public class GameInstance {
         return new QuestionPackage(createListOfQuestions(), this.amountOfQuestions);
     }
 
+    public void categoryChosen(Category category){
+        currentCategory = category;
+        sendQuestionPackage();
+    }
+
     public List<Question> createListOfQuestions(){
         List<Question> questions = QuestionDatabase.getQuestionsFromCategory(currentCategory);
         Collections.shuffle(questions);
-        return questions;
+        List<Question> sublist = questions.subList(0,amountOfQuestions);
+        return new ArrayList<>(sublist);
     }
-
 
     public void loadProperties(){
         try {
-            this.properties.store(new FileWriter("src/Game_properties.properties"), "Game Properties");
+            this.properties.load(new FileInputStream("src/gamelogic/Game_Properties.properties"));
         }
         catch(IOException e){
             e.printStackTrace();
         }
         this.amountOfQuestions = Integer.parseInt(this.properties.getProperty("amountOfQuestions", "2"));
         this.amountOfRounds = Integer.parseInt(this.properties.getProperty("amountOfRounds", "2"));
+    }
+
+    public int getAmountOfRounds() {
+        return amountOfRounds;
     }
 }

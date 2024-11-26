@@ -1,6 +1,8 @@
 package Modules;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Question implements Serializable {
@@ -28,6 +30,8 @@ public class Question implements Serializable {
     }
 
     public List<String> getAlternatives() {
-        return alternatives;
+        List<String> temp = alternatives;
+        Collections.shuffle(temp);
+        return temp;
     }
 }

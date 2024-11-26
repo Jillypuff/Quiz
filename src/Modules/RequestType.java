@@ -7,9 +7,6 @@ public enum RequestType {
     EXIT_GAME,
     LEAVE_QUEUE,
 
-    // CHANGE_USERNAME,
-    // CHECK_HIGHSCORE,
-
     CATEGORY_CHOSEN,
 
     NEXT_ROUND,

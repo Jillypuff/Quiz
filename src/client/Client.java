@@ -23,67 +23,66 @@ public class Client implements ActionListener {
     boolean running = true;
     GameManager gameManager;
 
-    public Client(Socket socket){
-        try{
+    public Client(Socket socket) {
+        try {
             this.out = new ObjectOutputStream(socket.getOutputStream());
             this.in = new ObjectInputStream(socket.getInputStream());
             startListening();
             gameGUI = new GameGUI(this);
-        } catch (Exception e){
+        } catch (Exception e) {
             closeEverything(socket, out, in);
         }
         addListeners();
     }
 
-    public void addListeners(){
+    public void addListeners() {
         gameGUI.loginPanel.addActionListener(this);
         gameGUI.welcomePanel.addActionListener(this);
         gameGUI.waitingPanel.addActionListener(this);
         gameGUI.questionPanel.addActionListeners(this);
-        // addActionListenersToCategoryButtons();
+        addActionListenersToCategoryButtons();
     }
 
     public void startListening() {
         new Thread(() -> {
             ClientProtocol protocol = new ClientProtocol();
-            try{
-                while(running){
+            try {
+                while (running) {
                     Object obj = in.readObject();
-                    if (obj instanceof Response response){
+                    if (obj instanceof Response response) {
                         protocol.processResponse(response, this);
                     }
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
     }
 
-    public void stop(){
+    public void stop() {
         running = false;
     }
 
-    public void closeEverything(Socket socket, ObjectOutputStream out, ObjectInputStream in){
+    public void closeEverything(Socket socket, ObjectOutputStream out, ObjectInputStream in) {
         stop();
         try {
-            if (out != null){
+            if (out != null) {
                 out.close();
             }
-            if (in != null){
+            if (in != null) {
                 in.close();
             }
-            if (socket != null){
+            if (socket != null) {
                 socket.close();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Closed connection");
             System.exit(1);
         }
     }
 
-    public void sendRequest(Request request){
-        try{
+    public void sendRequest(Request request) {
+        try {
             out.writeObject(request);
             out.flush();
         } catch (IOException e) {
@@ -103,7 +102,7 @@ public class Client implements ActionListener {
             }
             System.out.println("Sending connect-request");
             sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
-        } else if (button == gameGUI.loginPanel.exitButton){
+        } else if (button == gameGUI.loginPanel.exitButton) {
             int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
                     "Are you sure you want to exit?",
                     "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -111,29 +110,28 @@ public class Client implements ActionListener {
             if (confirm == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
-        } else if (button == gameGUI.welcomePanel.getLogoutButton()){
+        } else if (button == gameGUI.welcomePanel.getLogoutButton()) {
             sendRequest(new Request(RequestType.DISCONNECT));
-        } else if (button == gameGUI.welcomePanel.getNewGameButton()){
+        } else if (button == gameGUI.welcomePanel.getNewGameButton()) {
             System.out.println("Starting new game");
             sendRequest(new Request(RequestType.START_GAME, username));
-        }
-        else if (button == gameGUI.waitingPanel.getLeaveGameButton()){
+        } else if (button == gameGUI.waitingPanel.getLeaveGameButton()) {
             System.out.println("Leaving queue");
             sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
             gameGUI.switchPanel(2);
         }
     }
 
-//    public void addActionListenersToCategoryButtons(){
-//        List<JButton> buttons = gameGUI.categoryPanel.getCategoryButtons();
-//        for(JButton button : buttons){
-//            button.addActionListener(e ->{
-//                Category selectedCategory = Category.valueOf(button.getText());
-//                System.out.println("Sending next question request");
-//                sendRequest(new Request(RequestType.NEXT_QUESTION, username, selectedCategory));
-//            });
-//        }
-//    }
+    public void addActionListenersToCategoryButtons() {
+        List<JButton> buttons = gameGUI.categoryPanel.getCategoryButtons();
+        for (JButton button : buttons) {
+            button.addActionListener(e -> {
+                Category selectedCategory = Category.valueOf(button.getText());
+                System.out.println("Sending next question request");
+                sendRequest(new Request(RequestType.CATEGORY_CHOSEN, username, selectedCategory));
+            });
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

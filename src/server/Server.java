@@ -44,6 +44,8 @@ public class Server {
 
             System.out.println("Players found: " + player1.username + " vs " + player2.username);
             GameInstance instance = new GameInstance(player1, player2);
+            player1.instance = instance;
+            player2.instance = instance;
         }
     }
 

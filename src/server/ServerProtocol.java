@@ -1,8 +1,10 @@
 package server;
 
+import Modules.Category;
 import Modules.ResponseType;
 import Modules.Request;
 import Modules.Response;
+import gamelogic.GameInstance;
 
 import java.io.IOException;
 
@@ -32,8 +34,10 @@ public class ServerProtocol {
                 // Skicka confirmation?
             }
             case CATEGORY_CHOSEN -> {
-                // Valde kategorin request.getAnswer();
-                // Ge feedback
+                System.out.println("GOT CATEGORY CHOSEN");
+                Category selected = request.getChosenCategory();
+                GameInstance instance = client.instance;
+                instance.categoryChosen(selected);
             }
             case NEXT_ROUND -> {
 

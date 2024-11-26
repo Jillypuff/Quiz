@@ -8,8 +8,7 @@ public class QuestionPackage implements Serializable {
 
     List<Question> questions;
     int amountOfQuestions;
-    // -1 because checkUser first increments, then it's 0 indexed
-    int currentQuestion = -1;
+    int questionNumber = -1;
 
     public QuestionPackage(List<Question> questions, int amountOfQuestions) {
         this.questions = questions;
@@ -18,21 +17,28 @@ public class QuestionPackage implements Serializable {
 
     public List<String> getQuestionAndAlternatives(){
         List<String> questionAndAlternatives = new ArrayList<>();
-        questionAndAlternatives.add(questions.get(currentQuestion).getQuestion());
-        questionAndAlternatives.addAll(questions.get(currentQuestion).getAlternatives());
+        questionAndAlternatives.add(questions.get(questionNumber).getQuestion());
+        questionAndAlternatives.addAll(questions.get(questionNumber).getAlternatives());
         return questionAndAlternatives;
     }
 
-    public boolean checkUserAnswer(int answer){
-        currentQuestion++;
-        return questions.get(currentQuestion).checkAnswer(answer);
+    public void addOneToQuestionNumber(){
+        questionNumber++;
+    }
+
+    public boolean checkUserAnswer(String answer){
+        return questions.get(questionNumber).checkAnswer(answer);
     }
 
     public int getAmountOfQuestions() {
         return amountOfQuestions;
     }
 
-    public int getCurrentQuestion() {
-        return currentQuestion;
+    public Question getCurrentQuestion() {
+        return questions.get(questionNumber);
+    }
+
+    public int getQuestionNumber() {
+        return questionNumber;
     }
 }
