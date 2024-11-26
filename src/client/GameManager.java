@@ -12,6 +12,7 @@ import java.util.List;
 public class GameManager implements ActionListener {
 
     int score = 0;
+    int opponentScore = 0;
     int amountOfRounds;
     int currentRound = 1;
     int amountOfQuestions;
@@ -100,6 +101,10 @@ public class GameManager implements ActionListener {
                 //client skickar round finished request?
             }*/
         });
+    }
+
+    public int getRoundScore(){
+        return score;
     }
 
     void setActionListener(){

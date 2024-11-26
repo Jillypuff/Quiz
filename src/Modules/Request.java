@@ -8,6 +8,7 @@ public class Request implements Serializable {
     public String username;
     Category chosenCategory;
     public int answer = -1;
+    public boolean playerIdentifier=false;
 
     public Request(RequestType request){
         this(request, "", -1);
@@ -31,6 +32,13 @@ public class Request implements Serializable {
         this.request = request;
         this.username = username;
         this.chosenCategory = chosenCategory;
+    }
+
+    public Request(RequestType request, String username, int answer, Boolean playerIdentifier) {
+        this.request = request;
+        this.username = username;
+        this.answer = answer;
+        this.playerIdentifier = playerIdentifier;
     }
 
     public RequestType getType() {

@@ -13,4 +13,5 @@ public enum RequestType {
     ROUND_RESULT,
     FINAL_RESULT,
     GIVE_UP,
+    ROUND_SCORE,
 }

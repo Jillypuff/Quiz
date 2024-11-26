@@ -133,6 +133,11 @@ public class Client implements ActionListener {
         }
     }
 
+    public void sendRoundScore(){
+        System.out.println("Sending round score");
+        sendRequest(new Request(RequestType.ROUND_SCORE, username, gameManager.getRoundScore(), gameManager.isActivePlayer));
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();

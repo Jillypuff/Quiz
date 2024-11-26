@@ -47,6 +47,21 @@ public class ServerProtocol {
                 // Anropa båda spelarna att en spelare har gett upp
                 // Avsluta spelet
             }
+            case ROUND_SCORE ->{
+                System.out.println("GOT ROUND SCORE PLAYER: "+request.username);
+                GameInstance instance = client.instance;
+
+                if((instance.getAmountOfRounds()%2)!=0){
+                    if(request.playerIdentifier){
+                        instance.uppdatePlayer1Score(request.answer);
+                    }else{instance.uppdatePlayer2Score(request.answer);}
+                }
+                else{
+                    if(request.playerIdentifier){
+                        instance.uppdatePlayer2Score(request.answer);
+                    }else{instance.uppdatePlayer1Score(request.answer);}
+                }
+            }
             default -> System.err.println("How did we end up here!?");
         }
     }

@@ -20,6 +20,8 @@ public class GameInstance {
     protected List<Category> availableCategories;
     private Category currentCategory;
     int activePlayer = 1;
+    private int player1Score = 0;
+    private int player2Score = 0;
 
     public ConnectedClient player1;
     public ConnectedClient player2;
@@ -100,6 +102,26 @@ public class GameInstance {
         }
         this.amountOfQuestions = Integer.parseInt(this.properties.getProperty("amountOfQuestions", "2"));
         this.amountOfRounds = Integer.parseInt(this.properties.getProperty("amountOfRounds", "2"));
+    }
+
+    public int getPlayer1Score(){
+        return player1Score;
+    }
+    public void setPlayer1Score(int player1Score){
+        this.player1Score = player1Score;
+    }
+    public void uppdatePlayer1Score(int player1Score){
+        this.player1Score = this.player1Score+player1Score;
+    }
+
+    public int getPlayer2Score(){
+        return player2Score;
+    }
+    public void setPlayer2Score(int player2Score){
+        this.player2Score = player2Score;
+    }
+    public void uppdatePlayer2Score(int player2Score){
+        this.player2Score = this.player2Score+player2Score;
     }
 
     public int getAmountOfRounds() {
