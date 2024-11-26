@@ -25,7 +25,7 @@ public class GameManager implements ActionListener {
         this.isActivePlayer = isActivePlayer;
         this.gameGUI = gameGUI;
         addActionListenerToQuestionButtons();
-        addActionListenerToNextQuestionButton();
+        addActionListenerToContinueButton();
     }
 
     void startNewRound(QuestionPackage questionPackage) {
@@ -87,8 +87,8 @@ public class GameManager implements ActionListener {
         }
     }
 
-    public void addActionListenerToNextQuestionButton(){
-        gameGUI.questionPanel.nextQuestionButton.addActionListener(e->{
+    public void addActionListenerToContinueButton(){
+        gameGUI.questionPanel.getContinueButton().addActionListener(e->{
             getNextQuestion();
 
             /*
