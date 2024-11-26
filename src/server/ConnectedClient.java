@@ -19,6 +19,8 @@ public class ConnectedClient implements Runnable {
     private boolean running = true;
     public GameInstance instance;
 
+    boolean isReady = false;
+
     public ConnectedClient(Socket socket, Server server){
         this.socket = socket;
         this.server = server;
@@ -27,6 +29,14 @@ public class ConnectedClient implements Runnable {
     public synchronized void sendResponse(Response response) throws IOException {
         out.writeObject(response);
         out.flush();
+    }
+
+    public void readyForNewRound(boolean isReady){
+        this.isReady = isReady;
+    }
+
+    public boolean isReadyForNewRound(){
+        return isReady;
     }
 
     @Override

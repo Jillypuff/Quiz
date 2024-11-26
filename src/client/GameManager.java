@@ -2,6 +2,8 @@ package client;
 
 import GUI.GameGUI;
 import Modules.QuestionPackage;
+import Modules.Request;
+import Modules.RequestType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,12 +20,14 @@ public class GameManager implements ActionListener {
     int currentQuestion = 1;
     QuestionPackage questionPackage;
     GameGUI gameGUI;
+    Client client;
     boolean isActivePlayer;
 
-    public GameManager(int amountOfRounds, boolean isActivePlayer, GameGUI gameGUI) {
+    public GameManager(int amountOfRounds, boolean isActivePlayer, Client client) {
         this.amountOfRounds = amountOfRounds;
         this.isActivePlayer = isActivePlayer;
-        this.gameGUI = gameGUI;
+        this.client = client;
+        this.gameGUI = client.gameGUI;
         addActionListenerToQuestionButtons();
         addActionListenerToNextQuestionButton();
     }
@@ -56,6 +60,8 @@ public class GameManager implements ActionListener {
     }
 
     void requestNextRound() {
+        // Här ska egentligen bara ROUND_FINISHED skickas
+        client.sendRequest(new Request(RequestType.NEXT_ROUND, score));
         // Ber om ny runda
         // Ger bara om båda spelarna requestar ny runda
     }
@@ -90,15 +96,6 @@ public class GameManager implements ActionListener {
     public void addActionListenerToNextQuestionButton(){
         gameGUI.questionPanel.nextQuestionButton.addActionListener(e->{
             getNextQuestion();
-
-            /*
-            if (currentQuestion < questionPackage.getAnswerAlternatives().size()){
-                getNextQuestion();
-            }
-            else{
-                gameGUI.switchPanel(waitingpanel);
-                //client skickar round finished request?
-            }*/
         });
     }
 

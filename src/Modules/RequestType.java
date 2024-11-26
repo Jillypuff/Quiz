@@ -9,6 +9,7 @@ public enum RequestType {
 
     CATEGORY_CHOSEN,
 
+    ROUND_FINISHED,
     NEXT_ROUND,
     ROUND_RESULT,
     FINAL_RESULT,
