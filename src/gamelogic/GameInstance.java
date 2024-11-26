@@ -71,6 +71,16 @@ public class GameInstance {
         }
     }
 
+    public void sendUpdatedScore(){
+        try{
+            player1.sendResponse(new Response(ResponseType.SEND_SCORE, player1Score,player2Score));
+            player2.sendResponse(new Response(ResponseType.SEND_SCORE, player2Score,player1Score));
+        }catch (IOException e){
+            player1.closeEverything();
+            player2.closeEverything();
+        }
+    }
+
     public List<Category> randomizeCategories(){
         Collections.shuffle(availableCategories);
         List<Category> setOfCategories = availableCategories.subList(0,3);

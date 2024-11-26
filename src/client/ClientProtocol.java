@@ -48,6 +48,12 @@ public class ClientProtocol {
                 client.gameGUI.switchPanel(4);
                 client.gameManager.startNewRound(response.getQuestionPackage());
             }
+            case SEND_SCORE -> {
+                System.out.println("new score value received");
+                GameManager gameManager = client.gameManager;
+                gameManager.setScore(response.getYourScore());
+                gameManager.setOpponentScore(response.getOpponentScore());
+            }
         }
     }
 }

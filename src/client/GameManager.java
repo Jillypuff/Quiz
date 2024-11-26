@@ -106,6 +106,12 @@ public class GameManager implements ActionListener {
     public int getRoundScore(){
         return score;
     }
+    public void setScore(int score){
+        this.score = score;
+    }
+    public void setOpponentScore(int opponentScore){
+        this.opponentScore = opponentScore;
+    }
 
     void setActionListener(){
         gameGUI.questionPanel.addActionListeners(this);

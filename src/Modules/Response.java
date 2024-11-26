@@ -9,6 +9,8 @@ public class Response implements Serializable {
     int amountOfRounds;
     boolean isActivePlayer;
     QuestionPackage questionPackage;
+    int yourScore;
+    int opponentScore;
     List<Category> categories;
 
     public Response(ResponseType response) {
@@ -31,6 +33,12 @@ public class Response implements Serializable {
         this.questionPackage = questionPackage;
     }
 
+    public Response(ResponseType response, int yourScore, int opponentScore){
+        this.response = response;
+        this.yourScore = yourScore;
+        this.opponentScore = opponentScore;
+    }
+
     public ResponseType getResponse() {
         return this.response;
     }
@@ -50,4 +58,8 @@ public class Response implements Serializable {
     public List<Category> getCategories() {
         return categories;
     }
+
+    public int getYourScore() {return yourScore;}
+
+    public int getOpponentScore() {return opponentScore;}
 }
