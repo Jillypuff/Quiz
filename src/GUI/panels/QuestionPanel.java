@@ -33,6 +33,7 @@ public class QuestionPanel extends JPanel {
 
         JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        buttonPanel.setOpaque(false);
 
         for (JButton button : answerButtons) {
             buttonPanel.add(button);
@@ -45,14 +46,14 @@ public class QuestionPanel extends JPanel {
         add(buttonPanel);
     }
 
-    public JButton createButton(String text, int fontSize) {
+    private JButton createButton(String text, int fontSize) {
         JButton button = new JButton(text);
         button.setFont(new Font("", Font.PLAIN, fontSize));
         button.setFocusable(Boolean.FALSE);
         return button;
     }
 
-    public void resetButtonColor() {
+    private void resetButtonColor() {
         for (JButton button : answerButtons) {
             button.setBackground(null);
         }
@@ -94,11 +95,13 @@ public class QuestionPanel extends JPanel {
 
     public void setWaitingButton(){
         continueButton.setText("Waiting");
+        continueButton.setFocusable(false);
         continueButton.setEnabled(false);
     }
 
     public void setContinueButton(){
         continueButton.setText("Continue");
+        continueButton.setFocusable(false);
         continueButton.setEnabled(true);
     }
 
