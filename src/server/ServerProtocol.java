@@ -50,16 +50,13 @@ public class ServerProtocol {
             case ROUND_SCORE ->{
                 System.out.println("GOT ROUND SCORE PLAYER: "+request.username);
                 GameInstance instance = client.instance;
-
-                if((instance.getAmountOfRounds()%2)!=0){
-                    if(request.playerIdentifier){
-                        instance.uppdatePlayer1Score(request.answer);
-                    }else{instance.uppdatePlayer2Score(request.answer);}
+                if(client.username.equals(instance.player1.username)){
+                    instance.uppdatePlayer1Score(request.answer);
+                    System.out.println("added: " + request.answer + " to player1");
                 }
-                else{
-                    if(request.playerIdentifier){
-                        instance.uppdatePlayer2Score(request.answer);
-                    }else{instance.uppdatePlayer1Score(request.answer);}
+                else {
+                    instance.uppdatePlayer2Score(request.answer);
+                    System.out.println("added: " + request.answer + " to player2");
                 }
             }
             default -> System.err.println("How did we end up here!?");
