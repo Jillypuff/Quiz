@@ -24,11 +24,10 @@ public class ClientProtocol {
             }
             case QUEUE_JOINED -> {
                 System.out.println("Received queue joined");
-                client.gameGUI.switchPanel(2);
+                client.gameGUI.switchPanel(5);
             }
             case GAME_JOINED -> {
                 System.out.println("Game joined");
-                // sätter in client istället för client.gamegui
                 gameManager = new GameManager
                         (response.getAmountOfRounds(), response.isActivePlayer(), client);
             }
@@ -52,10 +51,12 @@ public class ClientProtocol {
                 gameManager.startNewRound(response.getQuestionPackage());
             }
             case SEND_SCORE -> {
+                // BYT TILL SCORE PANEL
                 System.out.println("new score value received");
-                GameManager gameManager = client.gameManager;
+                client.gameGUI.switchPanel(6);
                 gameManager.setScore(response.getYourScore());
                 gameManager.setOpponentScore(response.getOpponentScore());
+                client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
             }
         }
     }

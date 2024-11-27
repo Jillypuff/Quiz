@@ -12,6 +12,7 @@ public class GameGUI extends JFrame {
     public LoginPanel loginPanel;
     public WelcomePanel welcomePanel;
     public WaitingPanel waitingPanel;
+    public UglyScorePanel uglyScorePanel;
 
     Client client;
 
@@ -36,6 +37,7 @@ public class GameGUI extends JFrame {
         questionPanel = new QuestionPanel();
         categoryPanel = new CategoryPanel();
         waitingPanel = new WaitingPanel();
+        uglyScorePanel = new UglyScorePanel();
     }
 
     public void switchPanel(int panel){
@@ -46,6 +48,7 @@ public class GameGUI extends JFrame {
             case 3 -> this.add(categoryPanel);
             case 4 -> this.add(questionPanel);
             case 5 -> this.add(waitingPanel);
+            case 6 -> this.add(uglyScorePanel);
         }
         revalidate();
         repaint();

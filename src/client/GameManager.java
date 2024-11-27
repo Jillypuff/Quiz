@@ -61,13 +61,15 @@ public class GameManager implements ActionListener {
     }
 
     void requestNextRound() {
-        // Här ska egentligen bara ROUND_FINISHED skickas
-        client.sendRequest(new Request(RequestType.NEXT_ROUND, score));
+        System.out.println("Sending round score");
+        client.sendRequest(new Request(RequestType.ROUND_SCORE, client.username, score));
+//        client.sendRequest(new Request(RequestType.NEXT_ROUND, score));
         // Ber om ny runda
         // Ger bara om båda spelarna requestar ny runda
     }
 
     void requestFinalScore() {
+        System.out.println("IN FINAL SCORE");
         // Ge tillbaka poängen och be om sista scoren
         // Ge bara tillbaka när båda spelarna requestar sista scoren
     }
@@ -92,6 +94,16 @@ public class GameManager implements ActionListener {
                 gameGUI.questionPanel.disableButtons();
             });
         }
+    }
+
+    public void resetContinueButton(){
+        gameGUI.questionPanel.getContinueButton().setText("Continue");
+        gameGUI.questionPanel.getContinueButton().setEnabled(true);
+    }
+
+    public void setContinueButtonWaiting(){
+        gameGUI.questionPanel.getContinueButton().setText("Waiting...");
+        gameGUI.questionPanel.getContinueButton().setEnabled(false);
     }
 
     public void addActionListenerToContinueButton(){

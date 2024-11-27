@@ -22,6 +22,8 @@ public class GameInstance {
     int activePlayer = 1;
     private int player1Score = 0;
     private int player2Score = 0;
+    private int player1TotalScore = 0;
+    private int player2TotalScore = 0;
 
     public ConnectedClient player1;
     public ConnectedClient player2;
@@ -91,10 +93,15 @@ public class GameInstance {
         }
     }
 
-    public void sendUpdatedScore(){
+    public void sendUpdatedScore(ConnectedClient client){
+        client.readyForNewRound(true);
         try{
-            player1.sendResponse(new Response(ResponseType.SEND_SCORE, player1Score,player2Score));
-            player2.sendResponse(new Response(ResponseType.SEND_SCORE, player2Score,player1Score));
+            if (player1.isReadyForNewRound() && player2.isReadyForNewRound()){
+                player1.sendResponse(new Response(ResponseType.SEND_SCORE, player1Score,player2Score));
+                player2.sendResponse(new Response(ResponseType.SEND_SCORE, player2Score,player1Score));
+                client.readyForNewRound(false);
+                client.readyForNewRound(false);
+            }
         }catch (IOException e){
             player1.closeEverything();
             player2.closeEverything();
@@ -145,7 +152,8 @@ public class GameInstance {
         this.player1Score = player1Score;
     }
     public void uppdatePlayer1Score(int player1Score){
-        this.player1Score = this.player1Score+player1Score;
+        this.player1Score = player1Score;
+        this.player1TotalScore += player1Score;
     }
 
     public int getPlayer2Score(){
@@ -155,7 +163,8 @@ public class GameInstance {
         this.player2Score = player2Score;
     }
     public void uppdatePlayer2Score(int player2Score){
-        this.player2Score = this.player2Score+player2Score;
+        this.player2Score = player2Score;
+        this.player2TotalScore += player2Score;
     }
 
     public int getAmountOfRounds() {

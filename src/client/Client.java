@@ -119,6 +119,8 @@ public class Client implements ActionListener {
             sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
             gameGUI.switchPanel(2);
         }
+
+        addActionListenerToContinueButton();
     }
 
     public void addActionListenersToCategoryButtons() {
@@ -132,10 +134,16 @@ public class Client implements ActionListener {
         }
     }
 
-    public void sendRoundScore(){
-        System.out.println("Sending round score");
-        sendRequest(new Request(RequestType.ROUND_SCORE, username, gameManager.getRoundScore(), gameManager.isActivePlayer));
+    public void addActionListenerToContinueButton(){
+        gameGUI.uglyScorePanel.getContinueButton().addActionListener(e->{
+            sendRequest(new Request(RequestType.NEXT_ROUND, username));
+        });
     }
+
+//    public void sendRoundScore(){
+//        System.out.println("Sending round score");
+//        sendRequest(new Request(RequestType.ROUND_SCORE, username, gameManager.getRoundScore()));
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {

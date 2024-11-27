@@ -55,10 +55,12 @@ public class ServerProtocol {
                 if(client.username.equals(instance.player1.username)){
                     instance.uppdatePlayer1Score(request.answer);
                     System.out.println("added: " + request.answer + " to player1");
+                    instance.sendUpdatedScore(client);
                 }
                 else {
                     instance.uppdatePlayer2Score(request.answer);
                     System.out.println("added: " + request.answer + " to player2");
+                    instance.sendUpdatedScore(client);
                 }
             }
             default -> System.err.println("How did we end up here!?");

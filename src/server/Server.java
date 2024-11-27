@@ -34,7 +34,7 @@ public class Server {
     }
 
     public void handleStartGame(ConnectedClient client) throws IOException {
-        queue.add(client);
+        addToQueue(client);
         System.out.println("Sending queue joined response to " + client.username);
         client.sendResponse(new Response(ResponseType.QUEUE_JOINED));
         if(queue.size() >= 2){
@@ -46,6 +46,12 @@ public class Server {
             GameInstance instance = new GameInstance(player1, player2);
             player1.instance = instance;
             player2.instance = instance;
+        }
+    }
+
+    public void addToQueue(ConnectedClient client){
+        if(!queue.contains(client)){
+            queue.add(client);
         }
     }
 
