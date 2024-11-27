@@ -20,12 +20,10 @@ public class GameInstance {
     protected List<Category> availableCategories;
     private Category currentCategory;
     int activePlayer = 1;
-    private int player1Score = 0;
-    private int player2Score = 0;
     private int player1TotalScore = 0;
-    private int palyer1RoundScore = 0;
+    private int player1RoundScore = 0;
     private int player2TotalScore = 0;
-    private int palyer2RoundScore = 0;
+    private int player2RoundScore = 0;
 
     public ConnectedClient player1;
     public ConnectedClient player2;
@@ -99,8 +97,8 @@ public class GameInstance {
         client.readyForNewRound(true);
         try{
             if (player1.isReadyForNewRound() && player2.isReadyForNewRound()){
-                player1.sendResponse(new Response(ResponseType.SEND_SCORE, player1Score,player2Score));
-                player2.sendResponse(new Response(ResponseType.SEND_SCORE, player2Score,player1Score));
+                player1.sendResponse(new Response(ResponseType.SEND_SCORE, player1RoundScore, player1TotalScore, player2RoundScore, player2TotalScore));
+                player2.sendResponse(new Response(ResponseType.SEND_SCORE, player1RoundScore, player1TotalScore, player2RoundScore, player2TotalScore));
                 client.readyForNewRound(false);
                 client.readyForNewRound(false);
             }
@@ -147,25 +145,30 @@ public class GameInstance {
         this.amountOfRounds = Integer.parseInt(this.properties.getProperty("amountOfRounds", "2"));
     }
 
-    public int getPlayer1Score(){
-        return player1Score;
+    public int getPlayer2TotalScore() {
+        return player2TotalScore;
     }
-    public void setPlayer1Score(int player1Score){
-        this.player1Score = player1Score;
+
+    public void setPlayer2TotalScore(int player2TotalScore) {
+        this.player2TotalScore = player2TotalScore;
     }
+
+    public int getPlayer1TotalScore() {
+        return player1TotalScore;
+    }
+
+    public void setPlayer1TotalScore(int player1TotalScore) {
+        this.player1TotalScore = player1TotalScore;
+    }
+
     public void uppdatePlayer1Score(int player1Score){
-        this.player1Score = player1Score;
+        this.player1RoundScore = player1Score;
         this.player1TotalScore += player1Score;
     }
 
-    public int getPlayer2Score(){
-        return player2Score;
-    }
-    public void setPlayer2Score(int player2Score){
-        this.player2Score = player2Score;
-    }
+
     public void uppdatePlayer2Score(int player2Score){
-        this.player2Score = player2Score;
+        this.player2RoundScore = player2Score;
         this.player2TotalScore += player2Score;
     }
 
@@ -173,19 +176,19 @@ public class GameInstance {
         return amountOfRounds;
     }
 
-    public int getPalyer1RoundScore() {
-        return palyer1RoundScore;
+    public int getPlayer1RoundScore() {
+        return player1RoundScore;
     }
 
-    public void setPalyer1RoundScore(int palyer1RoundScore) {
-        this.palyer1RoundScore = palyer1RoundScore;
+    public void setPlayer1RoundScore(int palyer1RoundScore) {
+        this.player1RoundScore = palyer1RoundScore;
     }
 
-    public int getPalyer2RoundScore() {
-        return palyer2RoundScore;
+    public int getPlayer2RoundScore() {
+        return player2RoundScore;
     }
 
-    public void setPalyer2RoundScore(int palyer2RoundScore) {
-        this.palyer2RoundScore = palyer2RoundScore;
+    public void setPlayer2RoundScore(int palyer2RoundScore) {
+        this.player2RoundScore = palyer2RoundScore;
     }
 }

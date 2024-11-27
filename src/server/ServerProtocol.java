@@ -54,13 +54,11 @@ public class ServerProtocol {
                 GameInstance instance = client.instance;
                 if(client.username.equals(instance.player1.username)){
                     instance.uppdatePlayer1Score(request.answer);
-                    instance.setPalyer1RoundScore(request.answer);
                     System.out.println("added: " + request.answer + " to player1");
                     instance.sendUpdatedScore(client);
                 }
                 else {
                     instance.uppdatePlayer2Score(request.answer);
-                    instance.setPalyer2RoundScore(request.answer);
                     System.out.println("added: " + request.answer + " to player2");
                     instance.sendUpdatedScore(client);
                 }

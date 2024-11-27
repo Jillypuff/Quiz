@@ -14,7 +14,10 @@ import java.util.List;
 public class GameManager implements ActionListener {
 
     int score = 0;
-    int opponentScore = 0;
+    int scoreLastRound = 0;
+    int totalScore = 0;
+    int opponentScoreLastRound = 0;
+    int opponentTotalScore = 0;
     int amountOfRounds;
     int currentRound = 1;
     int amountOfQuestions;
@@ -105,14 +108,20 @@ public class GameManager implements ActionListener {
         });
     }
 
-    public int getRoundScore(){
-        return score;
+    public void setScoreLastRound(int scoreLastRound) {
+        this.scoreLastRound = scoreLastRound;
     }
-    public void setScore(int score){
-        this.score = score;
+
+    public void setTotalScore(int totalScore) {
+        this.totalScore = totalScore;
     }
-    public void setOpponentScore(int opponentScore){
-        this.opponentScore = opponentScore;
+
+    public void setOpponentScoreLastRound(int opponentScoreLastRound) {
+        this.opponentScoreLastRound = opponentScoreLastRound;
+    }
+
+    public void setOpponentTotalScore(int opponentTotalScore) {
+        this.opponentTotalScore = opponentTotalScore;
     }
 
     void setActionListener(){

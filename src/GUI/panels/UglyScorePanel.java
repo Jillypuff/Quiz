@@ -92,8 +92,10 @@ public class UglyScorePanel extends JPanel {
 
     private final JLabel playerNameLabel;
     private final JLabel playerScoreLabel;
+    private final JLabel playerTotalScoreLabel;
     private final JLabel opponentNameLabel;
     private final JLabel opponentScoreLabel;
+    private final JLabel opponentTotalScoreLabel;
     private final JLabel resultLabel;
     private final JButton continueButton;
 
@@ -105,8 +107,10 @@ public class UglyScorePanel extends JPanel {
         // Initialize components
         playerNameLabel = new JLabel();
         playerScoreLabel = new JLabel("Your Score: 0");
+        playerTotalScoreLabel = new JLabel("Your Total Score: 0");
         opponentNameLabel = new JLabel();
         opponentScoreLabel = new JLabel("Opponent's Score: 0");
+        opponentTotalScoreLabel = new JLabel("Opponent's Total Score: 0");
         resultLabel = new JLabel("");
         continueButton = new JButton("Continue");
 
@@ -116,7 +120,9 @@ public class UglyScorePanel extends JPanel {
         opponentNameLabel.setFont(nameFont);
 
         playerScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        playerTotalScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
         opponentScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        opponentTotalScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
         resultLabel.setFont(new Font("Arial", Font.ITALIC, 16));
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
         continueButton.setFont(new Font("Arial", Font.BOLD, 14));
@@ -133,15 +139,21 @@ public class UglyScorePanel extends JPanel {
         gbc.gridy = 1;
         add(playerScoreLabel, gbc);
 
+        gbc.gridx = 2;
+        add(playerTotalScoreLabel, gbc);
+
         // Add opponent name and score
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         add(opponentNameLabel, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridy = 4;
+        add(opponentScoreLabel, gbc);
+
+        gbc.gridy = 5;
         add(opponentScoreLabel, gbc);
 
         // Add result label
-        gbc.gridy = 4;
+        gbc.gridy = 6;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(resultLabel, gbc);
 
@@ -151,21 +163,45 @@ public class UglyScorePanel extends JPanel {
         add(continueButton, gbc);
     }
 
-    public void setScoreDisplay(int playerScore, int opponentScore, boolean gameOver) {
-        playerScoreLabel.setText("Your Score: " + playerScore);
-        opponentScoreLabel.setText("Opponent's Score: " + opponentScore);
-        if (playerScore > opponentScore){
-            String resultText = (gameOver) ? "YOU WON THE GAME!" : "You won this round!";
-            resultLabel.setText(resultText);
+    public void setScoreDisplay(int playerScoreLastRound, int playerTotalScore, int opponentScoreLastRound, int opponentTotalScore, boolean gameOver) {
+        playerScoreLabel.setText("Your Score Last Round: " + playerScoreLastRound);
+        opponentScoreLabel.setText("Opponent's Score Last Round: " + opponentScoreLastRound);
+        String resultText;
+        if(gameOver) {
+            if(playerTotalScore>opponentTotalScore) {
+                resultText = "YOU WON THE GAME!";
+            }
+            else if (playerTotalScore<opponentTotalScore) {
+                resultText = "YOU LOST!";
+            }
+            else {
+                resultText = "Game ended on a draw";
+            }
         }
-        else if (opponentScore > playerScore){
-            String resultText = (gameOver) ? "YOU LOST" : "You lost this round.";
-            resultLabel.setText(resultText);
+        else {
+            if (playerScoreLastRound>opponentScoreLastRound) {
+                resultText = "You won this round!";
+            }
+            else if (playerScoreLastRound<opponentScoreLastRound) {
+                resultText = "You lost this round!";
+            }
+            else {
+                resultText = "It was a draw.";
+            }
         }
-        else{
-            String resultText = (gameOver) ? "Game ended on a draw" : "It was a draw.";
-            resultLabel.setText(resultText);
-        }
+//        if (playerScore > opponentScore){
+//            String resultText = (gameOver) ? "YOU WON THE GAME!" : "You won this round!";
+//            resultLabel.setText(resultText);
+//        }
+//        else if (opponentScore > playerScore){
+//            String resultText = (gameOver) ? "YOU LOST" : "You lost this round.";
+//            resultLabel.setText(resultText);
+//        }
+//        else{
+//            String resultText = (gameOver) ? "Game ended on a draw" : "It was a draw.";
+//            resultLabel.setText(resultText);
+//        }
+        resultLabel.setText(resultText);
         String buttonText = (gameOver) ? "EXIT GAME" : "CONTINUE";
         continueButton.setText(buttonText);
     }

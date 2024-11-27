@@ -52,11 +52,13 @@ public class ClientProtocol {
             }
             case SEND_SCORE -> {
                 // BYT TILL SCORE PANEL
-                System.out.println("new score value received");
+                System.out.println("new score values received");
                 client.gameGUI.switchPanel(6);
-                gameManager.setScore(response.getYourScore());
-                gameManager.setOpponentScore(response.getOpponentScore());
-                client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
+                gameManager.setScoreLastRound(response.getYourScoreLastRound());
+                gameManager.setTotalScore(response.getYourTotalScore());
+                gameManager.setOpponentScoreLastRound(response.getOpponentScoreLastRound());
+                gameManager.setOpponentTotalScore(response.getOpponentTotalScore());
+                client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScoreLastRound(), response.getYourTotalScore(),response.getOpponentScoreLastRound(),response.getOpponentTotalScore(), false);
             }
         }
     }
