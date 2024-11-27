@@ -36,8 +36,8 @@ public class Client implements ActionListener {
     }
 
     public void addListeners() {
-        resetActionListeners(gameGUI.loginPanel.startButton);
-        resetActionListeners(gameGUI.loginPanel.exitButton);
+        resetActionListeners(gameGUI.loginPanel.getStartButton());
+        resetActionListeners(gameGUI.loginPanel.getExitButton());
         resetActionListeners(gameGUI.welcomePanel.getLogoutButton());
         resetActionListeners(gameGUI.welcomePanel.getNewGameButton());
         resetActionListeners(gameGUI.waitingPanel.getLeaveGameButton());
@@ -91,8 +91,8 @@ public class Client implements ActionListener {
     }
 
     public void sendRequest(JButton button) throws IOException {
-        if (button == gameGUI.loginPanel.startButton) {
-            String username = gameGUI.loginPanel.usernameTextField.getText().trim();
+        if (button == gameGUI.loginPanel.getStartButton()) {
+            String username = gameGUI.loginPanel.getUsernameTextField().getText().trim();
             if (username.isEmpty()) {
                 JOptionPane.showMessageDialog(gameGUI.loginPanel,
                         "You must enter a username!",
@@ -101,8 +101,8 @@ public class Client implements ActionListener {
                 return;
             }
             System.out.println("Sending connect-request");
-            sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.usernameTextField.getText()));
-        } else if (button == gameGUI.loginPanel.exitButton) {
+            sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.getUsernameTextField().getText()));
+        } else if (button == gameGUI.loginPanel.getExitButton()) {
             int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
                     "Are you sure you want to exit?",
                     "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);

@@ -9,9 +9,8 @@ public class LoginPanel extends JPanel {
 
     private final ImageIcon backgroundImage = new ImageIcon("src/GUI/images/Image.jpg");
 
-    public JTextField usernameTextField;
-    public JButton startButton;
-    public JButton exitButton;
+    private final JTextField usernameTextField;
+    private final JButton startButton, exitButton;
 
     public LoginPanel() {
 
@@ -20,31 +19,13 @@ public class LoginPanel extends JPanel {
 
         JLabel welcomeLabel = createLabel("QUIZ!", "Arial Black", 26);
         JLabel usernameLabel = createLabel("Enter username", "Lucida Console", 12);
-        usernameTextField = new JTextField(30);
 
+        usernameTextField = createTextField();
         startButton = createButton("START");
         exitButton = createButton("EXIT");
 
-        usernameTextField.setForeground(new Color(0xFF878787, true));
-        usernameTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        usernameTextField.setPreferredSize(new Dimension(250, 35));
-        usernameTextField.setMaximumSize(new Dimension(250, 35));
-        usernameTextField.setOpaque(false);
-        Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
-        usernameTextField.setBorder(bottomBorder);
-
-        JPanel namePanel = new JPanel();
-        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
-        namePanel.setOpaque(false);
-        namePanel.add(usernameLabel);
-        namePanel.add(usernameTextField);
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setOpaque(false);
-        buttonPanel.add(startButton);
-        buttonPanel.add(Box.createHorizontalStrut(90));
-        buttonPanel.add(exitButton);
+        JPanel namePanel = createNamePanel(usernameLabel);
+        JPanel buttonPanel = createButtonPanel();
 
         add(welcomeLabel);
         add(Box.createVerticalStrut(50));
@@ -60,6 +41,37 @@ public class LoginPanel extends JPanel {
         return label;
     }
 
+    private JPanel createNamePanel(JLabel usernameLabel) {
+        JPanel namePanel = new JPanel();
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
+        namePanel.setOpaque(false);
+        namePanel.add(usernameLabel);
+        namePanel.add(usernameTextField);
+        return namePanel;
+    }
+
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(startButton);
+        buttonPanel.add(Box.createHorizontalStrut(90));
+        buttonPanel.add(exitButton);
+        return buttonPanel;
+    }
+
+    private JTextField createTextField() {
+        JTextField textField = new JTextField(30);
+        textField.setForeground(new Color(0xFF878787, true));
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setPreferredSize(new Dimension(250, 35));
+        textField.setMaximumSize(new Dimension(250, 35));
+        textField.setOpaque(false);
+        Border bottomBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK);
+        textField.setBorder(bottomBorder);
+        return textField;
+    }
+
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(150,40));
@@ -71,6 +83,18 @@ public class LoginPanel extends JPanel {
     public void addActionListener(ActionListener listener){
         startButton.addActionListener(listener);
         exitButton.addActionListener(listener);
+    }
+
+    public JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
+
+    public JButton getStartButton() {
+        return startButton;
+    }
+
+    public JButton getExitButton() {
+        return exitButton;
     }
 
     @Override
