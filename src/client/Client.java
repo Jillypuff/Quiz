@@ -21,7 +21,6 @@ public class Client implements ActionListener {
     String username;
     GameGUI gameGUI;
     boolean running = true;
-    GameManager gameManager;
 
     public Client(Socket socket) {
         try {

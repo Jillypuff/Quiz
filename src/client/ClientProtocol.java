@@ -7,6 +7,8 @@ import java.util.List;
 
 public class ClientProtocol {
 
+    GameManager gameManager;
+
     public void processResponse(Response response, Client client){
         switch (response.getResponse()){
             case CLIENT_CONNECTED -> {
@@ -26,8 +28,9 @@ public class ClientProtocol {
             }
             case GAME_JOINED -> {
                 System.out.println("Game joined");
-                client.gameManager = new GameManager
-                        (response.getAmountOfRounds(), response.isActivePlayer(), client.gameGUI);
+                // sätter in client istället för client.gamegui
+                gameManager = new GameManager
+                        (response.getAmountOfRounds(), response.isActivePlayer(), client);
             }
             case CHOSE_CATEGORY -> {
                 System.out.println("Choose category");
@@ -46,7 +49,7 @@ public class ClientProtocol {
             case GAME_STARTED -> {
                 System.out.println("Game started");
                 client.gameGUI.switchPanel(4);
-                client.gameManager.startNewRound(response.getQuestionPackage());
+                gameManager.startNewRound(response.getQuestionPackage());
             }
             case SEND_SCORE -> {
                 System.out.println("new score value received");

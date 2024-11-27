@@ -22,16 +22,14 @@ public class ServerProtocol {
                 client.sendResponse(new Response(ResponseType.CLIENT_DISCONNECTED));
             }
             case START_GAME -> {
+                client.readyForNewRound(true);
                 client.server.handleStartGame(client);
             }
             case EXIT_GAME -> {
                 // Säg hejdå till username
-                // Stäng ner connetions
             }
             case LEAVE_QUEUE -> {
                 client.server.queue.remove(client);
-                // Plocka ut username ur kön
-                // Skicka confirmation?
             }
             case CATEGORY_CHOSEN -> {
                 System.out.println("GOT CATEGORY CHOSEN");
@@ -39,8 +37,12 @@ public class ServerProtocol {
                 GameInstance instance = client.instance;
                 instance.categoryChosen(selected);
             }
+            case ROUND_FINISHED -> {
+                // Mellan-läge, skickas innan next round, hanterar poäng
+            }
             case NEXT_ROUND -> {
-
+                client.readyForNewRound(true);
+                client.instance.sendRandomizedCategories();
             }
             case GIVE_UP -> {
                 // Ta bort spelaren ut spelet
