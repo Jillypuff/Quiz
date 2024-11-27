@@ -59,6 +59,7 @@ public class ClientProtocol {
                 client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
             }
             case SEND_FINAL_RESULT -> {
+                client.gameGUI.uglyScorePanel.setButtonToContinue();
                 client.inGame = false;
                 System.out.println("Final result received");
                 client.gameGUI.switchPanel(6);
