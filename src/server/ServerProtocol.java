@@ -10,6 +10,12 @@ import java.io.IOException;
 
 public class ServerProtocol {
 
+    Server server;
+
+    public ServerProtocol(Server server) {
+        this.server = server;
+    }
+
     public void processRequest(Request request, ConnectedClient client) throws IOException {
         switch (request.getType()){
             case CONNECT -> {
@@ -23,13 +29,13 @@ public class ServerProtocol {
             }
             case START_GAME -> {
                 client.readyForNewRound(true);
-                client.server.handleStartGame(client);
+                server.handleStartGame(client);
             }
             case EXIT_GAME -> {
                 // Säg hejdå till username
             }
             case LEAVE_QUEUE -> {
-                client.server.queue.remove(client);
+                server.queue.remove(client);
             }
             case CATEGORY_CHOSEN -> {
                 System.out.println("GOT CATEGORY CHOSEN");

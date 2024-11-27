@@ -11,7 +11,7 @@ import java.net.Socket;
 
 public class ConnectedClient implements Runnable {
 
-    public Server server;
+    public ServerProtocol protocol;
     Socket socket;
     ObjectOutputStream out;
     ObjectInputStream in;
@@ -21,9 +21,9 @@ public class ConnectedClient implements Runnable {
 
     boolean isReady = false;
 
-    public ConnectedClient(Socket socket, Server server){
+    public ConnectedClient(Socket socket, ServerProtocol protocol){
         this.socket = socket;
-        this.server = server;
+        this.protocol = protocol;
     }
 
     public synchronized void sendResponse(Response response) throws IOException {
@@ -46,7 +46,6 @@ public class ConnectedClient implements Runnable {
             out = new ObjectOutputStream(socket.getOutputStream());
             out.flush();
             in = new ObjectInputStream(socket.getInputStream());
-            ServerProtocol protocol = new ServerProtocol();
 
             while(running && !socket.isClosed()){
                 Object obj = in.readObject();

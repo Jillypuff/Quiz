@@ -25,7 +25,7 @@ public class Server {
         try {
             while(!serverSocket.isClosed()){
                 Socket socket = serverSocket.accept();
-                ConnectedClient client = new ConnectedClient(socket, this);
+                ConnectedClient client = new ConnectedClient(socket, new ServerProtocol(this));
                 new Thread(client).start();
             }
         } catch (IOException e) {
