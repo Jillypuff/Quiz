@@ -61,6 +61,11 @@ public class ServerProtocol {
                 }
             }
             case FINAL_RESULT -> {
+                if (client.username.equals(client.instance.player1.username)) {
+                    client.instance.updatePlayer1Score(request.answer);
+                } else {
+                    client.instance.updatePlayer2Score(request.answer);
+                }
                 System.out.println("Waiting for final result");
                 client.instance.sendFinalResults(client);
             }

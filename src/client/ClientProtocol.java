@@ -28,6 +28,7 @@ public class ClientProtocol {
             }
             case GAME_JOINED -> {
                 System.out.println("Game joined");
+                client.inGame = true;
                 gameManager = new GameManager
                         (response.getAmountOfRounds(), response.isActivePlayer(), client);
             }
@@ -57,10 +58,10 @@ public class ClientProtocol {
                 client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
             }
             case SEND_FINAL_RESULT -> {
+                client.inGame = false;
                 System.out.println("Final result received");
                 client.gameGUI.switchPanel(6);
                 client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), true);
-
             }
         }
     }

@@ -41,4 +41,8 @@ public class QuestionPackage implements Serializable {
     public int getQuestionNumber() {
         return questionNumber;
     }
+
+    public void resetPackage(){
+        questionNumber = 0;
+    }
 }

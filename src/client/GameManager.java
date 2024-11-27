@@ -21,7 +21,6 @@ public class GameManager {
     GameGUI gameGUI;
     Client client;
     boolean isActivePlayer;
-    boolean gameOver = false;
 
     public GameManager(int amountOfRounds, boolean isActivePlayer, Client client) {
         this.amountOfRounds = amountOfRounds;
@@ -68,15 +67,16 @@ public class GameManager {
     }
 
     void requestFinalScore() {
-        gameOver = true;
         gameGUI.questionPanel.setWaitingButton();
-        client.sendRequest(new Request(RequestType.FINAL_RESULT));
+        client.sendRequest(new Request(RequestType.FINAL_RESULT, client.username, scoreThisRound));
         System.out.println("IN FINAL SCORE");
+        questionPackage.resetPackage();
     }
 
     public void addActionListenerToQuestionButtons(){
         List<JButton> buttons = gameGUI.questionPanel.getAllAnswerButtons();
         for(JButton button: buttons){
+            resetActionListeners(button);
             button.addActionListener(e->{
                 String answer = button.getText();
                 if (questionPackage.getCurrentQuestion().checkAnswer(answer)){
@@ -97,12 +97,15 @@ public class GameManager {
     }
 
     public void addActionListenerToContinueButton(){
+        resetActionListeners(gameGUI.questionPanel.getContinueButton());
         gameGUI.questionPanel.getContinueButton().addActionListener(e->{
-            if (gameOver){
-                gameGUI.switchPanel(2);
-            } else {
-                getNextQuestion();
-            }
+            getNextQuestion();
         });
+    }
+
+    public void resetActionListeners(JButton button){
+        for(ActionListener listener: button.getActionListeners()){
+            button.removeActionListener((listener));
+        }
     }
 }

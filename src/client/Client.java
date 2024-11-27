@@ -18,23 +18,29 @@ public class Client implements ActionListener {
 
     private ObjectOutputStream out;
     private ObjectInputStream in;
+    private Socket socket;
     String username;
     GameGUI gameGUI;
-    boolean running = true;
+    boolean inGame = false;
 
     public Client(Socket socket) {
         try {
-            this.out = new ObjectOutputStream(socket.getOutputStream());
-            this.in = new ObjectInputStream(socket.getInputStream());
-            startListening();
+            this.socket = socket;
+            this.out = new ObjectOutputStream(this.socket.getOutputStream());
+            this.in = new ObjectInputStream(this.socket.getInputStream());
             gameGUI = new GameGUI(this);
         } catch (Exception e) {
-            closeEverything(socket, out, in);
+            closeEverything();
         }
         addListeners();
     }
 
     public void addListeners() {
+        resetActionListeners(gameGUI.loginPanel.startButton);
+        resetActionListeners(gameGUI.loginPanel.exitButton);
+        resetActionListeners(gameGUI.welcomePanel.getLogoutButton());
+        resetActionListeners(gameGUI.welcomePanel.getNewGameButton());
+        resetActionListeners(gameGUI.waitingPanel.getLeaveGameButton());
         gameGUI.loginPanel.addActionListener(this);
         gameGUI.welcomePanel.addActionListener(this);
         gameGUI.waitingPanel.addActionListener(this);
@@ -46,7 +52,7 @@ public class Client implements ActionListener {
         new Thread(() -> {
             ClientProtocol protocol = new ClientProtocol();
             try {
-                while (running) {
+                while (socket.isConnected()) {
                     Object obj = in.readObject();
                     if (obj instanceof Response response) {
                         protocol.processResponse(response, this);
@@ -58,12 +64,7 @@ public class Client implements ActionListener {
         }).start();
     }
 
-    public void stop() {
-        running = false;
-    }
-
-    public void closeEverything(Socket socket, ObjectOutputStream out, ObjectInputStream in) {
-        stop();
+    public void closeEverything() {
         try {
             if (out != null) {
                 out.close();
@@ -119,13 +120,13 @@ public class Client implements ActionListener {
             sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
             gameGUI.switchPanel(2);
         }
-
         addActionListenerToContinueButton();
     }
 
     public void addActionListenersToCategoryButtons() {
         List<JButton> buttons = gameGUI.categoryPanel.getCategoryButtons();
         for (JButton button : buttons) {
+            resetActionListeners(button);
             button.addActionListener(e -> {
                 Category selectedCategory = Category.valueOf(button.getText());
                 System.out.println("Sending next question request");
@@ -135,15 +136,16 @@ public class Client implements ActionListener {
     }
 
     public void addActionListenerToContinueButton(){
+        resetActionListeners(gameGUI.uglyScorePanel.getContinueButton());
         gameGUI.uglyScorePanel.getContinueButton().addActionListener(e->{
-            sendRequest(new Request(RequestType.NEXT_ROUND, username));
+            if (inGame){
+                sendRequest(new Request(RequestType.NEXT_ROUND, username));
+            }
+            else{
+                gameGUI.switchPanel(2);
+            }
         });
     }
-
-//    public void sendRoundScore(){
-//        System.out.println("Sending round score");
-//        sendRequest(new Request(RequestType.ROUND_SCORE, username, gameManager.getRoundScore()));
-//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -155,8 +157,15 @@ public class Client implements ActionListener {
         }
     }
 
+    public void resetActionListeners(JButton button){
+        for(ActionListener listener: button.getActionListeners()){
+            button.removeActionListener((listener));
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket(InetAddress.getLocalHost(), 55554);
         Client client = new Client(socket);
+        client.startListening();
     }
 }

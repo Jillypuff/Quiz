@@ -110,8 +110,10 @@ public class GameInstance {
 
     public void sendFinalResults(ConnectedClient client){
         client.readyForNewRound(true);
+        System.out.println("Are they ready?");
         try {
             if (player1.isReadyForNewRound() && player2.isReadyForNewRound()){
+                System.out.println("Sending final score to both players");
                 int player1TotalScore = getTotalValueFromList(player1Scores);
                 int player2TotalScore = getTotalValueFromList(player2Scores);
                 player1.sendResponse(new Response(ResponseType.SEND_FINAL_RESULT, player1TotalScore, player2TotalScore));
