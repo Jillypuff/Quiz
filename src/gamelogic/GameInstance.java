@@ -4,7 +4,6 @@ import Modules.*;
 import server.ConnectedClient;
 
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,14 +15,10 @@ public class GameInstance {
     private int amountOfQuestions;
     private int amountOfRounds;
     private Properties properties;
-    private int round = 1;
     protected List<Category> availableCategories;
     private Category currentCategory;
-    int activePlayer = 1;
-    private int player1Score = 0;
-    private int player2Score = 0;
-    private int player1TotalScore = 0;
-    private int player2TotalScore = 0;
+    private final List<Integer> player1Scores = new ArrayList<>();
+    private final List<Integer> player2Scores = new ArrayList<>();
 
     public ConnectedClient player1;
     public ConnectedClient player2;
@@ -82,8 +77,7 @@ public class GameInstance {
     public void sendQuestionPackage(){
         try {
             // sätter att dom ej är redo för ny runda
-            player1.readyForNewRound(false);
-            player2.readyForNewRound(false);
+            notReadyForNewRound();
             QuestionPackage questionPackage = createQuestionPackage();
             player1.sendResponse(new Response(ResponseType.GAME_STARTED, questionPackage));
             player2.sendResponse(new Response(ResponseType.GAME_STARTED, questionPackage));
@@ -93,14 +87,15 @@ public class GameInstance {
         }
     }
 
-    public void sendUpdatedScore(ConnectedClient client){
+    public void sendRoundScore(ConnectedClient client){
         client.readyForNewRound(true);
         try{
             if (player1.isReadyForNewRound() && player2.isReadyForNewRound()){
-                player1.sendResponse(new Response(ResponseType.SEND_SCORE, player1Score,player2Score));
-                player2.sendResponse(new Response(ResponseType.SEND_SCORE, player2Score,player1Score));
-                client.readyForNewRound(false);
-                client.readyForNewRound(false);
+                player1.sendResponse(new Response
+                        (ResponseType.SEND_SCORE, player1Scores.getLast(), player2Scores.getLast()));
+                player2.sendResponse(new Response
+                        (ResponseType.SEND_SCORE, player2Scores.getLast(), player1Scores.getLast()));
+                notReadyForNewRound();
             }
         }catch (IOException e){
             player1.closeEverything();
@@ -108,8 +103,30 @@ public class GameInstance {
         }
     }
 
-    public void sendRoundResult(){
-        // Metod som Joakim kan fixa, skickar rundans poängresultat för båda klienterna, till båda klienterna
+    public void notReadyForNewRound(){
+        player1.readyForNewRound(false);
+        player2.readyForNewRound(false);
+    }
+
+    public void sendFinalResults(ConnectedClient client){
+        client.readyForNewRound(true);
+        try {
+            if (player1.isReadyForNewRound() && player2.isReadyForNewRound()){
+                int player1TotalScore = getTotalValueFromList(player1Scores);
+                int player2TotalScore = getTotalValueFromList(player2Scores);
+                player1.sendResponse(new Response(ResponseType.SEND_FINAL_RESULT, player1TotalScore, player2TotalScore));
+                player2.sendResponse(new Response(ResponseType.SEND_FINAL_RESULT, player2TotalScore, player1TotalScore));
+            }
+        } catch (IOException e){
+            player1.closeEverything();
+            player2.closeEverything();
+        }
+    }
+
+    public int getTotalValueFromList(List<Integer> list){
+        return list.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
     public List<Category> randomizeCategories(){
@@ -145,29 +162,11 @@ public class GameInstance {
         this.amountOfRounds = Integer.parseInt(this.properties.getProperty("amountOfRounds", "2"));
     }
 
-    public int getPlayer1Score(){
-        return player1Score;
-    }
-    public void setPlayer1Score(int player1Score){
-        this.player1Score = player1Score;
-    }
-    public void uppdatePlayer1Score(int player1Score){
-        this.player1Score = player1Score;
-        this.player1TotalScore += player1Score;
+    public void updatePlayer1Score(int score){
+        player1Scores.add(score);
     }
 
-    public int getPlayer2Score(){
-        return player2Score;
-    }
-    public void setPlayer2Score(int player2Score){
-        this.player2Score = player2Score;
-    }
-    public void uppdatePlayer2Score(int player2Score){
-        this.player2Score = player2Score;
-        this.player2TotalScore += player2Score;
-    }
-
-    public int getAmountOfRounds() {
-        return amountOfRounds;
+    public void updatePlayer2Score(int score){
+        player2Scores.add(score);
     }
 }

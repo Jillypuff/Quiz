@@ -11,18 +11,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class GameManager implements ActionListener {
+public class GameManager {
 
-    int score = 0;
-    int opponentScore = 0;
+    int scoreThisRound = 0;
     int amountOfRounds;
     int currentRound = 1;
     int amountOfQuestions;
-    int currentQuestion = 1;
     QuestionPackage questionPackage;
     GameGUI gameGUI;
     Client client;
     boolean isActivePlayer;
+    boolean gameOver = false;
 
     public GameManager(int amountOfRounds, boolean isActivePlayer, Client client) {
         this.amountOfRounds = amountOfRounds;
@@ -64,17 +63,15 @@ public class GameManager implements ActionListener {
     void requestNextRound() {
         gameGUI.questionPanel.setWaitingButton();
         System.out.println("Sending round score");
-        client.sendRequest(new Request(RequestType.ROUND_SCORE, client.username, score));
-//        client.sendRequest(new Request(RequestType.NEXT_ROUND, score));
-        // Ber om ny runda
-        // Ger bara om båda spelarna requestar ny runda
+        client.sendRequest(new Request(RequestType.ROUND_SCORE, client.username, scoreThisRound));
+        scoreThisRound = 0;
     }
 
     void requestFinalScore() {
+        gameOver = true;
         gameGUI.questionPanel.setWaitingButton();
+        client.sendRequest(new Request(RequestType.FINAL_RESULT));
         System.out.println("IN FINAL SCORE");
-        // Ge tillbaka poängen och be om sista scoren
-        // Ge bara tillbaka när båda spelarna requestar sista scoren
     }
 
     public void addActionListenerToQuestionButtons(){
@@ -84,7 +81,7 @@ public class GameManager implements ActionListener {
                 String answer = button.getText();
                 if (questionPackage.getCurrentQuestion().checkAnswer(answer)){
                     button.setBackground(Color.GREEN);
-                    score++;
+                    scoreThisRound++;
                 }
                 else{
                     button.setBackground(Color.RED);
@@ -101,26 +98,11 @@ public class GameManager implements ActionListener {
 
     public void addActionListenerToContinueButton(){
         gameGUI.questionPanel.getContinueButton().addActionListener(e->{
-            getNextQuestion();
+            if (gameOver){
+                gameGUI.switchPanel(2);
+            } else {
+                getNextQuestion();
+            }
         });
-    }
-
-    public int getRoundScore(){
-        return score;
-    }
-    public void setScore(int score){
-        this.score = score;
-    }
-    public void setOpponentScore(int opponentScore){
-        this.opponentScore = opponentScore;
-    }
-
-    void setActionListener(){
-        gameGUI.questionPanel.addActionListeners(this);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

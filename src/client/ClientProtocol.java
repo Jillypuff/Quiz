@@ -54,9 +54,13 @@ public class ClientProtocol {
                 // BYT TILL SCORE PANEL
                 System.out.println("new score value received");
                 client.gameGUI.switchPanel(6);
-                gameManager.setScore(response.getYourScore());
-                gameManager.setOpponentScore(response.getOpponentScore());
                 client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
+            }
+            case SEND_FINAL_RESULT -> {
+                System.out.println("Final result received");
+                client.gameGUI.switchPanel(6);
+                client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), true);
+
             }
         }
     }

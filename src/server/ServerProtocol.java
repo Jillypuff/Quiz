@@ -26,7 +26,7 @@ public class ServerProtocol {
                 client.server.handleStartGame(client);
             }
             case EXIT_GAME -> {
-                // Säg hejdå till username
+
             }
             case LEAVE_QUEUE -> {
                 client.server.queue.remove(client);
@@ -36,9 +36,6 @@ public class ServerProtocol {
                 Category selected = request.getChosenCategory();
                 GameInstance instance = client.instance;
                 instance.categoryChosen(selected);
-            }
-            case ROUND_FINISHED -> {
-                // Mellan-läge, skickas innan next round, hanterar poäng
             }
             case NEXT_ROUND -> {
                 client.readyForNewRound(true);
@@ -53,15 +50,19 @@ public class ServerProtocol {
                 System.out.println("GOT ROUND SCORE PLAYER: "+request.username);
                 GameInstance instance = client.instance;
                 if(client.username.equals(instance.player1.username)){
-                    instance.uppdatePlayer1Score(request.answer);
+                    instance.updatePlayer1Score(request.answer);
                     System.out.println("added: " + request.answer + " to player1");
-                    instance.sendUpdatedScore(client);
+                    instance.sendRoundScore(client);
                 }
                 else {
-                    instance.uppdatePlayer2Score(request.answer);
+                    instance.updatePlayer2Score(request.answer);
                     System.out.println("added: " + request.answer + " to player2");
-                    instance.sendUpdatedScore(client);
+                    instance.sendRoundScore(client);
                 }
+            }
+            case FINAL_RESULT -> {
+                System.out.println("Waiting for final result");
+                client.instance.sendFinalResults(client);
             }
             default -> System.err.println("How did we end up here!?");
         }
