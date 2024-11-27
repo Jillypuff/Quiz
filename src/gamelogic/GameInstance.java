@@ -97,10 +97,12 @@ public class GameInstance {
         client.readyForNewRound(true);
         try{
             if (player1.isReadyForNewRound() && player2.isReadyForNewRound()){
+
                 player1.sendResponse(new Response(ResponseType.SEND_SCORE, player1Score,player2Score));
                 player2.sendResponse(new Response(ResponseType.SEND_SCORE, player2Score,player1Score));
-                client.readyForNewRound(false);
-                client.readyForNewRound(false);
+
+                player1.readyForNewRound(false);
+                player2.readyForNewRound(false);
             }
         }catch (IOException e){
             player1.closeEverything();
