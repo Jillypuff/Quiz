@@ -23,7 +23,9 @@ public class GameInstance {
     private int player1Score = 0;
     private int player2Score = 0;
     private int player1TotalScore = 0;
+    private int palyer1RoundScore = 0;
     private int player2TotalScore = 0;
+    private int palyer2RoundScore = 0;
 
     public ConnectedClient player1;
     public ConnectedClient player2;
@@ -169,5 +171,21 @@ public class GameInstance {
 
     public int getAmountOfRounds() {
         return amountOfRounds;
+    }
+
+    public int getPalyer1RoundScore() {
+        return palyer1RoundScore;
+    }
+
+    public void setPalyer1RoundScore(int palyer1RoundScore) {
+        this.palyer1RoundScore = palyer1RoundScore;
+    }
+
+    public int getPalyer2RoundScore() {
+        return palyer2RoundScore;
+    }
+
+    public void setPalyer2RoundScore(int palyer2RoundScore) {
+        this.palyer2RoundScore = palyer2RoundScore;
     }
 }
