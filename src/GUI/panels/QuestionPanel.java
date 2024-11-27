@@ -12,6 +12,8 @@ public class QuestionPanel extends JPanel {
     private final JButton continueButton;
     private final List<JButton> answerButtons;
 
+    private final ImageIcon backgroundImage = new ImageIcon("src/GUI/images/Image2.jpg");
+
     public QuestionPanel() {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -98,5 +100,11 @@ public class QuestionPanel extends JPanel {
     public void setContinueButton(){
         continueButton.setText("Continue");
         continueButton.setEnabled(true);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage.getImage(), 0, 0, 600, 360, this);
     }
 }

@@ -9,12 +9,11 @@ public class CategoryPanel extends JPanel {
 
     private final ImageIcon backgroundImage = new ImageIcon("src/GUI/images/Image2.jpg");
 
-    private final JButton category1;
-    private final JButton category2;
-    private final JButton category3;
+    private final List<JButton> categoryButtons;
 
     public CategoryPanel() {
 
+        categoryButtons = new ArrayList<>();
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -23,19 +22,7 @@ public class CategoryPanel extends JPanel {
         categoryLabel.setFont(new Font("Lucida Console", Font.PLAIN, 16));
         categoryLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        buttonPanel.setOpaque(false);
-
-        category1 = createCategoryButton();
-        category2 = createCategoryButton();
-        category3 = createCategoryButton();
-
-        buttonPanel.add(category1);
-        buttonPanel.add(Box.createVerticalStrut(15));
-        buttonPanel.add(category2);
-        buttonPanel.add(Box.createVerticalStrut(15));
-        buttonPanel.add(category3);
+        JPanel buttonPanel = createButtonPanel();
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
@@ -46,6 +33,22 @@ public class CategoryPanel extends JPanel {
         centerPanel.add(buttonPanel);
 
         add(centerPanel, BorderLayout.CENTER);
+    }
+
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        buttonPanel.setOpaque(false);
+
+        for (int i = 0; i < 3; i++) {
+            JButton button = createCategoryButton();
+            categoryButtons.add(button);
+            buttonPanel.add(button);
+            if (i < 2) {
+                buttonPanel.add(Box.createVerticalStrut(15));
+            }
+        }
+        return buttonPanel;
     }
 
     private JButton createCategoryButton() {
@@ -60,37 +63,24 @@ public class CategoryPanel extends JPanel {
     }
 
     public List<JButton> getCategoryButtons() {
-        List<JButton> buttons = new ArrayList<>();
-        buttons.add(category1);
-        buttons.add(category2);
-        buttons.add(category3);
-        return buttons;
+        return categoryButtons;
     }
 
     public JButton getCategory1() {
-        return category1;
+        return categoryButtons.size() > 0 ? categoryButtons.get(0) : null;
     }
 
     public JButton getCategory2() {
-        return category2;
+        return categoryButtons.size() > 1 ? categoryButtons.get(1) : null;
     }
 
     public JButton getCategory3() {
-        return category3;
+        return categoryButtons.size() > 2 ? categoryButtons.get(2) : null;
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(backgroundImage.getImage(), 0, 0, 600, 360, this);
+        @Override
+        protected void paintComponent (Graphics g){
+            super.paintComponent(g);
+            g.drawImage(backgroundImage.getImage(), 0, 0, 600, 360, this);
+        }
     }
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Category Selection");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(600, 400);
-//        frame.setLocationRelativeTo(null);
-//        frame.add(new CategoryPanel());
-//        frame.setVisible(true);
-//    }
-}
