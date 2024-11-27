@@ -194,6 +194,16 @@ public class UglyScorePanel extends JPanel {
         opponentNameLabel.setText(opponentName);
     }
 
+    public void setButtonToWaiting(){
+        getContinueButton().setText("Waiting...");
+        getContinueButton().setEnabled(false);
+    }
+
+    public void setButtonToContinue(){
+        getContinueButton().setText("Continue");
+        getContinueButton().setEnabled(true);
+    }
+
 
 
 }

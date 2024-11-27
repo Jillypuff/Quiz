@@ -137,6 +137,7 @@ public class Client implements ActionListener {
     public void addActionListenerToContinueButton(){
         gameGUI.uglyScorePanel.getContinueButton().addActionListener(e->{
             sendRequest(new Request(RequestType.NEXT_ROUND, username));
+            gameGUI.uglyScorePanel.setButtonToWaiting();
         });
     }
 
