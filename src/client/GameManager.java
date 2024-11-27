@@ -34,6 +34,7 @@ public class GameManager implements ActionListener {
     }
 
     void startNewRound(QuestionPackage questionPackage) {
+        gameGUI.questionPanel.setContinueButton();
         System.out.println("Starting new round");
         this.questionPackage = questionPackage;
         this.amountOfQuestions = questionPackage.getAmountOfQuestions();
@@ -61,6 +62,7 @@ public class GameManager implements ActionListener {
     }
 
     void requestNextRound() {
+        gameGUI.questionPanel.setWaitingButton();
         System.out.println("Sending round score");
         client.sendRequest(new Request(RequestType.ROUND_SCORE, client.username, score));
 //        client.sendRequest(new Request(RequestType.NEXT_ROUND, score));
@@ -69,6 +71,7 @@ public class GameManager implements ActionListener {
     }
 
     void requestFinalScore() {
+        gameGUI.questionPanel.setWaitingButton();
         System.out.println("IN FINAL SCORE");
         // Ge tillbaka poängen och be om sista scoren
         // Ge bara tillbaka när båda spelarna requestar sista scoren
@@ -94,16 +97,6 @@ public class GameManager implements ActionListener {
                 gameGUI.questionPanel.disableButtons();
             });
         }
-    }
-
-    public void resetContinueButton(){
-        gameGUI.questionPanel.getContinueButton().setText("Continue");
-        gameGUI.questionPanel.getContinueButton().setEnabled(true);
-    }
-
-    public void setContinueButtonWaiting(){
-        gameGUI.questionPanel.getContinueButton().setText("Waiting...");
-        gameGUI.questionPanel.getContinueButton().setEnabled(false);
     }
 
     public void addActionListenerToContinueButton(){

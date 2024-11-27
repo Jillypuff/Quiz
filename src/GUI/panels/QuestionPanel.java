@@ -89,4 +89,14 @@ public class QuestionPanel extends JPanel {
         answerButtons.get(3).setText(answer4);
         enableButtons();
     }
+
+    public void setWaitingButton(){
+        continueButton.setText("Waiting");
+        continueButton.setEnabled(false);
+    }
+
+    public void setContinueButton(){
+        continueButton.setText("Continue");
+        continueButton.setEnabled(true);
+    }
 }
