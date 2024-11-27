@@ -53,6 +53,7 @@ public class ClientProtocol {
             }
             case SEND_SCORE -> {
                 // BYT TILL SCORE PANEL
+                client.gameGUI.uglyScorePanel.setButtonToContinue();
                 System.out.println("new score value received");
                 client.gameGUI.switchPanel(6);
                 client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);

@@ -144,6 +144,8 @@ public class Client implements ActionListener {
             else{
                 gameGUI.switchPanel(2);
             }
+            sendRequest(new Request(RequestType.NEXT_ROUND, username));
+            gameGUI.uglyScorePanel.setButtonToWaiting();
         });
     }
 
