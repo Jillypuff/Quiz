@@ -45,7 +45,7 @@ public class ClientProtocol {
             case WAITING_FOR_CATEGORY_CHOICE -> {
                 System.out.println("Waiting for opponent to select category");
                 client.gameGUI.switchPanel(5);
-                client.gameGUI.waitingPanel.getQueuedLabel().setText("Waiting for other players turn");
+                client.gameGUI.waitingPanel.getQueuedLabel().setText("Waiting for player to select category");
             }
             case GAME_STARTED -> {
                 System.out.println("Game started");

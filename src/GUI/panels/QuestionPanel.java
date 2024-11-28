@@ -52,7 +52,7 @@ public class QuestionPanel extends JPanel {
         questionLabel.setRows(2);
         questionLabel.setFont(new Font("Malgun Gothic", Font.BOLD, 18));
         questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        questionLabel.setAlignmentY(Component.TOP_ALIGNMENT);
+        questionLabel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         questionLabel.setPreferredSize(new Dimension(500, 60));
         questionLabel.setMaximumSize(new Dimension(500,60));
         questionLabel.setOpaque(false);

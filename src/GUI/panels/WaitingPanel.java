@@ -8,7 +8,7 @@ public class WaitingPanel extends JPanel {
 
     private final ImageIcon backgroundImage = new ImageIcon("src/GUI/images/Image2.jpg");
 
-    private final JLabel queuedLabel = new JLabel("waiting for players...");
+    private final JLabel queuedLabel = new JLabel("waiting for players to join game...");
     private final JButton leaveGameButton;
 
     public WaitingPanel() {
@@ -41,10 +41,6 @@ public class WaitingPanel extends JPanel {
         button.setFocusable(false);
         button.setOpaque(false);
         return button;
-    }
-
-    public void addActionListener(ActionListener listener){
-        leaveGameButton.addActionListener(listener);
     }
 
     public JLabel getQueuedLabel() {
