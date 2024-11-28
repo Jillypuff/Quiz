@@ -2,6 +2,7 @@ package GUI.panels;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class UglyScorePanel extends JPanel {
 //    private final JLabel playerScoreLabel;
@@ -168,6 +169,30 @@ public class UglyScorePanel extends JPanel {
         }
         String buttonText = (gameOver) ? "EXIT GAME" : "CONTINUE";
         continueButton.setText(buttonText);
+    }
+
+    public void setScoreDisplay(List<Integer> yourScores, List<Integer> opponentScores, boolean gameOver) {
+        StringBuilder scoreAllRounds;
+        scoreAllRounds = new StringBuilder("Your Scoreboard\n");
+        for (int i = 0; i < yourScores.size(); i++) {
+            scoreAllRounds.append("\nround ").append(i).append(": ").append(yourScores.get(i).toString()).append("\n");
+        }
+        playerScoreLabel.setText(scoreAllRounds.toString());
+//        opponentScoreLabel.setText("Opponent's Score: " + opponentScore);
+//        if (playerScore > opponentScore){
+//            String resultText = (gameOver) ? "YOU WON THE GAME!" : "You won this round!";
+//            resultLabel.setText(resultText);
+//        }
+//        else if (opponentScore > playerScore){
+//            String resultText = (gameOver) ? "YOU LOST" : "You lost this round.";
+//            resultLabel.setText(resultText);
+//        }
+//        else{
+//            String resultText = (gameOver) ? "Game ended on a draw" : "It was a draw.";
+//            resultLabel.setText(resultText);
+//        }
+//        String buttonText = (gameOver) ? "EXIT GAME" : "CONTINUE";
+//        continueButton.setText(buttonText);
     }
 
     // Method to update the player score
