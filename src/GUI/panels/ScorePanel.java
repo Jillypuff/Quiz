@@ -10,10 +10,12 @@ public class ScorePanel extends JPanel {
     private final JLabel resultLabel;
     private final JButton continueButton;
 
+    private final ImageIcon backgroundImage = new ImageIcon("src/GUI/images/Image2.jpg");
+
     public ScorePanel() {
 
-        setLayout(new GridBagLayout());
-        setBackground(Color.LIGHT_GRAY);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setOpaque(false);
 
         playerScoreLabel = new JLabel("Your Score: 0");
         opponentScoreLabel = new JLabel("Opponent's Score: 0");
@@ -26,22 +28,17 @@ public class ScorePanel extends JPanel {
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
         continueButton.setFont(new Font("Arial", Font.BOLD, 14));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        playerScoreLabel.setAlignmentX(CENTER_ALIGNMENT);
+        opponentScoreLabel.setAlignmentX(CENTER_ALIGNMENT);
+        resultLabel.setAlignmentX(CENTER_ALIGNMENT);
+        continueButton.setAlignmentX(CENTER_ALIGNMENT);
 
-        gbc.gridy = 1;
-        add(playerScoreLabel, gbc);
-
-        gbc.gridy = 3;
-        add(opponentScoreLabel, gbc);
-
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        add(resultLabel, gbc);
-
-        gbc.gridy = 5;
-        gbc.fill = GridBagConstraints.NONE;
-        add(continueButton, gbc);
+        add(resultLabel);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(playerScoreLabel);
+        add(opponentScoreLabel);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(continueButton);
     }
 
     public void setScoreDisplay(int playerScore, int opponentScore, boolean gameOver) {
@@ -75,5 +72,11 @@ public class ScorePanel extends JPanel {
     public void setButtonToContinue(){
         getContinueButton().setText("Continue");
         getContinueButton().setEnabled(true);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(backgroundImage.getImage(), 0, 0, 600, 360, this);
     }
 }
