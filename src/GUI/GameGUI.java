@@ -16,7 +16,7 @@ public class GameGUI extends JFrame {
 
     Client client;
 
-    public GameGUI(Client client) throws IOException, InterruptedException {
+    public GameGUI(Client client) {
         this.client = client;
         loginPanel = new LoginPanel();
         add(loginPanel);
