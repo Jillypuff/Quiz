@@ -13,7 +13,7 @@ public class ConnectedClient implements Runnable {
 
     public Server server;
     Socket socket;
-    ObjectOutputStream out;
+    private ObjectOutputStream out;
     ObjectInputStream in;
     public String username;
     private boolean running = true;
