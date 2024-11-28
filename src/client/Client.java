@@ -62,6 +62,7 @@ public class Client {
                     }
                 }
             } catch (Exception e) {
+                System.out.println("ERROR; CANT READ FROM SOCKET BECAUSE JOSSAN CALLED INSTANCE.NULL OSV");
                 System.exit(0);
             }
         }).start();
@@ -140,6 +141,7 @@ public class Client {
             if (isInGame()){
                 System.out.println("Client giving up");
                 sendRequest(new Request(RequestType.GIVE_UP));
+                inGame(false);
             }
             else{
                 System.out.println("Leaving queue");

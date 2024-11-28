@@ -68,6 +68,7 @@ public class ClientProtocol {
             }
             case GAME_OVER ->{
                 System.out.println("Other player gave up");
+                client.inGame(false);
                 client.getGameGUI().switchPanel(2);
                 JOptionPane.showMessageDialog(client.getGameGUI(), "Other player gave up!");
             }
