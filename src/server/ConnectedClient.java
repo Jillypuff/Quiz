@@ -12,7 +12,7 @@ import java.net.Socket;
 public class ConnectedClient implements Runnable {
 
     public Server server;
-    Socket socket;
+    private final Socket socket;
     ObjectOutputStream out;
     ObjectInputStream in;
     public String username;
