@@ -68,6 +68,7 @@ public class GameManager implements ActionListener {
         gameGUI.questionPanel.setWaitingButton();
         System.out.println("Sending round score");
         client.sendRequest(new Request(RequestType.ROUND_SCORE, client.username, score));
+        score = 0;
 //        client.sendRequest(new Request(RequestType.NEXT_ROUND, score));
         // Ber om ny runda
         // Ger bara om båda spelarna requestar ny runda

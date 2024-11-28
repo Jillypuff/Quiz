@@ -98,7 +98,7 @@ public class GameInstance {
         try{
             if (player1.isReadyForNewRound() && player2.isReadyForNewRound()){
                 player1.sendResponse(new Response(ResponseType.SEND_SCORE, player1RoundScore, player1TotalScore, player2RoundScore, player2TotalScore));
-                player2.sendResponse(new Response(ResponseType.SEND_SCORE, player1RoundScore, player1TotalScore, player2RoundScore, player2TotalScore));
+                player2.sendResponse(new Response(ResponseType.SEND_SCORE, player2RoundScore, player2TotalScore, player1RoundScore, player1TotalScore));
                 client.readyForNewRound(false);
                 client.readyForNewRound(false);
             }

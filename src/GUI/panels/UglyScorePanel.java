@@ -134,26 +134,27 @@ public class UglyScorePanel extends JPanel {
         // Add player name and score
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(playerNameLabel, gbc);
+        //add(playerNameLabel, gbc);
 
-        gbc.gridy = 1;
+        gbc.gridx = 1;
         add(playerScoreLabel, gbc);
 
-        gbc.gridx = 2;
+        gbc.gridy = 1;
         add(playerTotalScoreLabel, gbc);
 
         // Add opponent name and score
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        //add(opponentNameLabel, gbc);
+
+        gbc.gridx = 1;
+        add(opponentScoreLabel, gbc);
+
         gbc.gridy = 3;
-        add(opponentNameLabel, gbc);
-
-        gbc.gridy = 4;
-        add(opponentScoreLabel, gbc);
-
-        gbc.gridy = 5;
-        add(opponentScoreLabel, gbc);
+        add(opponentTotalScoreLabel, gbc);
 
         // Add result label
-        gbc.gridy = 6;
+        gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(resultLabel, gbc);
 
@@ -165,7 +166,9 @@ public class UglyScorePanel extends JPanel {
 
     public void setScoreDisplay(int playerScoreLastRound, int playerTotalScore, int opponentScoreLastRound, int opponentTotalScore, boolean gameOver) {
         playerScoreLabel.setText("Your Score Last Round: " + playerScoreLastRound);
+        playerTotalScoreLabel.setText("Your Total Score: " + playerTotalScore);
         opponentScoreLabel.setText("Opponent's Score Last Round: " + opponentScoreLastRound);
+        opponentTotalScoreLabel.setText("Opponent's Total Score: " + opponentTotalScore);
         String resultText;
         if(gameOver) {
             if(playerTotalScore>opponentTotalScore) {
