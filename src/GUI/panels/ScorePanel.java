@@ -22,9 +22,9 @@ public class ScorePanel extends JPanel {
         resultLabel = new JLabel("");
         continueButton = new JButton("Continue");
 
-        playerScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        opponentScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        resultLabel.setFont(new Font("Arial", Font.ITALIC, 16));
+        playerScoreLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        opponentScoreLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        resultLabel.setFont(new Font("Lucida Console", Font.PLAIN, 20));
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
         continueButton.setFont(new Font("Arial", Font.BOLD, 14));
 
@@ -33,11 +33,13 @@ public class ScorePanel extends JPanel {
         resultLabel.setAlignmentX(CENTER_ALIGNMENT);
         continueButton.setAlignmentX(CENTER_ALIGNMENT);
 
+        add(Box.createVerticalStrut(60));
         add(resultLabel);
-        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(Box.createVerticalStrut(40));
         add(playerScoreLabel);
+        add(Box.createVerticalStrut(10));
         add(opponentScoreLabel);
-        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(Box.createVerticalStrut(50));
         add(continueButton);
     }
 
@@ -53,7 +55,7 @@ public class ScorePanel extends JPanel {
             resultLabel.setText(resultText);
         }
         else{
-            String resultText = (gameOver) ? "Game ended on a draw" : "It was a draw.";
+            String resultText = (gameOver) ? "Game ended on a draw" : "DRAW!";
             resultLabel.setText(resultText);
         }
         String buttonText = (gameOver) ? "EXIT GAME" : "CONTINUE";
