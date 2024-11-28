@@ -14,7 +14,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
 
-public class Client implements ActionListener {
+public class Client {
 
     private ObjectOutputStream out;
     private ObjectInputStream in;
@@ -32,20 +32,15 @@ public class Client implements ActionListener {
         } catch (Exception e) {
             closeEverything();
         }
-        addListeners();
+        addAllListeners();
     }
 
-    public void addListeners() {
-        resetActionListeners(gameGUI.loginPanel.getStartButton());
-        resetActionListeners(gameGUI.loginPanel.getExitButton());
-        resetActionListeners(gameGUI.welcomePanel.getLogoutButton());
-        resetActionListeners(gameGUI.welcomePanel.getNewGameButton());
-        resetActionListeners(gameGUI.waitingPanel.getLeaveGameButton());
-        gameGUI.loginPanel.addActionListener(this);
-        gameGUI.welcomePanel.addActionListener(this);
-        gameGUI.waitingPanel.addActionListener(this);
-        gameGUI.questionPanel.addActionListeners(this);
-        addActionListenersToCategoryButtons();
+    public void addAllListeners() {
+        addActionListenerToLoginPanel();
+        addActionListenersToWelcomePanel();
+        addActionListenersToWaitingPanel();
+        addActionListenersToCategoryPanel();
+        addActionListenerToUglyScorePanel();
     }
 
     public void startListening() {
@@ -90,8 +85,11 @@ public class Client implements ActionListener {
         }
     }
 
-    public void sendRequest(JButton button) throws IOException {
-        if (button == gameGUI.loginPanel.getStartButton()) {
+    public void addActionListenerToLoginPanel() {
+        resetActionListeners(gameGUI.loginPanel.getStartButton());
+        resetActionListeners(gameGUI.loginPanel.getExitButton());
+
+        gameGUI.loginPanel.getStartButton().addActionListener(e->{
             String username = gameGUI.loginPanel.getUsernameTextField().getText().trim();
             if (username.isEmpty()) {
                 JOptionPane.showMessageDialog(gameGUI.loginPanel,
@@ -102,7 +100,8 @@ public class Client implements ActionListener {
             }
             System.out.println("Sending connect-request");
             sendRequest(new Request(RequestType.CONNECT, gameGUI.loginPanel.getUsernameTextField().getText()));
-        } else if (button == gameGUI.loginPanel.getExitButton()) {
+        });
+        gameGUI.loginPanel.getExitButton().addActionListener(e->{
             int confirm = JOptionPane.showConfirmDialog(gameGUI.loginPanel,
                     "Are you sure you want to exit?",
                     "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -110,20 +109,37 @@ public class Client implements ActionListener {
             if (confirm == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
-        } else if (button == gameGUI.welcomePanel.getLogoutButton()) {
-            sendRequest(new Request(RequestType.DISCONNECT));
-        } else if (button == gameGUI.welcomePanel.getNewGameButton()) {
-            System.out.println("Starting new game");
-            sendRequest(new Request(RequestType.START_GAME, username));
-        } else if (button == gameGUI.waitingPanel.getLeaveGameButton()) {
-            System.out.println("Leaving queue");
-            sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
-            gameGUI.switchPanel(2);
-        }
-        addActionListenerToContinueButton();
+        });
     }
 
-    public void addActionListenersToCategoryButtons() {
+    public void addActionListenersToWelcomePanel(){
+        resetActionListeners(gameGUI.welcomePanel.getNewGameButton());
+        resetActionListeners(gameGUI.welcomePanel.getLogoutButton());
+        gameGUI.welcomePanel.getNewGameButton().addActionListener(e->{
+            System.out.println("Starting new game");
+            sendRequest(new Request(RequestType.START_GAME, username));
+        });
+        gameGUI.welcomePanel.getLogoutButton().addActionListener(e->{
+            sendRequest(new Request(RequestType.DISCONNECT));
+        });
+    }
+
+    public void addActionListenersToWaitingPanel(){
+        resetActionListeners(gameGUI.waitingPanel.getLeaveGameButton());
+        gameGUI.waitingPanel.getLeaveGameButton().addActionListener(e->{
+            if (inGame){
+                System.out.println("Client giving up");
+                sendRequest(new Request(RequestType.GIVE_UP));
+            }
+            else{
+                System.out.println("Leaving queue");
+                sendRequest(new Request(RequestType.LEAVE_QUEUE, username));
+            }
+            gameGUI.switchPanel(2);
+        });
+    }
+
+    public void addActionListenersToCategoryPanel() {
         List<JButton> buttons = gameGUI.categoryPanel.getCategoryButtons();
         for (JButton button : buttons) {
             resetActionListeners(button);
@@ -135,7 +151,7 @@ public class Client implements ActionListener {
         }
     }
 
-    public void addActionListenerToContinueButton(){
+    public void addActionListenerToUglyScorePanel(){
         resetActionListeners(gameGUI.uglyScorePanel.getContinueButton());
         gameGUI.uglyScorePanel.getContinueButton().addActionListener(e->{
             if (inGame){
@@ -146,16 +162,6 @@ public class Client implements ActionListener {
                 gameGUI.switchPanel(2);
             }
         });
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JButton button = (JButton) e.getSource();
-        try {
-            sendRequest(button);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 
     public void resetActionListeners(JButton button){

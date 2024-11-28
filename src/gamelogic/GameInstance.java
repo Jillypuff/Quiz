@@ -125,6 +125,15 @@ public class GameInstance {
         }
     }
 
+    public void sendGameOver(ConnectedClient client) throws IOException {
+        if (client.username.equals(player1.username)){
+            player2.sendResponse(new Response(ResponseType.GAME_OVER));
+        }
+        else{
+            player1.sendResponse(new Response(ResponseType.GAME_OVER));
+        }
+    }
+
     public int getTotalValueFromList(List<Integer> list){
         return list.stream()
                 .mapToInt(Integer::intValue)

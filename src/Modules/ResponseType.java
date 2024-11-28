@@ -6,6 +6,7 @@ public enum ResponseType {
 
     QUEUE_JOINED,
     GAME_JOINED,
+    GAME_OVER,
 
     CHOSE_CATEGORY,
     WAITING_FOR_CATEGORY_CHOICE,

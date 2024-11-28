@@ -42,9 +42,7 @@ public class ServerProtocol {
                 client.instance.sendRandomizedCategories();
             }
             case GIVE_UP -> {
-                // Ta bort spelaren ut spelet
-                // Anropa båda spelarna att en spelare har gett upp
-                // Avsluta spelet
+                client.instance.sendGameOver(client);
             }
             case ROUND_SCORE ->{
                 System.out.println("GOT ROUND SCORE PLAYER: "+request.username);

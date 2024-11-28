@@ -3,6 +3,7 @@ package client;
 import Modules.Category;
 import Modules.Response;
 
+import javax.swing.*;
 import java.util.List;
 
 public class ClientProtocol {
@@ -64,6 +65,11 @@ public class ClientProtocol {
                 System.out.println("Final result received");
                 client.gameGUI.switchPanel(6);
                 client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), true);
+            }
+            case GAME_OVER ->{
+                System.out.println("Other player gave up");
+                client.gameGUI.switchPanel(2);
+                JOptionPane.showMessageDialog(client.gameGUI, "Other player gave up!");
             }
         }
     }
