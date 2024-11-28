@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Response implements Serializable {
 
-    ResponseType response;
-    int amountOfRounds;
-    boolean isActivePlayer;
-    QuestionPackage questionPackage;
-    int yourScore;
-    int opponentScore;
-    List<Category> categories;
+    private final ResponseType response;
+    private int amountOfRounds;
+    private boolean isActivePlayer;
+    private QuestionPackage questionPackage;
+    private int yourScore;
+    private int opponentScore;
+    private List<Category> categories;
 
     public Response(ResponseType response) {
         this.response = response;
@@ -59,7 +59,11 @@ public class Response implements Serializable {
         return categories;
     }
 
-    public int getYourScore() {return yourScore;}
+    public int getYourScore() {
+        return yourScore;
+    }
 
-    public int getOpponentScore() {return opponentScore;}
+    public int getOpponentScore() {
+        return opponentScore;
+    }
 }

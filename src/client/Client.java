@@ -18,9 +18,9 @@ public class Client {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private Socket socket;
-    String username;
-    GameGUI gameGUI;
-    boolean inGame = false;
+    private String username;
+    private GameGUI gameGUI;
+    private boolean playing = false;
 
     public Client(Socket socket) {
         try {
@@ -32,6 +32,14 @@ public class Client {
             closeEverything();
         }
         addAllListeners();
+    }
+
+    public boolean isInGame(){
+        return playing;
+    }
+
+    public void inGame(boolean playing){
+        this.playing = playing;
     }
 
     public void addAllListeners() {
@@ -128,9 +136,10 @@ public class Client {
     public void addActionListenersToWaitingPanel(){
         resetActionListeners(gameGUI.waitingPanel.getLeaveGameButton());
         gameGUI.waitingPanel.getLeaveGameButton().addActionListener(e->{
-            if (inGame){
+            if (isInGame()){
                 System.out.println("Client giving up");
                 sendRequest(new Request(RequestType.GIVE_UP));
+                inGame(false);
             }
             else{
                 System.out.println("Leaving queue");
@@ -155,7 +164,7 @@ public class Client {
     public void addActionListenerToUglyScorePanel(){
         resetActionListeners(gameGUI.scorePanel.getContinueButton());
         gameGUI.scorePanel.getContinueButton().addActionListener(e->{
-            if (inGame){
+            if (isInGame()){
                 sendRequest(new Request(RequestType.NEXT_ROUND, username));
                 gameGUI.scorePanel.setButtonToWaiting();
             }
@@ -169,6 +178,22 @@ public class Client {
         for(ActionListener listener: button.getActionListeners()){
             button.removeActionListener((listener));
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public GameGUI getGameGUI() {
+        return gameGUI;
+    }
+
+    public void setGameGUI(GameGUI gameGUI) {
+        this.gameGUI = gameGUI;
     }
 
     public static void main(String[] args) throws IOException {

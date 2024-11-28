@@ -1,15 +1,14 @@
 package Modules;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Question implements Serializable {
 
-    String question;
-    String answer;
-    List<String> alternatives;
+    private final String question;
+    private final String answer;
+    private final List<String> alternatives;
 
     public Question(String question, String answer, List<String> alternatives) {
         this.question = question;
@@ -19,10 +18,6 @@ public class Question implements Serializable {
 
     public boolean checkAnswer(String answer){
         return this.answer.equalsIgnoreCase(answer);
-    }
-
-    public boolean checkAnswer(int answer){
-        return checkAnswer(alternatives.get(answer));
     }
 
     public String getQuestion() {
