@@ -21,7 +21,7 @@ public class Client {
     private Socket socket;
     private String username;
     private GameGUI gameGUI;
-    boolean inGame = false;
+    private boolean playing = false;
 
     public Client(Socket socket) {
         try {
@@ -33,6 +33,14 @@ public class Client {
             closeEverything();
         }
         addAllListeners();
+    }
+
+    public boolean isInGame(){
+        return playing;
+    }
+
+    public void inGame(boolean playing){
+        this.playing = playing;
     }
 
     public void addAllListeners() {
@@ -129,7 +137,7 @@ public class Client {
     public void addActionListenersToWaitingPanel(){
         resetActionListeners(gameGUI.waitingPanel.getLeaveGameButton());
         gameGUI.waitingPanel.getLeaveGameButton().addActionListener(e->{
-            if (inGame){
+            if (isInGame()){
                 System.out.println("Client giving up");
                 sendRequest(new Request(RequestType.GIVE_UP));
             }
@@ -156,7 +164,7 @@ public class Client {
     public void addActionListenerToUglyScorePanel(){
         resetActionListeners(gameGUI.uglyScorePanel.getContinueButton());
         gameGUI.uglyScorePanel.getContinueButton().addActionListener(e->{
-            if (inGame){
+            if (isInGame()){
                 sendRequest(new Request(RequestType.NEXT_ROUND, username));
                 gameGUI.uglyScorePanel.setButtonToWaiting();
             }

@@ -29,7 +29,7 @@ public class ClientProtocol {
             }
             case GAME_JOINED -> {
                 System.out.println("Game joined");
-                client.inGame = true;
+                client.inGame(true);
                 gameManager = new GameManager
                         (response.getAmountOfRounds(), response.isActivePlayer(), client);
             }
@@ -60,7 +60,7 @@ public class ClientProtocol {
             }
             case SEND_FINAL_RESULT -> {
                 client.getGameGUI().uglyScorePanel.setButtonToContinue();
-                client.inGame = false;
+                client.inGame(false);
                 System.out.println("Final result received");
                 client.getGameGUI().switchPanel(6);
                 client.getGameGUI().uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), true);
