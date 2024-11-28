@@ -3,7 +3,6 @@ package GUI;
 import GUI.panels.*;
 import client.Client;
 import javax.swing.*;
-import java.io.IOException;
 
 public class GameGUI extends JFrame {
 
