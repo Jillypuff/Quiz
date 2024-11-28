@@ -19,7 +19,7 @@ public class CategoryPanel extends JPanel {
 
         JLabel categoryLabel = new JLabel("Choose a category");
         categoryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        categoryLabel.setFont(new Font("Lucida Console", Font.PLAIN, 16));
+        categoryLabel.setFont(new Font("Arial Black", Font.PLAIN, 16));
         categoryLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel buttonPanel = createButtonPanel();

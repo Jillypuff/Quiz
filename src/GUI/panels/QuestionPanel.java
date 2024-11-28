@@ -2,13 +2,12 @@ package GUI.panels;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionPanel extends JPanel {
 
-    private final JLabel questionLabel;
+    private JTextArea questionLabel;
     private final JButton continueButton;
     private final List<JButton> answerButtons;
 
@@ -18,9 +17,7 @@ public class QuestionPanel extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        questionLabel = new JLabel();
-        questionLabel.setFont(new Font("Malgun Gothic", Font.BOLD, 21));
-        questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        questionLabel = createQuestionLabel();
 
         continueButton = createButton("Continue", 14);
         continueButton.setVisible(false);
@@ -46,6 +43,25 @@ public class QuestionPanel extends JPanel {
         add(buttonPanel);
     }
 
+    private JTextArea createQuestionLabel() {
+        questionLabel = new JTextArea();
+        questionLabel.setEditable(false);
+        questionLabel.setWrapStyleWord(true);
+        questionLabel.setLineWrap(true);
+        questionLabel.setColumns(20);
+        questionLabel.setRows(2);
+        questionLabel.setFont(new Font("Malgun Gothic", Font.BOLD, 18));
+        questionLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        questionLabel.setAlignmentY(Component.TOP_ALIGNMENT);
+        questionLabel.setPreferredSize(new Dimension(500, 60));
+        questionLabel.setMaximumSize(new Dimension(500,60));
+        questionLabel.setOpaque(false);
+        questionLabel.setBorder(null);
+        questionLabel.setFocusable(false);
+        questionLabel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        return questionLabel;
+    }
+
     private JButton createButton(String text, int fontSize) {
         JButton button = new JButton(text);
         button.setFont(new Font("", Font.PLAIN, fontSize));
@@ -67,12 +83,6 @@ public class QuestionPanel extends JPanel {
     public void enableButtons(){
         continueButton.setVisible(false);
         answerButtons.forEach(button -> button.setEnabled(true));
-    }
-
-    public void addActionListeners(ActionListener listener){
-        for (JButton button : answerButtons) {
-            button.addActionListener(listener);
-        }
     }
 
     public List<JButton> getAllAnswerButtons(){
