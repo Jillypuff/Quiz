@@ -3,6 +3,7 @@ package GUI.panels;
 import javax.swing.*;
 import java.awt.*;
 
+// detta är en frame. så ska det ej vara förstås, allt ska bara vara en panel
 public class SecondUglyScorePanel extends JFrame {
 
     public SecondUglyScorePanel(){
