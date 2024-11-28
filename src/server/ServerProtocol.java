@@ -26,7 +26,7 @@ public class ServerProtocol {
                 client.server.handleStartGame(client);
             }
             case EXIT_GAME -> {
-
+                client.closeEverything();
             }
             case LEAVE_QUEUE -> {
                 client.server.queue.remove(client);
