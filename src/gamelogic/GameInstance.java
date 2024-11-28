@@ -152,6 +152,7 @@ public class GameInstance {
 
     public void categoryChosen(Category category){
         currentCategory = category;
+        availableCategories.remove(category);
         sendQuestionPackage();
     }
 
