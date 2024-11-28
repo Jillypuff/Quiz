@@ -3,32 +3,22 @@ package GUI.panels;
 import javax.swing.*;
 import java.awt.*;
 
-public class UglyScorePanel extends JPanel {
+public class ScorePanel extends JPanel {
 
-    private final JLabel playerNameLabel;
     private final JLabel playerScoreLabel;
-    private final JLabel opponentNameLabel;
     private final JLabel opponentScoreLabel;
     private final JLabel resultLabel;
     private final JButton continueButton;
 
-    public UglyScorePanel() {
-        // Set layout and panel properties
+    public ScorePanel() {
+
         setLayout(new GridBagLayout());
         setBackground(Color.LIGHT_GRAY);
 
-        // Initialize components
-        playerNameLabel = new JLabel();
         playerScoreLabel = new JLabel("Your Score: 0");
-        opponentNameLabel = new JLabel();
         opponentScoreLabel = new JLabel("Opponent's Score: 0");
         resultLabel = new JLabel("");
         continueButton = new JButton("Continue");
-
-        // Styling labels and button
-        Font nameFont = new Font("Arial", Font.BOLD, 16);
-        playerNameLabel.setFont(nameFont);
-        opponentNameLabel.setFont(nameFont);
 
         playerScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
         opponentScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -36,31 +26,19 @@ public class UglyScorePanel extends JPanel {
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
         continueButton.setFont(new Font("Arial", Font.BOLD, 14));
 
-        // Use GridBagLayout for proper alignment
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-
-        // Add player name and score
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        add(playerNameLabel, gbc);
 
         gbc.gridy = 1;
         add(playerScoreLabel, gbc);
 
-        // Add opponent name and score
-        gbc.gridy = 2;
-        add(opponentNameLabel, gbc);
-
         gbc.gridy = 3;
         add(opponentScoreLabel, gbc);
 
-        // Add result label
         gbc.gridy = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(resultLabel, gbc);
 
-        // Add continue button
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.NONE;
         add(continueButton, gbc);
@@ -83,21 +61,6 @@ public class UglyScorePanel extends JPanel {
         }
         String buttonText = (gameOver) ? "EXIT GAME" : "CONTINUE";
         continueButton.setText(buttonText);
-    }
-
-    // Method to update the player score
-    public void setPlayerScore(int score) {
-        playerScoreLabel.setText("Your Score: " + score);
-    }
-
-    // Method to update the opponent score
-    public void setOpponentScore(int score) {
-        opponentScoreLabel.setText("Opponent's Score: " + score);
-    }
-
-    // Method to set the result text
-    public void setResultText(String resultText) {
-        resultLabel.setText(resultText);
     }
 
     public JButton getContinueButton() {

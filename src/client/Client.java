@@ -7,7 +7,6 @@ import Modules.Category;
 import Modules.Response;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.InetAddress;
@@ -154,11 +153,11 @@ public class Client {
     }
 
     public void addActionListenerToUglyScorePanel(){
-        resetActionListeners(gameGUI.uglyScorePanel.getContinueButton());
-        gameGUI.uglyScorePanel.getContinueButton().addActionListener(e->{
+        resetActionListeners(gameGUI.scorePanel.getContinueButton());
+        gameGUI.scorePanel.getContinueButton().addActionListener(e->{
             if (inGame){
                 sendRequest(new Request(RequestType.NEXT_ROUND, username));
-                gameGUI.uglyScorePanel.setButtonToWaiting();
+                gameGUI.scorePanel.setButtonToWaiting();
             }
             else{
                 gameGUI.switchPanel(2);
