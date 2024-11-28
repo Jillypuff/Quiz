@@ -45,7 +45,7 @@ public class ClientProtocol {
             case WAITING_FOR_CATEGORY_CHOICE -> {
                 System.out.println("Waiting for opponent to select category");
                 client.gameGUI.switchPanel(5);
-                client.gameGUI.waitingPanel.getQueuedLabel().setText("Waiting for other players turn");
+                client.gameGUI.waitingPanel.getQueuedLabel().setText("Waiting for player to select category");
             }
             case GAME_STARTED -> {
                 System.out.println("Game started");
@@ -54,17 +54,17 @@ public class ClientProtocol {
             }
             case SEND_SCORE -> {
                 // BYT TILL SCORE PANEL
-                client.gameGUI.uglyScorePanel.setButtonToContinue();
+                client.gameGUI.scorePanel.setButtonToContinue();
                 System.out.println("new score value received");
                 client.gameGUI.switchPanel(6);
-                client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
+                client.gameGUI.scorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
             }
             case SEND_FINAL_RESULT -> {
-                client.gameGUI.uglyScorePanel.setButtonToContinue();
+                client.gameGUI.scorePanel.setButtonToContinue();
                 client.inGame = false;
                 System.out.println("Final result received");
                 client.gameGUI.switchPanel(6);
-                client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), true);
+                client.gameGUI.scorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), true);
             }
             case GAME_OVER ->{
                 System.out.println("Other player gave up");

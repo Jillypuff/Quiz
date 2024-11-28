@@ -3,7 +3,6 @@ package GUI;
 import GUI.panels.*;
 import client.Client;
 import javax.swing.*;
-import java.io.IOException;
 
 public class GameGUI extends JFrame {
 
@@ -12,11 +11,11 @@ public class GameGUI extends JFrame {
     public LoginPanel loginPanel;
     public WelcomePanel welcomePanel;
     public WaitingPanel waitingPanel;
-    public UglyScorePanel uglyScorePanel;
+    public ScorePanel scorePanel;
 
     Client client;
 
-    public GameGUI(Client client) throws IOException, InterruptedException {
+    public GameGUI(Client client) {
         this.client = client;
         loginPanel = new LoginPanel();
         add(loginPanel);
@@ -37,7 +36,7 @@ public class GameGUI extends JFrame {
         questionPanel = new QuestionPanel();
         categoryPanel = new CategoryPanel();
         waitingPanel = new WaitingPanel();
-        uglyScorePanel = new UglyScorePanel();
+        scorePanel = new ScorePanel();
     }
 
     public void switchPanel(int panel){
@@ -48,7 +47,7 @@ public class GameGUI extends JFrame {
             case 3 -> this.add(categoryPanel);
             case 4 -> this.add(questionPanel);
             case 5 -> this.add(waitingPanel);
-            case 6 -> this.add(uglyScorePanel);
+            case 6 -> this.add(scorePanel);
         }
         revalidate();
         repaint();

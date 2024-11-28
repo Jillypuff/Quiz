@@ -54,7 +54,7 @@ public class CategoryPanel extends JPanel {
     private JButton createCategoryButton() {
         JButton button = new JButton("Category");
         button.setPreferredSize(new Dimension(50, 35));
-        button.setFont(new Font("Malgun Gothic", Font.PLAIN, 16));
+        button.setFont(new Font("Malgun Gothic", Font.PLAIN, 14));
         button.setFocusPainted(false);
         button.setOpaque(true);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);

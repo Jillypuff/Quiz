@@ -2,7 +2,6 @@ package GUI.panels;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class WelcomePanel extends JPanel {
 
@@ -56,11 +55,6 @@ public class WelcomePanel extends JPanel {
 
     public JButton getLogoutButton() {
         return logoutButton;
-    }
-
-    public void addActionListener(ActionListener listener){
-        newGameButton.addActionListener(listener);
-        logoutButton.addActionListener(listener);
     }
 
     @Override

@@ -3,7 +3,6 @@ package GUI.panels;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class LoginPanel extends JPanel {
 
@@ -78,11 +77,6 @@ public class LoginPanel extends JPanel {
         button.setFont(new Font("Arial Black", Font.PLAIN, 14));
         button.setFocusable(false);
         return button;
-    }
-
-    public void addActionListener(ActionListener listener){
-        startButton.addActionListener(listener);
-        exitButton.addActionListener(listener);
     }
 
     public JTextField getUsernameTextField() {
