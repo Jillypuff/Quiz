@@ -93,6 +93,7 @@ public class UglyScorePanel extends JPanel {
 
     private final JLabel playerNameLabel;
     private final JLabel playerScoreLabel;
+    private final JTextField playerScoreAllRounds;
     private final JLabel opponentNameLabel;
     private final JLabel opponentScoreLabel;
     private final JLabel resultLabel;
@@ -106,6 +107,7 @@ public class UglyScorePanel extends JPanel {
         // Initialize components
         playerNameLabel = new JLabel();
         playerScoreLabel = new JLabel("Your Score: 0");
+        playerScoreAllRounds = new JTextField();
         opponentNameLabel = new JLabel();
         opponentScoreLabel = new JLabel("Opponent's Score: 0");
         resultLabel = new JLabel("");
@@ -117,10 +119,18 @@ public class UglyScorePanel extends JPanel {
         opponentNameLabel.setFont(nameFont);
 
         playerScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        playerScoreAllRounds.setFont(new Font("Arial", Font.BOLD, 16));
         opponentScoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
         resultLabel.setFont(new Font("Arial", Font.ITALIC, 16));
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
         continueButton.setFont(new Font("Arial", Font.BOLD, 14));
+
+        playerScoreAllRounds.setHorizontalAlignment(SwingConstants.CENTER);
+        playerScoreAllRounds.setEditable(false);
+        playerScoreAllRounds.setOpaque(true);
+        playerScoreAllRounds.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        playerScoreAllRounds.setVisible(true);
+
 
         // Use GridBagLayout for proper alignment
         GridBagConstraints gbc = new GridBagConstraints();
@@ -132,7 +142,8 @@ public class UglyScorePanel extends JPanel {
         add(playerNameLabel, gbc);
 
         gbc.gridy = 1;
-        add(playerScoreLabel, gbc);
+        //add(playerScoreLabel, gbc);
+        add(playerScoreAllRounds, gbc);
 
         // Add opponent name and score
         gbc.gridy = 2;
@@ -172,12 +183,16 @@ public class UglyScorePanel extends JPanel {
     }
 
     public void setScoreDisplay(List<Integer> yourScores, List<Integer> opponentScores, boolean gameOver) {
-        StringBuilder scoreAllRounds;
-        scoreAllRounds = new StringBuilder("Your Scoreboard\n");
+        StringBuilder yourScoreAllRounds = new StringBuilder();
+        yourScoreAllRounds.append("Your Score\n");
         for (int i = 0; i < yourScores.size(); i++) {
-            scoreAllRounds.append("\nround ").append(i).append(": ").append(yourScores.get(i).toString()).append("\n");
+            yourScoreAllRounds.append("Round " + i + ": " + yourScores.get(i) + "\n");
         }
-        playerScoreLabel.setText(scoreAllRounds.toString());
+
+        playerScoreAllRounds.setText(yourScoreAllRounds.toString());
+
+
+
 //        opponentScoreLabel.setText("Opponent's Score: " + opponentScore);
 //        if (playerScore > opponentScore){
 //            String resultText = (gameOver) ? "YOU WON THE GAME!" : "You won this round!";
