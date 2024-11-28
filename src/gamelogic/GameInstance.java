@@ -14,28 +14,29 @@ public class GameInstance {
 
     private int amountOfQuestions;
     private int amountOfRounds;
-    private Properties properties;
-    protected List<Category> availableCategories;
+    private final Properties properties;
+    private final List<Category> availableCategories;
     private Category currentCategory;
     private final List<Integer> player1Scores = new ArrayList<>();
     private final List<Integer> player2Scores = new ArrayList<>();
 
-    public ConnectedClient player1;
-    public ConnectedClient player2;
-    // La till en aktiv spelare
-    public ConnectedClient activeClient;
-
+    private ConnectedClient player1;
+    private ConnectedClient player2;
+    private ConnectedClient activeClient;
 
     public GameInstance(ConnectedClient player1, ConnectedClient player2) {
         availableCategories = new ArrayList<>(List.of(Category.values()));
+
         properties = new Properties();
         loadProperties();
+
         this.player1 = player1;
         this.player2 = player2;
-        // La till att player1 sätts till aktiv spelare först
         activeClient = player1;
+
         amountOfQuestions = Integer.parseInt(properties.getProperty("amountOfQuestions"));
         amountOfRounds = Integer.parseInt(properties.getProperty("amountOfRounds"));
+
         try{
             player1.sendResponse(new Response(ResponseType.GAME_JOINED, amountOfRounds, true));
             player2.sendResponse(new Response(ResponseType.GAME_JOINED, amountOfRounds, false));
@@ -43,17 +44,16 @@ public class GameInstance {
             player1.closeEverything();
             player2.closeEverything();
         }
+
         sendRandomizedCategories();
     }
 
-    // La till metod för att byta aktiv spelare
     public void switchActiveClient() {
         activeClient = (activeClient == player1) ? player2 : player1;
     }
 
-    // Ändrar att titta vilken connectedclient som är aktiv
+
     public void sendRandomizedCategories(){
-        // tittar först om båda är redo för new round
         if (player1.isReadyForNewRound() && player2.isReadyForNewRound()){
             try{
                 if (activeClient == player1){
@@ -63,10 +63,9 @@ public class GameInstance {
                     player2.sendResponse(new Response(ResponseType.CHOSE_CATEGORY, randomizeCategories()));
                     player1.sendResponse(new Response(ResponseType.WAITING_FOR_CATEGORY_CHOICE));
                 }
-                // Byter vems tur det är tills nästa runda
                 switchActiveClient();
-
-            } catch (Exception e){
+            }
+            catch (Exception e){
                 player1.closeEverything();
                 player2.closeEverything();
                 System.err.println("It's broke yo");
@@ -76,12 +75,12 @@ public class GameInstance {
 
     public void sendQuestionPackage(){
         try {
-            // sätter att dom ej är redo för ny runda
             notReadyForNewRound();
             QuestionPackage questionPackage = createQuestionPackage();
             player1.sendResponse(new Response(ResponseType.GAME_STARTED, questionPackage));
             player2.sendResponse(new Response(ResponseType.GAME_STARTED, questionPackage));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             player1.closeEverything();
             player2.closeEverything();
         }
@@ -97,7 +96,8 @@ public class GameInstance {
                         (ResponseType.SEND_SCORE, player2Scores.getLast(), player1Scores.getLast()));
                 notReadyForNewRound();
             }
-        }catch (IOException e){
+        }
+        catch (IOException e){
             player1.closeEverything();
             player2.closeEverything();
         }
@@ -119,14 +119,15 @@ public class GameInstance {
                 player1.sendResponse(new Response(ResponseType.SEND_FINAL_RESULT, player1TotalScore, player2TotalScore));
                 player2.sendResponse(new Response(ResponseType.SEND_FINAL_RESULT, player2TotalScore, player1TotalScore));
             }
-        } catch (IOException e){
+        }
+        catch (IOException e){
             player1.closeEverything();
             player2.closeEverything();
         }
     }
 
     public void sendGameOver(ConnectedClient client) throws IOException {
-        if (client.username.equals(player1.username)){
+        if (client.getUsername().equals(player1.getUsername())){
             player2.sendResponse(new Response(ResponseType.GAME_OVER));
         }
         else{
@@ -180,5 +181,29 @@ public class GameInstance {
 
     public void updatePlayer2Score(int score){
         player2Scores.add(score);
+    }
+
+    public ConnectedClient getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(ConnectedClient player1) {
+        this.player1 = player1;
+    }
+
+    public ConnectedClient getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(ConnectedClient player2) {
+        this.player2 = player2;
+    }
+
+    public ConnectedClient getActiveClient() {
+        return activeClient;
+    }
+
+    public void setActiveClient(ConnectedClient activeClient) {
+        this.activeClient = activeClient;
     }
 }

@@ -8,24 +8,24 @@ import java.util.List;
 
 public class ClientProtocol {
 
-    GameManager gameManager;
+    private GameManager gameManager;
 
     public void processResponse(Response response, Client client){
         switch (response.getResponse()){
             case CLIENT_CONNECTED -> {
                 System.out.println("Received client connected");
-                client.gameGUI.switchPanel(2);
-                String username = client.gameGUI.loginPanel.getUsernameTextField().getText();
-                client.username = username;
-                client.gameGUI.welcomePanel.getWelcomePrompt().setText("Welcome " + username + "!");
+                client.getGameGUI().switchPanel(2);
+                String username = client.getGameGUI().loginPanel.getUsernameTextField().getText();
+                client.setUsername(username);
+                client.getGameGUI().welcomePanel.getWelcomePrompt().setText("Welcome " + username + "!");
             }
             case CLIENT_DISCONNECTED -> {
                 System.out.println("Client disconnected");
-                client.gameGUI.switchPanel(1);
+                client.getGameGUI().switchPanel(1);
             }
             case QUEUE_JOINED -> {
                 System.out.println("Received queue joined");
-                client.gameGUI.switchPanel(5);
+                client.getGameGUI().switchPanel(5);
             }
             case GAME_JOINED -> {
                 System.out.println("Game joined");
@@ -36,40 +36,39 @@ public class ClientProtocol {
             case CHOSE_CATEGORY -> {
                 System.out.println("Choose category");
                 List<Category> categoryChoices = response.getCategories();
-                client.gameGUI.categoryPanel.getCategory1().setText(categoryChoices.get(0).name());
-                client.gameGUI.categoryPanel.getCategory2().setText(categoryChoices.get(1).name());
-                client.gameGUI.categoryPanel.getCategory3().setText(categoryChoices.get(2).name());
+                client.getGameGUI().categoryPanel.getCategory1().setText(categoryChoices.get(0).name());
+                client.getGameGUI().categoryPanel.getCategory2().setText(categoryChoices.get(1).name());
+                client.getGameGUI().categoryPanel.getCategory3().setText(categoryChoices.get(2).name());
 
-                client.gameGUI.switchPanel(3);
+                client.getGameGUI().switchPanel(3);
             }
             case WAITING_FOR_CATEGORY_CHOICE -> {
                 System.out.println("Waiting for opponent to select category");
-                client.gameGUI.switchPanel(5);
-                client.gameGUI.waitingPanel.getQueuedLabel().setText("Waiting for other players turn");
+                client.getGameGUI().switchPanel(5);
+                client.getGameGUI().waitingPanel.getQueuedLabel().setText("Waiting for other players turn");
             }
             case GAME_STARTED -> {
                 System.out.println("Game started");
-                client.gameGUI.switchPanel(4);
+                client.getGameGUI().switchPanel(4);
                 gameManager.startNewRound(response.getQuestionPackage());
             }
             case SEND_SCORE -> {
-                // BYT TILL SCORE PANEL
-                client.gameGUI.uglyScorePanel.setButtonToContinue();
+                client.getGameGUI().uglyScorePanel.setButtonToContinue();
                 System.out.println("new score value received");
-                client.gameGUI.switchPanel(6);
-                client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
+                client.getGameGUI().switchPanel(6);
+                client.getGameGUI().uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), false);
             }
             case SEND_FINAL_RESULT -> {
-                client.gameGUI.uglyScorePanel.setButtonToContinue();
+                client.getGameGUI().uglyScorePanel.setButtonToContinue();
                 client.inGame = false;
                 System.out.println("Final result received");
-                client.gameGUI.switchPanel(6);
-                client.gameGUI.uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), true);
+                client.getGameGUI().switchPanel(6);
+                client.getGameGUI().uglyScorePanel.setScoreDisplay(response.getYourScore(), response.getOpponentScore(), true);
             }
             case GAME_OVER ->{
                 System.out.println("Other player gave up");
-                client.gameGUI.switchPanel(2);
-                JOptionPane.showMessageDialog(client.gameGUI, "Other player gave up!");
+                client.getGameGUI().switchPanel(2);
+                JOptionPane.showMessageDialog(client.getGameGUI(), "Other player gave up!");
             }
         }
     }

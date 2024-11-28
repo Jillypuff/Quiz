@@ -11,19 +11,19 @@ import java.net.Socket;
 
 public class ConnectedClient implements Runnable {
 
-    public Server server;
-    Socket socket;
-    ObjectOutputStream out;
-    ObjectInputStream in;
-    public String username;
+    private final ServerProtocol protocol;
+    private final Socket socket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private String username;
     private boolean running = true;
-    public GameInstance instance;
+    private GameInstance instance;
 
-    boolean isReady = false;
+    private boolean isReady = false;
 
-    public ConnectedClient(Socket socket, Server server){
+    public ConnectedClient(Socket socket, ServerProtocol protocol){
         this.socket = socket;
-        this.server = server;
+        this.protocol = protocol;
     }
 
     public synchronized void sendResponse(Response response) throws IOException {
@@ -46,7 +46,6 @@ public class ConnectedClient implements Runnable {
             out = new ObjectOutputStream(socket.getOutputStream());
             out.flush();
             in = new ObjectInputStream(socket.getInputStream());
-            ServerProtocol protocol = new ServerProtocol();
 
             while(running && !socket.isClosed()){
                 Object obj = in.readObject();
@@ -79,5 +78,21 @@ public class ConnectedClient implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public GameInstance getInstance() {
+        return instance;
+    }
+
+    public void setInstance(GameInstance instance) {
+        this.instance = instance;
     }
 }

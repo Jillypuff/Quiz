@@ -19,8 +19,8 @@ public class Client {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private Socket socket;
-    String username;
-    GameGUI gameGUI;
+    private String username;
+    private GameGUI gameGUI;
     boolean inGame = false;
 
     public Client(Socket socket) {
@@ -170,6 +170,22 @@ public class Client {
         for(ActionListener listener: button.getActionListeners()){
             button.removeActionListener((listener));
         }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public GameGUI getGameGUI() {
+        return gameGUI;
+    }
+
+    public void setGameGUI(GameGUI gameGUI) {
+        this.gameGUI = gameGUI;
     }
 
     public static void main(String[] args) throws IOException {

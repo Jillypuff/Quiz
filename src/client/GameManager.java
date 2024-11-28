@@ -7,26 +7,25 @@ import Modules.RequestType;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 public class GameManager {
 
-    int scoreThisRound = 0;
-    int amountOfRounds;
-    int currentRound = 1;
-    int amountOfQuestions;
-    QuestionPackage questionPackage;
-    GameGUI gameGUI;
-    Client client;
-    boolean isActivePlayer;
+    private int scoreThisRound = 0;
+    private final int amountOfRounds;
+    private int currentRound = 1;
+    private int amountOfQuestions;
+    private QuestionPackage questionPackage;
+    private final GameGUI gameGUI;
+    private final Client client;
+    private boolean isActivePlayer;
 
     public GameManager(int amountOfRounds, boolean isActivePlayer, Client client) {
         this.amountOfRounds = amountOfRounds;
         this.isActivePlayer = isActivePlayer;
         this.client = client;
-        this.gameGUI = client.gameGUI;
+        this.gameGUI = client.getGameGUI();
         addActionListenerToQuestionButtons();
         addActionListenerToContinueButton();
     }
@@ -62,13 +61,13 @@ public class GameManager {
     void requestNextRound() {
         gameGUI.questionPanel.setWaitingButton();
         System.out.println("Sending round score");
-        client.sendRequest(new Request(RequestType.ROUND_SCORE, client.username, scoreThisRound));
+        client.sendRequest(new Request(RequestType.ROUND_SCORE, client.getUsername(), scoreThisRound));
         scoreThisRound = 0;
     }
 
     void requestFinalScore() {
         gameGUI.questionPanel.setWaitingButton();
-        client.sendRequest(new Request(RequestType.FINAL_RESULT, client.username, scoreThisRound));
+        client.sendRequest(new Request(RequestType.FINAL_RESULT, client.getUsername(), scoreThisRound));
         System.out.println("IN FINAL SCORE");
         questionPackage.resetPackage();
     }

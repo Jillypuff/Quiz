@@ -5,10 +5,9 @@ import java.io.Serializable;
 public class Request implements Serializable {
 
     private final RequestType request;
-    public String username;
-    Category chosenCategory;
-    public int answer = -1;
-//    public boolean playerIdentifier=false;
+    private String username;
+    private Category chosenCategory;
+    private int roundScore = -1;
 
     public Request(RequestType request){
         this(request, "", -1);
@@ -18,14 +17,10 @@ public class Request implements Serializable {
         this(request, username, -1);
     }
 
-    public Request(RequestType request, int answer){
-        this(request, "", answer);
-    }
-
-    public Request(RequestType request, String username, int answer) {
+    public Request(RequestType request, String username, int roundScore) {
         this.request = request;
         this.username = username;
-        this.answer = answer;
+        this.roundScore = roundScore;
     }
 
     public Request(RequestType request, String username, Category chosenCategory){
@@ -34,21 +29,32 @@ public class Request implements Serializable {
         this.chosenCategory = chosenCategory;
     }
 
-//    public Request(RequestType request, String username, int answer, Boolean playerIdentifier) {
-//        this.request = request;
-//        this.username = username;
-//        this.answer = answer;
-//        this.playerIdentifier = playerIdentifier;
-//    }
-
     public RequestType getType() {
         return request;
     }
 
-    public int getAnswer(){
-        return answer;
+    public int getRoundScore(){
+        return roundScore;
     }
+
+    public void setRoundScore(int roundScore) {
+        this.roundScore = roundScore;
+    }
+
     public Category getChosenCategory(){
         return chosenCategory;
     }
+
+    public void setChosenCategory(Category chosenCategory) {
+        this.chosenCategory = chosenCategory;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

@@ -6,9 +6,9 @@ import java.util.List;
 
 public class QuestionPackage implements Serializable {
 
-    List<Question> questions;
-    int amountOfQuestions;
-    int questionNumber = -1;
+    private final List<Question> questions;
+    private final int amountOfQuestions;
+    private int questionNumber = -1;
 
     public QuestionPackage(List<Question> questions, int amountOfQuestions) {
         this.questions = questions;

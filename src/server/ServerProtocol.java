@@ -10,11 +10,17 @@ import java.io.IOException;
 
 public class ServerProtocol {
 
+    GameQueueManager gameQueueManager;
+
+    public ServerProtocol(GameQueueManager gameQueueManager) {
+        this.gameQueueManager = gameQueueManager;
+    }
+
     public void processRequest(Request request, ConnectedClient client) throws IOException {
         switch (request.getType()){
             case CONNECT -> {
                 System.out.println("Received connect request; sending connected response");
-                client.username = request.username;
+                client.setUsername(request.getUsername());
                 client.sendResponse(new Response(ResponseType.CLIENT_CONNECTED));
             }
             case DISCONNECT -> {
@@ -23,49 +29,49 @@ public class ServerProtocol {
             }
             case START_GAME -> {
                 client.readyForNewRound(true);
-                client.server.handleStartGame(client);
+                gameQueueManager.handleStartGame(client);
             }
             case EXIT_GAME -> {
                 client.closeEverything();
             }
             case LEAVE_QUEUE -> {
-                client.server.queue.remove(client);
+                gameQueueManager.removeFromQueue(client);
             }
             case CATEGORY_CHOSEN -> {
                 System.out.println("GOT CATEGORY CHOSEN");
                 Category selected = request.getChosenCategory();
-                GameInstance instance = client.instance;
+                GameInstance instance = client.getInstance();
                 instance.categoryChosen(selected);
             }
             case NEXT_ROUND -> {
                 client.readyForNewRound(true);
-                client.instance.sendRandomizedCategories();
+                client.getInstance().sendRandomizedCategories();
             }
             case GIVE_UP -> {
-                client.instance.sendGameOver(client);
+                client.getInstance().sendGameOver(client);
             }
             case ROUND_SCORE ->{
-                System.out.println("GOT ROUND SCORE PLAYER: "+request.username);
-                GameInstance instance = client.instance;
-                if(client.username.equals(instance.player1.username)){
-                    instance.updatePlayer1Score(request.answer);
-                    System.out.println("added: " + request.answer + " to player1");
+                System.out.println("GOT ROUND SCORE PLAYER: "+request.getUsername());
+                GameInstance instance = client.getInstance();
+                if(client.getUsername().equals(instance.getPlayer1().getUsername())){
+                    instance.updatePlayer1Score(request.getRoundScore());
+                    System.out.println("added: " + request.getRoundScore() + " to player1");
                     instance.sendRoundScore(client);
                 }
                 else {
-                    instance.updatePlayer2Score(request.answer);
-                    System.out.println("added: " + request.answer + " to player2");
+                    instance.updatePlayer2Score(request.getRoundScore());
+                    System.out.println("added: " + request.getRoundScore() + " to player2");
                     instance.sendRoundScore(client);
                 }
             }
             case FINAL_RESULT -> {
-                if (client.username.equals(client.instance.player1.username)) {
-                    client.instance.updatePlayer1Score(request.answer);
+                if (client.getUsername().equals(client.getInstance().getPlayer1().getUsername())) {
+                    client.getInstance().updatePlayer1Score(request.getRoundScore());
                 } else {
-                    client.instance.updatePlayer2Score(request.answer);
+                    client.getInstance().updatePlayer2Score(request.getRoundScore());
                 }
                 System.out.println("Waiting for final result");
-                client.instance.sendFinalResults(client);
+                client.getInstance().sendFinalResults(client);
             }
             default -> System.err.println("How did we end up here!?");
         }
