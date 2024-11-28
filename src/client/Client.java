@@ -54,7 +54,7 @@ public class Client {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.exit(0);
             }
         }).start();
     }
@@ -107,6 +107,8 @@ public class Client {
                     "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
             if (confirm == JOptionPane.YES_OPTION) {
+                sendRequest(new Request(RequestType.EXIT_GAME));
+                closeEverything();
                 System.exit(0);
             }
         });
