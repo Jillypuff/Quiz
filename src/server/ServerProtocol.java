@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ServerProtocol {
 
-    GameQueueManager gameQueueManager;
+    private final GameQueueManager gameQueueManager;
 
     public ServerProtocol(GameQueueManager gameQueueManager) {
         this.gameQueueManager = gameQueueManager;

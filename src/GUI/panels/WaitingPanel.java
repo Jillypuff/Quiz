@@ -43,6 +43,15 @@ public class WaitingPanel extends JPanel {
         return button;
     }
 
+    public void setUpWaitingPanel(boolean inGame){
+        if (inGame){
+            queuedLabel.setText("Waiting for opponent...");
+        }
+        else{
+            queuedLabel.setText("In queue for a game...");
+        }
+    }
+
     public void addActionListener(ActionListener listener){
         leaveGameButton.addActionListener(listener);
     }

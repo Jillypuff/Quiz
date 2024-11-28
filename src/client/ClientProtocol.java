@@ -25,6 +25,7 @@ public class ClientProtocol {
             }
             case QUEUE_JOINED -> {
                 System.out.println("Received queue joined");
+                client.getGameGUI().waitingPanel.setUpWaitingPanel(false);
                 client.getGameGUI().switchPanel(5);
             }
             case GAME_JOINED -> {
@@ -45,7 +46,7 @@ public class ClientProtocol {
             case WAITING_FOR_CATEGORY_CHOICE -> {
                 System.out.println("Waiting for opponent to select category");
                 client.getGameGUI().switchPanel(5);
-                client.getGameGUI().waitingPanel.getQueuedLabel().setText("Waiting for other players turn");
+                client.getGameGUI().waitingPanel.setUpWaitingPanel(true);
             }
             case GAME_STARTED -> {
                 System.out.println("Game started");
