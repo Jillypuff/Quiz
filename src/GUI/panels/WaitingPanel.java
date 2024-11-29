@@ -51,10 +51,6 @@ public class WaitingPanel extends JPanel {
         }
     }
 
-    public JLabel getQueuedLabel() {
-        return queuedLabel;
-    }
-
     public JButton getLeaveGameButton() {
         return leaveGameButton;
     }
