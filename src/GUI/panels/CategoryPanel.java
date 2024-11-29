@@ -24,15 +24,20 @@ public class CategoryPanel extends JPanel {
 
         JPanel buttonPanel = createButtonPanel();
 
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.setOpaque(false);
+        JPanel centerPanel = createCenterPanel();
         centerPanel.add(Box.createVerticalStrut(50));
         centerPanel.add(categoryLabel);
         centerPanel.add(Box.createVerticalStrut(30));
         centerPanel.add(buttonPanel);
 
         add(centerPanel, BorderLayout.CENTER);
+    }
+
+    private JPanel createCenterPanel() {
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setOpaque(false);
+        return centerPanel;
     }
 
     private JPanel createButtonPanel() {
